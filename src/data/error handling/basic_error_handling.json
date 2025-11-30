@@ -1,0 +1,48 @@
+{
+  "id": "08651b7a-c76d-4c79-aa83-d3875c881b6a",
+  "brandColor": "#8C3900",
+  "connectionReferences": {},
+  "connectorDisplayName": "Control",
+  "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDMyIDMyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KIDxwYXRoIGQ9Im0wIDBoMzJ2MzJoLTMyeiIgZmlsbD0iIzhDMzkwMCIvPg0KIDxwYXRoIGQ9Im04IDEwaDE2djEyaC0xNnptMTUgMTF2LTEwaC0xNHYxMHptLTItOHY2aC0xMHYtNnptLTEgNXYtNGgtOHY0eiIgZmlsbD0iI2ZmZiIvPg0KPC9zdmc+DQo=",
+  "isTrigger": false,
+  "operationName": "Scope_-_catch",
+  "operationDefinition": {
+    "type": "Scope",
+    "actions": {
+      "Compose_-_get_workflow_details": {
+        "type": "Compose",
+        "inputs": "@workflow()",
+        "runAfter": {},
+        "metadata": {
+          "operationMetadataId": "4d49bf35-93eb-478a-9555-27d655139b8a"
+        }
+      },
+      "Compose_-_get_Flow_URL": {
+        "type": "Compose",
+        "inputs": "@concat('https://make.powerautomate.com/environments/', workflow()?['tags']['environmentName'],'/flows/',workflow()?['name'],'/runs/',workflow()?['run']['name'])\r\n\r\n",
+        "runAfter": {
+          "Compose_-_get_failed_Action": ["Succeeded"]
+        },
+        "metadata": {
+          "operationMetadataId": "2f211208-b0ad-45c7-a710-8f966fb89523"
+        }
+      },
+      "Compose_-_get_failed_Action": {
+        "type": "Compose",
+        "inputs": "@actions('Scope_-_try')?['error']?['message']",
+        "runAfter": {
+          "Compose_-_get_workflow_details": ["Succeeded"]
+        },
+        "metadata": {
+          "operationMetadataId": "58732135-02d8-4073-b89e-78e38fe0f30a"
+        }
+      }
+    },
+    "runAfter": {
+      "Scope_-_try": ["Failed", "Skipped", "TimedOut"]
+    },
+    "metadata": {
+      "operationMetadataId": "8f3f6158-75da-4ea8-a0d8-9375615a20a2"
+    }
+  }
+}

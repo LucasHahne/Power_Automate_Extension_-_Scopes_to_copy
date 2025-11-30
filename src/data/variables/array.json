@@ -1,0 +1,337 @@
+{
+  "nodeId": "Initialize_variable_-",
+  "nodeData": {
+    "id": "Initialize_variable_-",
+    "nodeInputs": {
+      "dynamicLoadStatus": "NotStarted",
+      "parameterGroups": {
+        "default": {
+          "id": "default",
+          "description": "",
+          "parameters": [
+            {
+              "id": "A164F738-5521-4474-BA2A-8E21D170F2BE",
+              "editor": "string",
+              "info": { "isDynamic": false },
+              "hideInUI": false,
+              "label": "Name",
+              "parameterKey": "inputs.$.name",
+              "parameterName": "name",
+              "placeholder": "Enter variable name",
+              "preservedValue": "",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "title": "Name",
+                "description": "Enter variable name",
+                "x-ms-editor": "string"
+              },
+              "showErrors": false,
+              "showTokens": false,
+              "suppressCasting": true,
+              "type": "string",
+              "value": [
+                {
+                  "id": "AAD9C4A6-32F3-4A9A-9612-4FA8C40B6D63",
+                  "type": "literal",
+                  "value": "",
+                  "valueType": "string"
+                }
+              ],
+              "visibility": ""
+            },
+            {
+              "id": "D64E631B-F624-4669-9E25-9870B88EA772",
+              "editor": "dropdown",
+              "editorOptions": {
+                "options": [
+                  { "displayName": "Boolean", "value": "boolean" },
+                  { "displayName": "Integer", "value": "integer" },
+                  { "displayName": "Float", "value": "float" },
+                  { "displayName": "String", "value": "string" },
+                  { "displayName": "Object", "value": "object" },
+                  { "displayName": "Array", "value": "array" }
+                ],
+                "serialization": {}
+              },
+              "info": { "isDynamic": false },
+              "hideInUI": false,
+              "label": "Type",
+              "parameterKey": "inputs.$.type",
+              "parameterName": "type",
+              "preservedValue": "array",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "title": "Type",
+                "default": "boolean",
+                "x-ms-editor": "dropdown",
+                "x-ms-editor-options": {
+                  "options": [
+                    { "displayName": "Boolean", "value": "boolean" },
+                    { "displayName": "Integer", "value": "integer" },
+                    { "displayName": "Float", "value": "float" },
+                    { "displayName": "String", "value": "string" },
+                    { "displayName": "Object", "value": "object" },
+                    { "displayName": "Array", "value": "array" }
+                  ]
+                }
+              },
+              "showErrors": false,
+              "showTokens": true,
+              "suppressCasting": true,
+              "type": "string",
+              "value": [
+                {
+                  "id": "424B9AA6-134D-4653-98D7-15D3BFB61329",
+                  "type": "literal",
+                  "value": "array",
+                  "valueType": "string"
+                }
+              ],
+              "visibility": ""
+            },
+            {
+              "id": "4C037C6C-C532-474A-8E47-C2D5C760BE12",
+              "info": {
+                "isDynamic": true,
+                "dynamicParameterReference": "inputs.$.value"
+              },
+              "hideInUI": false,
+              "label": "Value",
+              "parameterKey": "inputs.$.value",
+              "parameterName": "value",
+              "required": false,
+              "schema": {
+                "isDynamic": true,
+                "key": "inputs.$.value",
+                "name": "value",
+                "required": false,
+                "schema": { "type": "array" },
+                "summary": "",
+                "suppressCasting": true,
+                "title": "Value",
+                "type": "array",
+                "visibility": "important",
+                "dynamicParameterReference": "inputs.$.value"
+              },
+              "showErrors": false,
+              "showTokens": true,
+              "suppressCasting": true,
+              "type": "array",
+              "value": [
+                {
+                  "id": "DB4FF6A9-817D-406E-A098-C0243BED6797",
+                  "type": "literal",
+                  "value": "",
+                  "valueType": "string"
+                }
+              ],
+              "visibility": "important"
+            }
+          ],
+          "rawInputs": [
+            {
+              "description": "Enter variable name",
+              "editor": "string",
+              "isNested": true,
+              "key": "inputs.$.name",
+              "name": "name",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "title": "Name",
+                "description": "Enter variable name",
+                "x-ms-editor": "string"
+              },
+              "summary": "",
+              "suppressCasting": true,
+              "title": "Name",
+              "type": "string",
+              "visibility": "",
+              "hideInUI": false,
+              "value": ""
+            },
+            {
+              "default": "boolean",
+              "editor": "dropdown",
+              "editorOptions": {
+                "options": [
+                  { "displayName": "Boolean", "value": "boolean" },
+                  { "displayName": "Integer", "value": "integer" },
+                  { "displayName": "Float", "value": "float" },
+                  { "displayName": "String", "value": "string" },
+                  { "displayName": "Object", "value": "object" },
+                  { "displayName": "Array", "value": "array" }
+                ]
+              },
+              "isNested": true,
+              "key": "inputs.$.type",
+              "name": "type",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "title": "Type",
+                "default": "boolean",
+                "x-ms-editor": "dropdown",
+                "x-ms-editor-options": {
+                  "options": [
+                    { "displayName": "Boolean", "value": "boolean" },
+                    { "displayName": "Integer", "value": "integer" },
+                    { "displayName": "Float", "value": "float" },
+                    { "displayName": "String", "value": "string" },
+                    { "displayName": "Object", "value": "object" },
+                    { "displayName": "Array", "value": "array" }
+                  ]
+                }
+              },
+              "summary": "",
+              "suppressCasting": true,
+              "title": "Type",
+              "type": "string",
+              "visibility": "",
+              "hideInUI": false,
+              "value": "array"
+            },
+            {
+              "isDynamic": true,
+              "key": "inputs.$.value",
+              "name": "value",
+              "required": false,
+              "schema": {
+                "isDynamic": true,
+                "key": "inputs.$.value",
+                "name": "value",
+                "required": false,
+                "schema": { "type": "array" },
+                "summary": "",
+                "suppressCasting": true,
+                "title": "Value",
+                "type": "array",
+                "visibility": "important",
+                "dynamicParameterReference": "inputs.$.value"
+              },
+              "summary": "",
+              "suppressCasting": true,
+              "title": "Value",
+              "type": "array",
+              "visibility": "important",
+              "dynamicParameterReference": "inputs.$.value"
+            }
+          ]
+        }
+      }
+    },
+    "nodeOutputs": { "outputs": {} },
+    "nodeDependencies": {
+      "inputs": {
+        "inputs.$.value": {
+          "definition": {
+            "type": "DynamicProperties",
+            "extension": {
+              "dynamicState": {
+                "extension": { "builtInOperation": "getVariableSchema" },
+                "isInput": true
+              },
+              "parameters": {
+                "type": { "parameterReference": "type", "required": true }
+              }
+            }
+          },
+          "dependencyType": "ApiSchema",
+          "dependentParameters": {
+            "D64E631B-F624-4669-9E25-9870B88EA772": { "isValid": true }
+          },
+          "parameter": {
+            "description": "Enter initial value",
+            "dynamicSchema": {
+              "type": "DynamicProperties",
+              "extension": {
+                "dynamicState": {
+                  "extension": { "builtInOperation": "getVariableSchema" },
+                  "isInput": true
+                },
+                "parameters": {
+                  "type": { "parameterReference": "type", "required": true }
+                }
+              }
+            },
+            "isNested": true,
+            "key": "inputs.$.value",
+            "name": "value",
+            "required": false,
+            "schema": {
+              "title": "Value",
+              "description": "Enter initial value",
+              "x-ms-dynamic-properties": {
+                "dynamicState": {
+                  "extension": { "builtInOperation": "getVariableSchema" },
+                  "isInput": true
+                },
+                "parameters": {
+                  "type": { "parameterReference": "type", "required": true }
+                }
+              },
+              "x-ms-visibility": "important"
+            },
+            "summary": "",
+            "suppressCasting": true,
+            "title": "Value",
+            "type": "any",
+            "visibility": "important"
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "operationMetadata": {
+      "iconUri": "https://content.powerapps.com/resource/makerx/static/pauto/images/designeroperations/variables.e1611a86.png",
+      "brandColor": "#770BD6"
+    },
+    "settings": {
+      "asynchronous": { "isSupported": false, "value": false },
+      "correlation": { "isSupported": false },
+      "secureInputs": { "isSupported": false },
+      "secureOutputs": { "isSupported": false },
+      "disableAsyncPattern": { "isSupported": false, "value": false },
+      "disableAutomaticDecompression": { "isSupported": false },
+      "splitOn": { "isSupported": false, "value": { "enabled": false } },
+      "retryPolicy": { "isSupported": false },
+      "requestOptions": { "isSupported": false },
+      "sequential": false,
+      "suppressWorkflowHeaders": { "isSupported": false },
+      "suppressWorkflowHeadersOnResponse": {
+        "isSupported": false,
+        "value": false
+      },
+      "concurrency": { "isSupported": false },
+      "singleInstance": false,
+      "timeout": { "isSupported": false },
+      "paging": { "isSupported": false, "value": { "enabled": false } },
+      "uploadChunk": { "isSupported": false, "value": {} },
+      "downloadChunkSize": { "isSupported": false },
+      "trackedProperties": { "isSupported": true },
+      "requestSchemaValidation": { "isSupported": false, "value": false },
+      "conditionExpressions": { "isSupported": false },
+      "runAfter": { "isSupported": false, "value": [] },
+      "invokerConnection": {
+        "isSupported": false,
+        "value": { "enabled": false }
+      },
+      "statelessFlow": { "isSupported": false, "value": { "enabled": false } }
+    },
+    "repetitionInfo": { "repetitionReferences": [] }
+  },
+  "nodeTokenData": {
+    "tokens": [],
+    "upstreamNodeIds": ["Manually_trigger_a_flow"]
+  },
+  "nodeOperationInfo": {
+    "connectorId": "Variable",
+    "operationId": "InitializeVariable",
+    "type": "InitializeVariable"
+  },
+  "nodeConnectionData": null,
+  "isScopeNode": false,
+  "mslaNode": true
+}
