@@ -15,7 +15,6 @@ import objectJson from "./variables/object.json";
 import arrayJson from "./variables/array.json";
 import basicErrorJson from "./error handling/basic_error_handling.json";
 import errorMailJson from "./error handling/basic_error_handling_mail.json";
-import errorJiraJson from "./error handling/basic_error_handling_jira.json";
 import requestManagerApprovalJson from "./sharepoint/requestManagerApproval.json";
 export interface ScriptItem {
   id: string;
@@ -82,12 +81,6 @@ export const scriptCategories = [
         name: "Basic Error Handler with mail",
         icon: <ErrorhandlingIcon />,
         jsonData: errorMailJson,
-      },
-      {
-        id: "error-3",
-        name: "Basic Error Handler with Jira ticket",
-        icon: <ErrorhandlingIcon />,
-        jsonData: errorJiraJson,
       },
     ],
   },
