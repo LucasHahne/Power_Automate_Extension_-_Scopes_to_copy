@@ -28,7 +28,7 @@ function App() {
     <div className="bg-gray-100 p-2 w-[400px] max-h-[500px] overflow-y-auto">
       <div className="space-y-2">
         <div className="flex justify-center py-2 bg-linear-to-b from-yellow-900 to-yellow-600 rounded-sm">
-          <span className="text-3xl font-bold text-zinc-200">
+          <span className="text-3xl font-bold text-zinc-100">
             Power Automate Scopes
           </span>
         </div>

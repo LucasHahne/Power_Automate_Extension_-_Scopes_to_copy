@@ -1,0 +1,97 @@
+{
+  "id": "69c2ab9f-1ba2-40cd-bc12-6065c2fca6ec",
+  "brandColor": "#8C3900",
+  "connectionReferences": {
+    "shared_approvals": {
+      "connection": { "id": "" }
+    },
+    "shared_sharepointonline": {
+      "connection": { "id": "" }
+    }
+  },
+  "connectorDisplayName": "Control",
+  "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDMyIDMyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KIDxwYXRoIGQ9Im0wIDBoMzJ2MzJoLTMyeiIgZmlsbD0iIzhDMzkwMCIvPg0KIDxwYXRoIGQ9Im04IDEwaDE2djEyaC0xNnptMTUgMTF2LTEwaC0xNHYxMHptLTItOHY2aC0xMHYtNnptLTEgNXYtNGgtOHY0eiIgZmlsbD0iI2ZmZiIvPg0KPC9zdmc+DQo=",
+  "isTrigger": false,
+  "operationName": "Scope_-_Try",
+  "operationDefinition": {
+    "type": "Scope",
+    "actions": {
+      "Get_file_properties": {
+        "type": "OpenApiConnection",
+        "inputs": {
+          "host": {
+            "connectionName": "shared_sharepointonline",
+            "operationId": "GetFileItem",
+            "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+          },
+          "parameters": {
+            "dataset": "",
+            "table": "",
+            "id": "@triggerBody()?['entity']?['ID']"
+          },
+          "authentication": {
+            "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+          }
+        },
+        "runAfter": {},
+        "metadata": {
+          "operationMetadataId": "6295edac-f41d-4464-8fbf-595ebd1160db"
+        }
+      },
+      "Get_file_content": {
+        "type": "OpenApiConnection",
+        "inputs": {
+          "host": {
+            "connectionName": "shared_sharepointonline",
+            "operationId": "GetFileContent",
+            "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+          },
+          "parameters": {
+            "dataset": "",
+            "id": "@outputs('Get_file_properties')?['body/{Identifier}']",
+            "inferContentType": true
+          },
+          "authentication": {
+            "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+          }
+        },
+        "runAfter": { "Get_file_properties": ["Succeeded"] },
+        "metadata": {
+          "operationMetadataId": "4a626804-ef85-45c8-be4c-6ded990e2c91"
+        }
+      },
+      "Start_and_wait_for_an_approval_-_Approval_from_Manager": {
+        "type": "OpenApiConnectionWebhook",
+        "inputs": {
+          "host": {
+            "connectionName": "shared_approvals",
+            "operationId": "StartAndWaitForAnApproval",
+            "apiId": "/providers/Microsoft.PowerApps/apis/shared_approvals"
+          },
+          "parameters": {
+            "approvalType": "BasicAwaitAll",
+            "WebhookApprovalCreationInput/title": "Approval for @{triggerBody()['text']}!",
+            "WebhookApprovalCreationInput/assignedTo": "",
+            "WebhookApprovalCreationInput/details": "## File request for Approval\nDeart Manager,\nplease find the following file for approval.\n\n## File\n**File Name:** @{outputs('Get_file_properties')?['body/{FilenameWithExtension}']}  \n**File Type:** @{toUpper(last(split(outputs('Get_file_properties')?['body/{FilenameWithExtension}'],'.')))}\n**Date Submitted:** @{formatDateTime(utcNow(),'dd.MM.yyyy')}\n",
+            "WebhookApprovalCreationInput/enableNotifications": true,
+            "WebhookApprovalCreationInput/enableReassignment": false
+          },
+          "authentication": {
+            "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+          }
+        },
+        "runAfter": { "Get_file_content": ["Succeeded"] },
+        "metadata": {
+          "operationMetadataId": "aa777441-f96f-4606-a0dd-151b2eccc372"
+        }
+      }
+    },
+    "runAfter": {},
+    "metadata": {
+      "operationMetadataId": "7367052e-aa79-4918-9ce8-cc2684c4fa2b"
+    }
+  }
+}

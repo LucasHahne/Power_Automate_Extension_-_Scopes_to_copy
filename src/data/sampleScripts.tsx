@@ -16,12 +16,11 @@ import arrayJson from "./variables/array.json";
 import basicErrorJson from "./error handling/basic_error_handling.json";
 import errorMailJson from "./error handling/basic_error_handling_mail.json";
 import errorJiraJson from "./error handling/basic_error_handling_jira.json";
-
+import requestManagerApprovalJson from "./sharepoint/requestManagerApproval.json";
 export interface ScriptItem {
   id: string;
   name: string;
   icon: React.ReactNode;
-  category: string;
   jsonData?: any;
 }
 
@@ -34,42 +33,36 @@ export const scriptCategories = [
         id: "variables-1",
         name: "Boolean variable (Initialize)",
         icon: <VariableIcon />,
-        category: "powerAutomate",
         jsonData: booleanJson,
       },
       {
         id: "variables-2",
         name: "Integer variable (Initialize)",
         icon: <VariableIcon />,
-        category: "powerAutomate",
         jsonData: integerJson,
       },
       {
         id: "variables-4",
         name: "Float variable (Initialize)",
         icon: <VariableIcon />,
-        category: "powerAutomate",
         jsonData: floatJson,
       },
       {
         id: "variables-5",
         name: "String variable (Initialize)",
         icon: <VariableIcon />,
-        category: "powerAutomate",
         jsonData: stringJson,
       },
       {
         id: "variables-6",
         name: "Object variable (Initialize)",
         icon: <VariableIcon />,
-        category: "powerAutomate",
         jsonData: objectJson,
       },
       {
         id: "variables-7",
         name: "Arrray variable (Initialize)",
         icon: <VariableIcon />,
-        category: "powerAutomate",
         jsonData: arrayJson,
       },
     ],
@@ -82,21 +75,18 @@ export const scriptCategories = [
         id: "error-1",
         name: "Basic Error Handler",
         icon: <ErrorhandlingIcon />,
-        category: "selenium",
         jsonData: basicErrorJson,
       },
       {
         id: "error-2",
         name: "Basic Error Handler with mail",
         icon: <ErrorhandlingIcon />,
-        category: "selenium",
         jsonData: errorMailJson,
       },
       {
         id: "error-3",
         name: "Basic Error Handler with Jira ticket",
         icon: <ErrorhandlingIcon />,
-        category: "selenium",
         jsonData: errorJiraJson,
       },
     ],
@@ -107,7 +97,7 @@ export const scriptCategories = [
     items: [
       {
         id: "custom-1",
-        name: "Custom Agengt",
+        name: "Custom Agent",
         icon: <DataverseIcon />,
         category: "custom",
       },
@@ -125,15 +115,9 @@ export const scriptCategories = [
     items: [
       {
         id: "Get attachments",
-        name: "Email Bot",
+        name: "Request Manager Approval",
         icon: <SharepointIcon />,
-        category: "custom",
-      },
-      {
-        id: "custom-2",
-        name: "Get list",
-        icon: <SharepointIcon />,
-        category: "custom",
+        jsonData: requestManagerApprovalJson,
       },
     ],
   },
