@@ -1,3 +1,5 @@
+import { useState, useRef } from "react";
+
 interface ListItem {
   name: string;
   icon: React.ReactNode;
@@ -27,38 +29,89 @@ const CopyIcon = () => (
   </svg>
 );
 
+const CheckIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="w-5 h-5"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M4.5 12.75l6 6 9-13.5"
+    />
+  </svg>
+);
+
 const ListContent: React.FC<ListProps> = ({
   items,
   onItemClick,
   onCopyClick,
 }) => {
-  const handleCopyClick = (e: React.MouseEvent, item: ListItem) => {
+  const [copiedItemId, setCopiedItemId] = useState<string | number | null>(
+    null
+  );
+  const timeoutRef = useRef<number | null>(null);
+
+  const handleCopyClick = (
+    e: React.MouseEvent,
+    item: ListItem,
+    index: number
+  ) => {
     e.stopPropagation();
     onCopyClick?.(item);
+
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    // Set the copied item ID (use item.id if available, otherwise use index)
+    const itemId = item.id || index;
+    setCopiedItemId(itemId);
+
+    // Reset after 2 seconds
+    timeoutRef.current = setTimeout(() => {
+      setCopiedItemId(null);
+    }, 1000);
   };
 
   return (
     <div className="w-full">
       <ul className="divide-y divide-gray-200">
-        {items.map((item, index) => (
-          <li
-            key={item.id || index}
-            onClick={() => onItemClick?.(item)}
-            className="flex items-center gap-3 px-4 py-1 hover:bg-gray-50 cursor-pointer transition-colors"
-          >
-            <div className="shrink-0 text-gray-600 rounded-sm">{item.icon}</div>
-            <span className="text-sm font-medium text-gray-900 flex-1">
-              {item.name}
-            </span>
-            <button
-              onClick={(e) => handleCopyClick(e, item)}
-              className="shrink-0 p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
-              aria-label="Copy"
+        {items.map((item, index) => {
+          const itemId = item.id || index;
+          const isCopied = copiedItemId === itemId;
+
+          return (
+            <li
+              key={item.id || index}
+              onClick={() => onItemClick?.(item)}
+              className="flex items-center gap-3 px-4 py-1 hover:bg-gray-50 cursor-pointer transition-colors"
             >
-              <CopyIcon />
-            </button>
-          </li>
-        ))}
+              <div className="shrink-0 text-gray-600 rounded-sm">
+                {item.icon}
+              </div>
+              <span className="text-sm font-medium text-gray-900 flex-1">
+                {item.name}
+              </span>
+              <button
+                onClick={(e) => handleCopyClick(e, item, index)}
+                className={`shrink-0 p-2 rounded-md transition-colors ${
+                  isCopied
+                    ? "text-green-600 bg-green-50"
+                    : "text-gray-500 hover:text-blue-600 hover:bg-blue-50"
+                }`}
+                aria-label={isCopied ? "Copied" : "Copy"}
+              >
+                {isCopied ? <CheckIcon /> : <CopyIcon />}
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

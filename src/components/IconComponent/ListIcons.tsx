@@ -3,6 +3,8 @@ import variablesLogo from "../../assets/variables_logo.png";
 import dataverseLogo from "../../assets/dataverse_logo.png";
 import sharepointLogo from "../../assets/sharepoint_logo.png";
 import errorhandlingLogo from "../../assets/errorhandling_logo.png";
+import outlookLogo from "../../assets/outlook_logo.png";
+import office365Logo from "../../assets/office365_logo.png";
 
 interface IconProps {
   size?: number;
@@ -47,6 +49,36 @@ export const SharepointIcon: React.FC<IconProps> = ({
     <img
       src={sharepointLogo}
       alt="Sharepoint"
+      width={size}
+      height={size}
+      className={className}
+    />
+  );
+};
+
+export const OutlookIcon: React.FC<IconProps> = ({
+  size = 20,
+  className = "",
+}) => {
+  return (
+    <img
+      src={outlookLogo}
+      alt="Outlook"
+      width={size}
+      height={size}
+      className={className}
+    />
+  );
+};
+
+export const Office365Icon: React.FC<IconProps> = ({
+  size = 20,
+  className = "",
+}) => {
+  return (
+    <img
+      src={office365Logo}
+      alt="Office 365"
       width={size}
       height={size}
       className={className}

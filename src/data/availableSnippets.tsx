@@ -2,6 +2,8 @@ import React from "react";
 import {
   DataverseIcon,
   ErrorhandlingIcon,
+  Office365Icon,
+  OutlookIcon,
   SharepointIcon,
   VariableIcon,
 } from "../components/IconComponent/ListIcons";
@@ -23,7 +25,7 @@ export interface ScriptItem {
   jsonData?: any;
 }
 
-export const scriptCategories = [
+export const availableSnippets = [
   {
     title: "Variables",
     gradient: "from-violet-800 to-purple-400",
@@ -89,15 +91,33 @@ export const scriptCategories = [
     gradient: "from-green-800 to-lime-400",
     items: [
       {
-        id: "custom-1",
-        name: "Custom Agent",
+        id: "dataverse-1",
+        name: "This could be your flow",
         icon: <DataverseIcon />,
         category: "custom",
       },
+    ],
+  },
+  {
+    title: "Outlook",
+    gradient: "from-blue-800 to-blue-400",
+    items: [
       {
-        id: "custom-2",
-        name: "File Organizer",
-        icon: <DataverseIcon />,
+        id: "outlook-1",
+        name: "This could be your flow",
+        icon: <OutlookIcon />,
+        category: "custom",
+      },
+    ],
+  },
+  {
+    title: "Office 365",
+    gradient: "from-violet-600 to-orange-500",
+    items: [
+      {
+        id: "office365-1",
+        name: "This could be your flow",
+        icon: <Office365Icon />,
         category: "custom",
       },
     ],

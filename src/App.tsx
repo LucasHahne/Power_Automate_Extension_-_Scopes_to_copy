@@ -1,6 +1,6 @@
 import "./App.css";
 import List from "./components/ListComponent/List";
-import { scriptCategories } from "./data/sampleScripts";
+import { availableSnippets } from "./data/availableSnippets";
 
 function App() {
   const handleItemClick = (item: any) => {
@@ -32,7 +32,7 @@ function App() {
             Power Automate Scopes
           </span>
         </div>
-        {scriptCategories.map((category, index) => (
+        {availableSnippets.map((category, index) => (
           <List
             key={index}
             title={category.title}

@@ -1,24 +1,11 @@
 {
-  "id": "c7528315-1ff4-42be-85be-dfb542596552",
-  "brandColor": "#8C3900",
-  "connectionReferences": {
-    "shared_office365": {
-      "connection": {
-        "id": "/cr4cc_contosoHelpdeskAgent.shared_office365.shared-office365-67056dbe-60da-47a2-af2a-db4e5e189ac1"
-      }
-    }
-  },
-  "connectorDisplayName": "Control",
-  "icon": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDMyIDMyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KIDxwYXRoIGQ9Im0wIDBoMzJ2MzJoLTMyeiIgZmlsbD0iIzhDMzkwMCIvPg0KIDxwYXRoIGQ9Im04IDEwaDE2djEyaC0xNnptMTUgMTF2LTEwaC0xNHYxMHptLTItOHY2aC0xMHYtNnptLTEgNXYtNGgtOHY0eiIgZmlsbD0iI2ZmZiIvPg0KPC9zdmc+DQo=",
-  "isTrigger": false,
-  "operationName": "Scope_-_catch",
-  "operationDefinition": {
+  "nodeId": "Scope_-_catch",
+  "serializedValue": {
     "type": "Scope",
     "actions": {
       "Compose_-_get_workflow_details": {
         "type": "Compose",
         "inputs": "@workflow()",
-        "runAfter": {},
         "metadata": {
           "operationMetadataId": "4d49bf35-93eb-478a-9555-27d655139b8a"
         }
@@ -26,9 +13,7 @@
       "Compose_-_get_Flow_URL": {
         "type": "Compose",
         "inputs": "@concat('https://make.powerautomate.com/environments/', workflow()?['tags']['environmentName'],'/flows/',workflow()?['name'],'/runs/',workflow()?['run']['name'])\r\n\r\n",
-        "runAfter": {
-          "Compose_-_get_failed_Action": ["Succeeded"]
-        },
+        "runAfter": { "Compose_-_get_failed_Action": ["Succeeded"] },
         "metadata": {
           "operationMetadataId": "2f211208-b0ad-45c7-a710-8f966fb89523"
         }
@@ -36,9 +21,7 @@
       "Compose_-_get_failed_Action": {
         "type": "Compose",
         "inputs": "@actions('Scope_-_try')?['error']?['message']",
-        "runAfter": {
-          "Compose_-_get_workflow_details": ["Succeeded"]
-        },
+        "runAfter": { "Compose_-_get_workflow_details": ["Succeeded"] },
         "metadata": {
           "operationMetadataId": "58732135-02d8-4073-b89e-78e38fe0f30a"
         }
@@ -46,32 +29,42 @@
       "Send_an_email_(V2)": {
         "type": "OpenApiConnection",
         "inputs": {
-          "host": {
-            "connectionName": "shared_office365",
-            "operationId": "SendEmailV2",
-            "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
-          },
           "parameters": {
             "emailMessage/To": "",
             "emailMessage/Subject": "Error in Flow: @{outputs('Compose_-_get_workflow_details')?['tags']?['flowDisplayName']}",
             "emailMessage/Body": "<p>Hi, </p>\n<p>Your flow: <b> @{outputs('Compose_-_get_workflow_details')?['tags']?['flowDisplayName']}<b> has failed.</p>\n<p>Error: @{outputs('Compose_-_get_failed_Action')} </p>\n<p>Your flowlink: <a href='@{outputs('Compose_-_get_Flow_URL')}'> </a>@{outputs('Compose_-_get_Flow_URL')}</p>\n<p>Please have a look</p>\n<p>Your Flowbot</p>",
             "emailMessage/Importance": "Normal"
           },
-          "authentication": {
-            "type": "Raw",
-            "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+          "host": {
+            "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+            "connection": "shared_office365",
+            "operationId": "SendEmailV2"
           }
         },
-        "runAfter": {
-          "Compose_-_get_Flow_URL": ["Succeeded"]
+        "runAfter": { "Compose_-_get_Flow_URL": ["Succeeded"] },
+        "metadata": {
+          "operationMetadataId": "b4a278a3-feae-4564-82d6-1f64f11a59fb"
         }
       }
     },
-    "runAfter": {
-      "Scope_-_try": ["Failed", "Skipped", "TimedOut"]
-    },
+    "runAfter": { "Scope_-_try": ["Failed", "Skipped", "TimedOut"] },
     "metadata": {
       "operationMetadataId": "8f3f6158-75da-4ea8-a0d8-9375615a20a2"
     }
-  }
+  },
+  "allConnectionData": {
+    "Send_an_email_(V2)": {
+      "connectionReference": {
+        "api": { "id": "/providers/Microsoft.PowerApps/apis/shared_office365" },
+        "connection": {
+          "id": ""
+        },
+        "connectionName": ""
+      },
+      "referenceKey": "shared_office365"
+    }
+  },
+  "staticResults": {},
+  "isScopeNode": true,
+  "mslaNode": true
 }
