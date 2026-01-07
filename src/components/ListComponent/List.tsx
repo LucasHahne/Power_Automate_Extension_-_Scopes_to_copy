@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import ListHeader from "../ListComponent/ListHeader";
 import ListContent from "../ListComponent/ListContent";
-
-interface ListItem {
-  name: string;
-  icon: React.ReactNode;
-  id?: string;
-}
+import type { ListItem } from "../../types";
 
 interface ListProps {
   title: string;

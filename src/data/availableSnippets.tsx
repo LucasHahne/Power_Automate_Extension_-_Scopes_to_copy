@@ -1,4 +1,3 @@
-import React from "react";
 import {
   DataverseIcon,
   ErrorhandlingIcon,
@@ -7,6 +6,7 @@ import {
   SharepointIcon,
   VariableIcon,
 } from "../components/IconComponent/ListIcons";
+import type { SnippetCategory } from "../types";
 
 // Import JSON files
 import booleanJson from "./variables/boolean.json";
@@ -15,17 +15,11 @@ import floatJson from "./variables/float.json";
 import stringJson from "./variables/string.json";
 import objectJson from "./variables/object.json";
 import arrayJson from "./variables/array.json";
-import basicErrorJson from "./error handling/basic_error_handling.json";
-import errorMailJson from "./error handling/basic_error_handling_mail.json";
+import basicErrorJson from "./errorhandling/basic_error_handling.json";
+import errorMailJson from "./errorhandling/basic_error_handling_mail.json";
 import requestManagerApprovalJson from "./sharepoint/requestManagerApproval.json";
-export interface ScriptItem {
-  id: string;
-  name: string;
-  icon: React.ReactNode;
-  jsonData?: any;
-}
 
-export const availableSnippets = [
+export const availableSnippets: SnippetCategory[] = [
   {
     title: "Variables",
     gradient: "from-violet-800 to-purple-400",
@@ -91,7 +85,7 @@ export const availableSnippets = [
     gradient: "from-teal-800 to-cyan-400",
     items: [
       {
-        id: "Get attachments",
+        id: "sharepoint-1",
         name: "Request Manager Approval",
         icon: <SharepointIcon />,
         jsonData: requestManagerApprovalJson,

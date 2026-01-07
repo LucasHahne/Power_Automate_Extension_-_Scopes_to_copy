@@ -1,13 +1,14 @@
 import "./App.css";
 import List from "./components/ListComponent/List";
 import { availableSnippets } from "./data/availableSnippets";
+import type { ListItem } from "./types";
 
 function App() {
-  const handleItemClick = (item: any) => {
+  const handleItemClick = (item: ListItem) => {
     console.log("Clicked:", item.name);
   };
 
-  const handleCopyClick = (item: any) => {
+  const handleCopyClick = (item: ListItem) => {
     if (item.jsonData) {
       const jsonString = JSON.stringify(item.jsonData, null, 2);
       navigator.clipboard

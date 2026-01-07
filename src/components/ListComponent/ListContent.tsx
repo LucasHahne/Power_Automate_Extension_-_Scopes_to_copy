@@ -1,10 +1,5 @@
 import { useState, useRef } from "react";
-
-interface ListItem {
-  name: string;
-  icon: React.ReactNode;
-  id?: string;
-}
+import type { ListItem } from "../../types";
 
 interface ListProps {
   items: ListItem[];
