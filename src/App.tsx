@@ -1,6 +1,6 @@
 import "./App.css";
-import List from "./components/ListComponent/List";
-import { availableSnippets } from "./data/availableSnippets";
+import List from "./components/List";
+import { availableSnippets } from "./config/snippets";
 import type { ListItem } from "./types";
 import { UI_CONFIG } from "./constants";
 

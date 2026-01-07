@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import ListHeader from "../ListComponent/ListHeader";
-import ListContent from "../ListComponent/ListContent";
+import Header from "./Header";
+import Content from "./Content";
 import type { ListItem } from "../../types";
 
 interface ListProps {
@@ -28,14 +28,14 @@ const List: React.FC<ListProps> = ({
 
   return (
     <div className="w-full overflow-auto shadow-md bg-white rounded-sm">
-      <ListHeader
+      <Header
         title={title}
         gradient={gradient}
         isCollapsed={isCollapsed}
         onToggle={toggleCollapse}
       />
       {!isCollapsed && (
-        <ListContent
+        <Content
           items={items}
           onItemClick={onItemClick}
           onCopyClick={onCopyClick}

@@ -5,19 +5,19 @@ import {
   OutlookIcon,
   SharepointIcon,
   VariableIcon,
-} from "../components/IconComponent/ListIcons";
+} from "../components/Icons/ServiceIcons";
 import type { SnippetCategory } from "../types";
 
 // Import JSON files
-import booleanJson from "./variables/boolean.json";
-import integerJson from "./variables/integer.json";
-import floatJson from "./variables/float.json";
-import stringJson from "./variables/string.json";
-import objectJson from "./variables/object.json";
-import arrayJson from "./variables/array.json";
-import basicErrorJson from "./errorhandling/basic_error_handling.json";
-import errorMailJson from "./errorhandling/basic_error_handling_mail.json";
-import requestManagerApprovalJson from "./sharepoint/requestManagerApproval.json";
+import booleanJson from "../data/variables/boolean.json";
+import integerJson from "../data/variables/integer.json";
+import floatJson from "../data/variables/float.json";
+import stringJson from "../data/variables/string.json";
+import objectJson from "../data/variables/object.json";
+import arrayJson from "../data/variables/array.json";
+import basicErrorJson from "../data/errorhandling/basic_error_handling.json";
+import errorMailJson from "../data/errorhandling/basic_error_handling_mail.json";
+import requestManagerApprovalJson from "../data/sharepoint/requestManagerApproval.json";
 
 export const availableSnippets: SnippetCategory[] = [
   {
