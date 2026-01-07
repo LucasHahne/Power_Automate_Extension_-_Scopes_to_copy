@@ -87,6 +87,18 @@ export const availableSnippets = [
     ],
   },
   {
+    title: "Sharepoint",
+    gradient: "from-teal-800 to-cyan-400",
+    items: [
+      {
+        id: "Get attachments",
+        name: "Request Manager Approval",
+        icon: <SharepointIcon />,
+        jsonData: requestManagerApprovalJson,
+      },
+    ],
+  },
+  {
     title: "Dataverse",
     gradient: "from-green-800 to-lime-400",
     items: [
@@ -119,18 +131,6 @@ export const availableSnippets = [
         name: "This could be your flow",
         icon: <Office365Icon />,
         category: "custom",
-      },
-    ],
-  },
-  {
-    title: "Sharepoint",
-    gradient: "from-teal-800 to-cyan-400",
-    items: [
-      {
-        id: "Get attachments",
-        name: "Request Manager Approval",
-        icon: <SharepointIcon />,
-        jsonData: requestManagerApprovalJson,
       },
     ],
   },
