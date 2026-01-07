@@ -2,44 +2,36 @@ import "./App.css";
 import List from "./components/ListComponent/List";
 import { availableSnippets } from "./data/availableSnippets";
 import type { ListItem } from "./types";
+import { UI_CONFIG } from "./constants";
 
 function App() {
-  const handleItemClick = (item: ListItem) => {
-    console.log("Clicked:", item.name);
-  };
-
   const handleCopyClick = (item: ListItem) => {
     if (item.jsonData) {
       const jsonString = JSON.stringify(item.jsonData, null, 2);
-      navigator.clipboard
-        .writeText(jsonString)
-        .then(() => {
-          console.log("Copied to clipboard:", item.name);
-          // You can add a toast notification here
-        })
-        .catch((err) => {
-          console.error("Failed to copy:", err);
-        });
-    } else {
-      console.log("No JSON data available for:", item.name);
+      navigator.clipboard.writeText(jsonString);
     }
   };
 
   return (
-    <div className="bg-gray-100 p-2 w-[400px] max-h-[500px] overflow-y-auto">
+    <div
+      className="bg-gray-100 p-2 overflow-y-auto"
+      style={{
+        width: `${UI_CONFIG.EXTENSION_WIDTH}px`,
+        maxHeight: `${UI_CONFIG.EXTENSION_MAX_HEIGHT}px`,
+      }}
+    >
       <div className="space-y-2">
         <div className="flex justify-center py-2 bg-linear-to-b from-yellow-900 to-yellow-600 rounded-sm">
           <span className="text-3xl font-bold text-zinc-100">
             Power Automate Scopes
           </span>
         </div>
-        {availableSnippets.map((category, index) => (
+        {availableSnippets.map((category) => (
           <List
-            key={index}
+            key={category.title}
             title={category.title}
             gradient={category.gradient}
             items={category.items}
-            onItemClick={handleItemClick}
             onCopyClick={handleCopyClick}
           />
         ))}

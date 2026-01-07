@@ -1,5 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import type { ListItem } from "../../types";
+import { UI_CONFIG } from "../../constants";
 
 interface ListProps {
   items: ListItem[];
@@ -51,6 +52,14 @@ const ListContent: React.FC<ListProps> = ({
   );
   const timeoutRef = useRef<number | null>(null);
 
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
   const handleCopyClick = (
     e: React.MouseEvent,
     item: ListItem,
@@ -68,10 +77,10 @@ const ListContent: React.FC<ListProps> = ({
     const itemId = item.id || index;
     setCopiedItemId(itemId);
 
-    // Reset after 2 seconds
-    timeoutRef.current = setTimeout(() => {
+    // Reset after duration
+    timeoutRef.current = window.setTimeout(() => {
       setCopiedItemId(null);
-    }, 1000);
+    }, UI_CONFIG.COPY_FEEDBACK_DURATION);
   };
 
   return (

@@ -56,7 +56,7 @@ export const availableSnippets: SnippetCategory[] = [
       },
       {
         id: "variables-7",
-        name: "Arrray variable (Initialize)",
+        name: "Array variable (Initialize)",
         icon: <VariableIcon />,
         jsonData: arrayJson,
       },

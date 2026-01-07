@@ -7,7 +7,7 @@ export interface ListItem {
   id?: string;
   name: string;
   icon: React.ReactNode;
-  jsonData?: any;
+  jsonData?: unknown;
   category?: string;
 }
 
@@ -16,7 +16,7 @@ export interface ListItem {
  */
 export interface ScriptItem extends ListItem {
   id: string;
-  jsonData?: any;
+  jsonData?: unknown;
 }
 
 /**

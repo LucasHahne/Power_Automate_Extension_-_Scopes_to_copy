@@ -1,4 +1,5 @@
 import React from "react";
+import { DEFAULT_GRADIENT } from "../../constants";
 
 interface ListHeaderProps {
   title: string;
@@ -28,7 +29,7 @@ const ChevronIcon: React.FC<{ isCollapsed: boolean }> = ({ isCollapsed }) => (
 
 const ListHeader: React.FC<ListHeaderProps> = ({
   title,
-  gradient = "from-blue-500 to-purple-600",
+  gradient = DEFAULT_GRADIENT,
   isCollapsed = false,
   onToggle,
 }) => {
