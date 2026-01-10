@@ -78,7 +78,7 @@ If you run into any problems or have questions:
 - Open an issue on [GitHub](https://github.com/LucasHahne/PowerAutomateBrowserExtension/issues)
 - Check existing issues to see if someone else has had the same question
 
-## License 📄
+## License
 
 This project is open source and available under the [MIT License](LICENSE).
 
