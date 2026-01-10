@@ -4,19 +4,11 @@ import React from "react";
  * Represents an item in a list with an icon and optional data
  */
 export interface ListItem {
-  id?: string;
+  id: string;
   name: string;
   icon: React.ReactNode;
   jsonData?: unknown;
   category?: string;
-}
-
-/**
- * Represents a snippet item with associated JSON data
- */
-export interface ScriptItem extends ListItem {
-  id: string;
-  jsonData?: unknown;
 }
 
 /**
@@ -25,5 +17,5 @@ export interface ScriptItem extends ListItem {
 export interface SnippetCategory {
   title: string;
   gradient: string;
-  items: ScriptItem[];
+  items: ListItem[];
 }
