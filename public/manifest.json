@@ -1,12 +1,11 @@
 {
   "manifest_version": 3,
   "name": "Power Automate Extension",
-  "version": "1.0",
+  "version": "1.1",
   "action": {
     "default_popup": "index.html"
   },
-  "permissions": ["storage", "tabs", "activeTab"],
-  "host_permissions": ["http://localhost:5173/*"],
+  "permissions": [],
   "background": {
     "service_worker": "src/background.js",
     "type": "module"
