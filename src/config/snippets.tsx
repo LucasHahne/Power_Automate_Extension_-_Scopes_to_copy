@@ -92,7 +92,7 @@ export const availableSnippets: SnippetCategory[] = [
       },
       {
         id: "sharepoint-2",
-        name: "Search for File by Name (Coming Soon)",
+        name: "Search for file by Name (Coming Soon)",
         icon: <SharepointIcon />,
         jsonData: requestManagerApprovalJson,
       },
