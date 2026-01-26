@@ -9,14 +9,14 @@ export default defineConfig({
   base: "./",
   server: {
     cors: {
-      origin: "*",
-      // origin: false
+      // origin: "*",
+      origin: false,
       credentials: false,
     },
     headers: {
-      //  "X-Content-Type-Options": "nosniff",
-      // "X-Frame-Options": "DENY",
-      "Access-Control-Allow-Origin": "*",
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      // "Access-Control-Allow-Origin": "*",
     },
   },
 });
