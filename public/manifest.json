@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Power Automate Extension",
+  "name": "Power Automate Extension - Scopes to Copy",
   "version": "1.0.0.2",
   "action": {
     "default_popup": "index.html"

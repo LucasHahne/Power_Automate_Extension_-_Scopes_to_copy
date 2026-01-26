@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 #Generated Zip File
-PowerAutomateScopesToCopy.zip
+*.zip
