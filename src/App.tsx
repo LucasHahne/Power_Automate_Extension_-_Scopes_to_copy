@@ -6,9 +6,16 @@ import { UI_CONFIG } from "./constants";
 
 function App() {
   const handleCopyClick = (item: ListItem) => {
-    if (item.jsonData) {
-      const jsonString = JSON.stringify(item.jsonData, null, 2);
-      navigator.clipboard.writeText(jsonString);
+    if (item.data) {
+      // Check file type to determine how to copy
+      if (item.fileType === "txt") {
+        // For txt files, copy the text as-is
+        navigator.clipboard.writeText(item.data as string);
+      } else {
+        // For JSON files, stringify with formatting
+        const jsonString = JSON.stringify(item.data, null, 2);
+        navigator.clipboard.writeText(jsonString);
+      }
     }
   };
 

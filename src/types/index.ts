@@ -7,8 +7,8 @@ export interface ListItem {
   id: string;
   name: string;
   icon: React.ReactNode;
-  jsonData?: unknown;
-  category?: string;
+  data?: unknown;
+  fileType?: "json" | "txt";
 }
 
 /**

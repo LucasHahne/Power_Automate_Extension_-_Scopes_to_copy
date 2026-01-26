@@ -7,21 +7,16 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [react(), crx({ manifest }), tailwindcss()],
   base: "./",
-  build: {
-    rollupOptions: {
-      input: {
-        index: "index.html",
-      },
-    },
-  },
   server: {
     cors: {
-      origin: false,
+      origin: "*",
+      // origin: false
       credentials: false,
     },
     headers: {
-      "X-Content-Type-Options": "nosniff",
-      "X-Frame-Options": "DENY",
+      //  "X-Content-Type-Options": "nosniff",
+      // "X-Frame-Options": "DENY",
+      "Access-Control-Allow-Origin": "*",
     },
   },
 });
