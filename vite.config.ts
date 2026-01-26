@@ -6,7 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [react(), crx({ manifest }), tailwindcss()],
-  assetsInclude: ["**/*.txt"],
+  base: "./",
   server: {
     cors: {
       origin: "*",
