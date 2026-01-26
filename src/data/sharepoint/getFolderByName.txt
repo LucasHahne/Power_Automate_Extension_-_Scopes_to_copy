@@ -1,0 +1,1 @@
+substringof('Your Foldername as String',FileLeafRef) and FSObjType eq 0
