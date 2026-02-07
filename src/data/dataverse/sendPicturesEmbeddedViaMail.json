@@ -1,0 +1,115 @@
+{
+  "nodeId": "Scope_-_Try",
+  "serializedValue": {
+    "type": "Scope",
+    "actions": {
+      "List_rows_-_where_a_picture_is_available": {
+        "type": "OpenApiConnection",
+        "inputs": {
+          "parameters": {
+            "entityName": "Your Entity",
+            "$filter": "prefix_yourfilecolumn ne null"
+          },
+          "host": {
+            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+            "connection": "shared_commondataserviceforapps",
+            "operationId": "ListRecords"
+          }
+        },
+        "metadata": {
+          "operationMetadataId": "e3b4469c-dabf-4225-a44f-c144a66d1b24"
+        }
+      },
+      "Apply_to_each_-_item_where_picture_is_included": {
+        "type": "Foreach",
+        "foreach": "@outputs('List_rows_-_where_a_picture_is_available')?['body/value']",
+        "actions": {
+          "Download_a_file_or_an_image": {
+            "type": "OpenApiConnection",
+            "inputs": {
+              "parameters": {
+                "entityName": "Your Entity",
+                "recordId": "@items('Apply_to_each_-_item_where_picture_is_included')?['yourentityid']",
+                "fileImageFieldName": "prefix_yourfilecolumn",
+                "size": "full"
+              },
+              "host": {
+                "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                "connection": "shared_commondataserviceforapps",
+                "operationId": "GetEntityFileImageFieldContent"
+              }
+            },
+            "metadata": {
+              "operationMetadataId": "296ba759-f286-4939-b659-2702b2537295"
+            }
+          },
+          "Send_an_email_(V2)_-_with_embedded_picture": {
+            "type": "OpenApiConnection",
+            "inputs": {
+              "parameters": {
+                "emailMessage/To": "YourEmail@test.com",
+                "emailMessage/Subject": "Your picture attached",
+                "emailMessage/Body": "<p>Please find the picture attached</p>\n<img src=\"data:image/jpeg;base64,@{body('Download_a_file_or_an_image')?['$content']}\">",
+                "emailMessage/Importance": "Normal"
+              },
+              "host": {
+                "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+                "connection": "shared_office365",
+                "operationId": "SendEmailV2"
+              }
+            },
+            "runAfter": { "Download_a_file_or_an_image": ["Succeeded"] },
+            "metadata": {
+              "operationMetadataId": "ad3725e4-646b-4606-b361-d9e7c7c6d91a"
+            }
+          }
+        },
+        "runAfter": {
+          "List_rows_-_where_a_picture_is_available": ["Succeeded"]
+        },
+        "metadata": {
+          "operationMetadataId": "22231f28-380e-4266-9a2c-9bc39793ed22"
+        }
+      }
+    },
+    "runAfter": {},
+    "metadata": {
+      "operationMetadataId": "e3162a4b-7091-4cbe-a81c-73c6a99e0f7d"
+    }
+  },
+  "allConnectionData": {
+    "List_rows_-_where_a_picture_is_available": {
+      "connectionReference": {
+        "api": {
+          "id": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+        },
+        "connection": { "id": "" },
+        "connectionName": ""
+      },
+      "referenceKey": "shared_commondataserviceforapps"
+    },
+    "Download_a_file_or_an_image": {
+      "connectionReference": {
+        "api": {
+          "id": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+        },
+        "connection": { "id": "" },
+        "connectionName": ""
+      },
+      "referenceKey": "shared_commondataserviceforapps"
+    },
+    "Send_an_email_(V2)_-_with_embedded_picture": {
+      "connectionReference": {
+        "api": { "id": "/providers/Microsoft.PowerApps/apis/shared_office365" },
+        "connection": {
+          "id": ""
+        },
+        "connectionName": ""
+      },
+      "referenceKey": "shared_office365"
+    }
+  },
+  "staticResults": {},
+  "isScopeNode": true,
+  "mslaNode": true
+}

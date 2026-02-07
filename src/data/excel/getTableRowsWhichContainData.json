@@ -1,0 +1,52 @@
+{
+  "nodeId": "Scope_-_Try",
+  "serializedValue": {
+    "type": "Scope",
+    "actions": {
+      "List_rows_present_in_a_table": {
+        "type": "OpenApiConnection",
+        "inputs": {
+          "parameters": {
+            "source": "Your Sharepoint",
+            "drive": "Your Library",
+            "file": "Your File",
+            "table": "Your Table"
+          },
+          "host": {
+            "apiId": "/providers/Microsoft.PowerApps/apis/shared_excelonlinebusiness",
+            "connection": "shared_excelonlinebusiness",
+            "operationId": "GetItems"
+          }
+        },
+        "metadata": {
+          "01ZQMCD23OCWQXSR43X5D2X2LKHBICYL7A": "/Your File.xlsx",
+          "tableId": ""
+        }
+      },
+      "Filter_array_-_excel_rows_which_contain_data": {
+        "type": "Query",
+        "inputs": {
+          "from": "@outputs('List_rows_present_in_a_table')?['body/value']",
+          "where": "@equals(empty(item()?['Your Column to check']),false)"
+        },
+        "runAfter": { "List_rows_present_in_a_table": ["SUCCEEDED"] }
+      }
+    },
+    "runAfter": {}
+  },
+  "allConnectionData": {
+    "List_rows_present_in_a_table": {
+      "connectionReference": {
+        "api": {
+          "id": "/providers/Microsoft.PowerApps/apis/shared_excelonlinebusiness"
+        },
+        "connection": { "id": "" },
+        "connectionName": ""
+      },
+      "referenceKey": "shared_excelonlinebusiness"
+    }
+  },
+  "staticResults": {},
+  "isScopeNode": true,
+  "mslaNode": true
+}

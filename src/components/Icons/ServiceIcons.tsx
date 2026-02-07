@@ -5,6 +5,7 @@ import sharepointLogo from "../../assets/sharepoint_logo.png";
 import errorhandlingLogo from "../../assets/errorhandling_logo.png";
 import outlookLogo from "../../assets/outlook_logo.png";
 import office365Logo from "../../assets/office365_logo.png";
+import excelLogo from "../../assets/excel_logo.png";
 
 interface IconProps {
   size?: number;
@@ -123,7 +124,22 @@ export const ArrayIcon: React.FC<IconProps> = ({
   return (
     <img
       src={variablesLogo}
-      alt="Array Variable"
+      alt="Array Icon"
+      width={size}
+      height={size}
+      className={className}
+    />
+  );
+};
+
+export const ExcelIcon: React.FC<IconProps> = ({
+  size = 20,
+  className = "",
+}) => {
+  return (
+    <img
+      src={excelLogo}
+      alt="Excel Icon"
       width={size}
       height={size}
       className={className}

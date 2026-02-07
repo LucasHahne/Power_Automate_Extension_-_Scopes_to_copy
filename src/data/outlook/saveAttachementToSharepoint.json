@@ -1,0 +1,85 @@
+{
+  "nodeId": "Scope_-_Try",
+  "serializedValue": {
+    "type": "Scope",
+    "actions": {
+      "Apply_to_each_-_Attachement": {
+        "type": "Foreach",
+        "foreach": "@triggerOutputs()?['body/attachments']",
+        "actions": {
+          "Get_Attachment_(V2)": {
+            "type": "OpenApiConnection",
+            "inputs": {
+              "parameters": {
+                "messageId": "@triggerOutputs()?['body/id']",
+                "attachmentId": "@items('Apply_to_each_-_Attachement')?['id']"
+              },
+              "host": {
+                "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+                "connection": "shared_office365",
+                "operationId": "GetAttachment_V2"
+              }
+            },
+            "metadata": {
+              "operationMetadataId": "8dfd8a7b-4f79-4923-bc1f-68e934b44047"
+            }
+          },
+          "Create_file_-_File_with_new_name": {
+            "type": "OpenApiConnection",
+            "inputs": {
+              "parameters": {
+                "dataset": "Your Sharepoint",
+                "folderPath": "/Shared Documents/Your Folder",
+                "name": "@{formatDateTime(utcNow(),'yyyy-MM-dd-hhmmss')}_TestFile.@{last(split(outputs('Get_Attachment_(V2)')?['body/name'],'.'))}",
+                "body": "@outputs('Get_Attachment_(V2)')?['body/contentBytes']"
+              },
+              "host": {
+                "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                "connection": "shared_sharepointonline",
+                "operationId": "CreateFile"
+              }
+            },
+            "runAfter": { "Get_Attachment_(V2)": ["Succeeded"] },
+            "runtimeConfiguration": {
+              "contentTransfer": { "transferMode": "Chunked" }
+            },
+            "metadata": {
+              "operationMetadataId": "e91cc5eb-a39e-4f92-8092-f53e22ed2e86"
+            }
+          }
+        },
+        "metadata": {
+          "operationMetadataId": "dff6741f-a026-4c6d-b547-2545da98a49b"
+        }
+      }
+    },
+    "runAfter": {}
+  },
+  "allConnectionData": {
+    "Get_Attachment_(V2)": {
+      "connectionReference": {
+        "api": { "id": "/providers/Microsoft.PowerApps/apis/shared_office365" },
+        "connection": {
+          "id": ""
+        },
+        "connectionName": ""
+      },
+      "referenceKey": "shared_office365"
+    },
+    "Create_file_-_File_with_new_name": {
+      "connectionReference": {
+        "api": {
+          "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+        },
+        "connection": {
+          "id": ""
+        },
+        "connectionName": ""
+      },
+      "referenceKey": "shared_sharepointonline"
+    }
+  },
+  "staticResults": {},
+  "isScopeNode": true,
+  "mslaNode": true
+}

@@ -5,6 +5,7 @@ import {
   OutlookIcon,
   SharepointIcon,
   VariableIcon,
+  ExcelIcon,
 } from "../components/Icons/ServiceIcons";
 import type { SnippetCategory } from "../types";
 
@@ -15,13 +16,16 @@ import floatJson from "../data/variables/float.json";
 import stringJson from "../data/variables/string.json";
 import objectJson from "../data/variables/object.json";
 import arrayJson from "../data/variables/array.json";
-import basicErrorJson from "../data/errorhandling/basic_error_handling.json";
-import errorMailJson from "../data/errorhandling/basic_error_handling_mail.json";
+import basicErrorJson from "../data/errorhandling/basicErrorHandling.json";
+import errorMailJson from "../data/errorhandling/basicErrorHandlingMail.json";
 import requestManagerApprovalJson from "../data/sharepoint/requestManagerApproval.json";
 import getFilesByNameAndNoFolderTxt from "../data/sharepoint/getFilesByNameAndNoFolder.txt?raw";
 import getFilesByNameAndNoFolderJson from "../data/sharepoint/getFilesByNameAndNoFolder.json";
 import getFolderByNameTxt from "../data/sharepoint/getFolderByName.txt?raw";
 import getFolderByNameJson from "../data/sharepoint/getFolderByName.json";
+import sendPicturesEmbeddedViaMailJson from "../data/dataverse/sendPicturesEmbeddedViaMail.json";
+import getTableRowsWhichContainDataJson from "../data/excel/getTableRowsWhichContainData.json";
+import saveAttachementToSharepointJson from "../data/outlook/saveAttachementToSharepoint.json";
 
 export const availableSnippets: SnippetCategory[] = [
   {
@@ -134,15 +138,29 @@ export const availableSnippets: SnippetCategory[] = [
     ],
   },
   {
+    title: "Excel Online (Business)",
+    gradient: "from-green-900 to-green-600",
+    items: [
+      {
+        id: "excelonline-1",
+        name: "Send picture embedded via mail",
+        icon: <ExcelIcon />,
+        data: getTableRowsWhichContainDataJson,
+        fileType: "json",
+      },
+    ],
+  },
+
+  {
     title: "Dataverse",
     gradient: "from-green-800 to-lime-400",
     items: [
       {
         id: "dataverse-1",
-        name: "This could be your flow",
+        name: "Send picture embedded via mail",
         icon: <DataverseIcon />,
-        data: {},
-        fileType: "txt",
+        data: sendPicturesEmbeddedViaMailJson,
+        fileType: "json",
       },
     ],
   },
@@ -152,10 +170,10 @@ export const availableSnippets: SnippetCategory[] = [
     items: [
       {
         id: "outlook-1",
-        name: "This could be your flow",
+        name: "Save attachment to Sharepoint",
         icon: <OutlookIcon />,
-        data: {},
-        fileType: "txt",
+        data: saveAttachementToSharepointJson,
+        fileType: "json",
       },
     ],
   },
