@@ -143,7 +143,7 @@ export const availableSnippets: SnippetCategory[] = [
     items: [
       {
         id: "excelonline-1",
-        name: "Send picture embedded via mail",
+        name: "Filter Tablerows which are not empty",
         icon: <ExcelIcon />,
         data: getTableRowsWhichContainDataJson,
         fileType: "json",

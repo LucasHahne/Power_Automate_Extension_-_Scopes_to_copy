@@ -16,14 +16,7 @@ export class PanelObserver {
     this.observer = new MutationObserver(() => {
       if (!this.isActive) return;
 
-      const panelMain = document.getElementsByClassName(
-        "ms-Panel-main",
-      )[0] as HTMLElement;
-
-      if (panelMain) {
-        panelMain.style.width = "60%";
-      }
-      // Don't disconnect - keep observing for new panels
+      this.setPanelWidth();
     });
 
     this.observer.observe(document.body, {
@@ -32,7 +25,7 @@ export class PanelObserver {
     });
 
     // Check existing panels immediately
-    this.checkExistingPanels();
+    this.setPanelWidth();
   }
 
   stop(): void {
@@ -47,7 +40,7 @@ export class PanelObserver {
     return window.location.href.includes("make.powerautomate.com");
   }
 
-  private checkExistingPanels(): void {
+  private setPanelWidth(): void {
     const panelMain = document.getElementsByClassName(
       "ms-Panel-main",
     )[0] as HTMLElement;
