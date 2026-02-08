@@ -55,7 +55,7 @@ The library is constantly growing with new actions and templates!
 3. **Copy what you need** – Click the copy icon (📋) next to any action
 4. **Paste into Power Automate** – The JSON is on your clipboard, ready to go!
 
-- **Auto-Expand Raw Inputs/Outputs Window**: If activated the raw Inputs/Outputs Window will get a new width of 60%. Making it easier to debug and see the values.
+**Auto-Expand Raw Inputs/Outputs Window**: If activated the raw Inputs/Outputs Window will get a new width of 60%. Making it easier to debug and see the values.
 
 ## Want to Add a New Flow Action?
 
