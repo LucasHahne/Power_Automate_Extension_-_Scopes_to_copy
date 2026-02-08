@@ -8,24 +8,41 @@ Hey there! Welcome to the Power Automate Browser Extension - Scopes to Copy – 
 
 This extension is a growing collection of Power Automate actions and flow templates that you can grab and use in seconds. No more rebuilding the same patterns over and over – got you covered with pre-configured JSON templates for common scenarios like variables, error handling, and much more.
 
-## Features
-
-- **One-Click Copy**: Instantly copy Power Automate action JSON to your clipboard
-- **Organized Categories**: Everything neatly grouped (Variables, Error Handling, Dataverse, SharePoint, and more)
-- **Clean Interface**: Collapsible sections keep things tidy and easy to navigate
-- **Always Accessible**: Right there in your browser toolbar whenever you need it
-- **Lightning Fast**: Built with React + Vite for a smooth experience
-
 ## What's Inside?
 
 ### Variables
 
-- Boolean, Integer, Float, String, Object, and Array variables (all ready to initialize!)
+- Boolean variable (Initialize)
+- Integer variable (Initialize)
+- Float variable (Initialize)
+- String variable (Initialize)
+- Object variable (Initialize)
+- Array variable (Initialize)
 
 ### Error Handling
 
 - Basic Error Handler
-- Error Handler with Email Notification
+- Basic Error Handler with mail
+
+### SharePoint
+
+- Request Manager Approval
+- Search for file by name
+- Search for file by name (Filter Query only)
+- Search for folder by name
+- Search for folder by name (Filter Query only)
+
+### Excel Online (Business)
+
+- Filter Tablerows which are not empty
+
+### Dataverse
+
+- Send picture embedded via mail
+
+### Outlook
+
+- Save attachment to SharePoint
 
 ### More Coming Soon!
 
@@ -37,6 +54,8 @@ The library is constantly growing with new actions and templates!
 2. **Browse the categories** – Click any category header to expand and see what's available
 3. **Copy what you need** – Click the copy icon (📋) next to any action
 4. **Paste into Power Automate** – The JSON is on your clipboard, ready to go!
+
+- **Auto-Expand Raw Inputs/Outputs Window**: If activated the raw Inputs/Outputs Window will get a new width of 60%. Making it easier to debug and see the values.
 
 ## Want to Add a New Flow Action?
 
