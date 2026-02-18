@@ -17,6 +17,10 @@ browserAPI.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     }
 
     sendResponse({ success: true, isRunning: panelObserver.isRunning() });
+  } else if (message.type === "SET_PANEL_WIDTH_PERCENT") {
+    const { widthPercent } = message.payload ?? {};
+    panelObserver.setWidthPercent(widthPercent);
+    sendResponse({ success: true, widthPercent });
   } else if (message.type === "GET_OBSERVER_STATE") {
     sendResponse({ isRunning: panelObserver.isRunning() });
   }
@@ -25,9 +29,13 @@ browserAPI.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 });
 
 browserAPI.storage.local
-  .get(["isActive"])
+  .get(["isActive", "panelWidthPercent"])
   .then((result) => {
     const isActive = result.isActive ?? true;
+    const widthPercentRaw = result.panelWidthPercent;
+    const widthPercent =
+      typeof widthPercentRaw === "number" ? widthPercentRaw : 60;
+    panelObserver.setWidthPercent(widthPercent);
     if (isActive) {
       panelObserver.start();
     }

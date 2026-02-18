@@ -2,8 +2,18 @@
 export class PanelObserver {
   private observer: MutationObserver | null = null;
   private isActive: boolean = false;
+  private widthPercent: number = 60;
 
   constructor() {}
+
+  setWidthPercent(widthPercent: number): void {
+    const next = Number.isFinite(widthPercent) ? Math.trunc(widthPercent) : 60;
+    this.widthPercent = Math.min(100, Math.max(1, next));
+
+    if (this.isActive) {
+      this.setPanelWidth();
+    }
+  }
 
   start(): void {
     if (this.observer || !this.shouldRunOnCurrentPage()) {
@@ -37,16 +47,25 @@ export class PanelObserver {
   }
 
   private shouldRunOnCurrentPage(): boolean {
-    return window.location.href.includes("make.powerautomate.com");
+    const href = window.location.href;
+    return (
+      href.includes("make.powerautomate.com") && href.includes("run")
+    );
   }
 
   private setPanelWidth(): void {
-    const panelMain = document.getElementsByClassName(
-      "ms-Panel-main",
-    )[0] as HTMLElement;
-
+    const panels = document.getElementsByClassName("ms-Panel-main");
+    let panelMain: HTMLElement | null = null;
+    for (let i = 0; i < panels.length; i++) {
+      const el = panels[i] as HTMLElement;
+      // Only expand the panel that contains the raw JSON/code view (Monaco editor lines)
+      if (el.querySelector(".view-line") != null) {
+        panelMain = el;
+        break;
+      }
+    }
     if (panelMain) {
-      panelMain.style.width = "60%";
+      panelMain.style.width = `${this.widthPercent}%`;
     }
   }
 
