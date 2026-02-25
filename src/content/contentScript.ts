@@ -1,8 +1,10 @@
 // src/content/contentScript.ts
 import { PanelObserver } from "../utils/panelObserver";
+import { ExpressionWindowObserver } from "../utils/expressionWindowObserver";
 import { browserAPI } from "../utils/browserAPI";
 
 const panelObserver = new PanelObserver();
+const expressionWindowObserver = new ExpressionWindowObserver();
 
 browserAPI.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === "SET_ACTIVE_STATE") {
@@ -21,6 +23,10 @@ browserAPI.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     const { widthPercent } = message.payload ?? {};
     panelObserver.setWidthPercent(widthPercent);
     sendResponse({ success: true, widthPercent });
+  } else if (message.type === "SET_EXPAND_EXPRESSION_WINDOW_DEFAULT") {
+    const { expandExpressionWindowDefault } = message.payload ?? {};
+    expressionWindowObserver.setActive(!!expandExpressionWindowDefault);
+    sendResponse({ success: true, expandExpressionWindowDefault: !!expandExpressionWindowDefault });
   } else if (message.type === "GET_OBSERVER_STATE") {
     sendResponse({ isRunning: panelObserver.isRunning() });
   }
@@ -28,42 +34,19 @@ browserAPI.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   return true;
 });
 
-// #region agent log
-const _log = (msg: string, d: Record<string, unknown>) => {
-  fetch("http://127.0.0.1:7244/ingest/95e32b20-4201-4420-b55f-b8b70e73c946", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "9f5981" },
-    body: JSON.stringify({
-      sessionId: "9f5981",
-      location: "contentScript.ts",
-      message: msg,
-      data: d,
-      timestamp: Date.now(),
-    }),
-  }).catch(() => {});
-};
-// #endregion
 browserAPI.storage.local
-  .get(["isActive", "panelWidthPercent"])
+  .get(["isActive", "panelWidthPercent", "expandExpressionWindowDefault"])
   .then((result) => {
     const rawActive = result.isActive;
     const isActive = rawActive ?? true;
     const widthPercentRaw = result.panelWidthPercent;
     const widthPercent =
       typeof widthPercentRaw === "number" ? widthPercentRaw : 60;
-    // #region agent log
-    _log("Storage loaded on init", {
-      hypothesisId: "H1",
-      rawIsActive: rawActive,
-      resolvedIsActive: isActive,
-      willCallStart: isActive,
-    });
-    // #endregion
+    const expandExpressionWindowDefault =
+      result.expandExpressionWindowDefault === true;
     panelObserver.setWidthPercent(widthPercent);
+    expressionWindowObserver.setActive(expandExpressionWindowDefault);
     if (isActive) {
-      // #region agent log
-      _log("Calling panelObserver.start() on load", { hypothesisId: "H2" });
-      // #endregion
       panelObserver.start();
     }
   })

@@ -103,21 +103,6 @@ export class PanelObserver {
         break;
       }
     }
-    // #region agent log
-    const w = this.widthPercent;
-    const found = !!panelMain;
-    fetch("http://127.0.0.1:7244/ingest/95e32b20-4201-4420-b55f-b8b70e73c946", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "9f5981" },
-      body: JSON.stringify({
-        sessionId: "9f5981",
-        location: "panelObserver.ts:setPanelWidth",
-        message: "setPanelWidth executed",
-        data: { hypothesisId: "H3", found, width: `${w}%` },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion
     if (panelMain) {
       this.clearRetries();
       panelMain.style.width = `${this.widthPercent}%`;
