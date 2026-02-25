@@ -3,6 +3,8 @@ export class PanelObserver {
   private observer: MutationObserver | null = null;
   private isActive: boolean = false;
   private widthPercent: number = 60;
+  private debounceTimer: ReturnType<typeof setTimeout> | null = null;
+  private retryTimeouts: ReturnType<typeof setTimeout>[] = [];
 
   constructor() {}
 
@@ -22,11 +24,20 @@ export class PanelObserver {
 
     this.isActive = true;
 
-    // Create observer with the working logic
+    const debounceMs = 120;
+    const runSetPanelWidth = (): void => {
+      if (!this.isActive) return;
+      this.setPanelWidth();
+    };
+
     this.observer = new MutationObserver(() => {
       if (!this.isActive) return;
 
-      this.setPanelWidth();
+      if (this.debounceTimer) clearTimeout(this.debounceTimer);
+      this.debounceTimer = setTimeout(() => {
+        this.debounceTimer = null;
+        runSetPanelWidth();
+      }, debounceMs);
     });
 
     this.observer.observe(document.body, {
@@ -34,16 +45,44 @@ export class PanelObserver {
       subtree: true,
     });
 
-    // Check existing panels immediately
-    this.setPanelWidth();
+    // Run immediately, then schedule retries in case panel/Monaco appear later
+    runSetPanelWidth();
+    this.scheduleRetries();
   }
 
   stop(): void {
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+      this.debounceTimer = null;
+    }
+    this.clearRetries();
     if (this.observer) {
       this.observer.disconnect();
       this.observer = null;
     }
     this.isActive = false;
+  }
+
+  private clearRetries(): void {
+    for (const t of this.retryTimeouts) clearTimeout(t);
+    this.retryTimeouts = [];
+  }
+
+  /**
+   * When the panel or Monaco isn't in the DOM yet, retry a few times with delays
+   * so we still apply the width once they render.
+   */
+  private scheduleRetries(): void {
+    this.clearRetries();
+    const delays = [200, 500];
+    delays.forEach((delayMs) => {
+      const id = setTimeout(() => {
+        this.retryTimeouts = this.retryTimeouts.filter((t) => t !== id);
+        if (!this.isActive) return;
+        this.setPanelWidth();
+      }, delayMs);
+      this.retryTimeouts.push(id);
+    });
   }
 
   private shouldRunOnCurrentPage(): boolean {
@@ -64,8 +103,29 @@ export class PanelObserver {
         break;
       }
     }
+    // #region agent log
+    const w = this.widthPercent;
+    const found = !!panelMain;
+    fetch("http://127.0.0.1:7244/ingest/95e32b20-4201-4420-b55f-b8b70e73c946", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "9f5981" },
+      body: JSON.stringify({
+        sessionId: "9f5981",
+        location: "panelObserver.ts:setPanelWidth",
+        message: "setPanelWidth executed",
+        data: { hypothesisId: "H3", found, width: `${w}%` },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {});
+    // #endregion
     if (panelMain) {
+      this.clearRetries();
       panelMain.style.width = `${this.widthPercent}%`;
+    } else if (this.isActive && this.shouldRunOnCurrentPage()) {
+      // Panel not found yet; ensure we have retries scheduled (e.g. after tab focus or late-open panel)
+      if (this.retryTimeouts.length === 0) {
+        this.scheduleRetries();
+      }
     }
   }
 
