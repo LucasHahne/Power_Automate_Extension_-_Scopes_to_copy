@@ -2,6 +2,8 @@
 
 Hey there! Welcome to the Power Automate Browser Extension - Scopes to Copy – your friendly companion for building Power Automate flows faster and easier. This extension gives you instant access to ready-to-use action templates right from your browser toolbar. Just click, copy, and paste into your flows!
 
+**[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/power-automate-extension/hfbdkblkbenbeeoccmbpmpgkakmckdmc)** – Get the extension for Chrome to use one-click copy, organized categories, and configurable panel/expression window expansion on make.powerautomate.com.
+
 (Only the new designer is supported for now)
 
 ## What's This All About?
@@ -22,7 +24,9 @@ This extension is a growing collection of Power Automate actions and flow templa
 ### Error Handling
 
 - Basic Error Handler
+- Basic Error Handler incl. Terminate
 - Basic Error Handler with mail
+- Basic Error Handler with mail incl. Terminate
 
 Error handling scopes require a **Scope - Try** that wraps the actions you want to monitor; the catch block uses it to get the proper error information.
 
