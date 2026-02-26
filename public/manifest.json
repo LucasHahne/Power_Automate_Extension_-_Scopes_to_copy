@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Power Automate Extension - Scopes to Copy",
-  "version": "1.1.0.7",
+  "version": "1.1.1.1",
   "action": {
     "default_title": "Power Automate Scopes"
   },

@@ -24,6 +24,8 @@ This extension is a growing collection of Power Automate actions and flow templa
 - Basic Error Handler
 - Basic Error Handler with mail
 
+Error handling scopes require a **Scope - Try** that wraps the actions you want to monitor; the catch block uses it to get the proper error information.
+
 ### SharePoint
 
 - Request Manager Approval
@@ -55,7 +57,9 @@ The library is constantly growing with new actions and templates!
 3. **Copy what you need** – Click the copy icon (📋) next to any action
 4. **Paste into Power Automate** – The JSON is on your clipboard, ready to go!
 
-**Auto-Expand Raw Inputs/Outputs Window**: If activated the raw Inputs/Outputs Window will get a new width of 60%. Making it easier to debug and see the values.
+**Expand expression window**: When enabled, the raw Inputs/Outputs (expression) window is widened to a configurable percentage of the screen so you can debug and see values more easily. You can set the width and toggle it on or off in the extension options.
+
+**Expand output and input panel**: When enabled, the output and input panel is widened to a configurable percentage. Width and on/off can be set in the extension options.
 
 ## Want to Add a New Flow Action?
 

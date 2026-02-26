@@ -10,8 +10,11 @@ import stringJson from "../data/variables/string.json";
 import objectJson from "../data/variables/object.json";
 import arrayJson from "../data/variables/array.json";
 import basicErrorJson from "../data/errorHandling/basicErrorHandling.json";
+import basicErrorTerminateJson from "../data/errorHandling/basicErrorHandlingTerminate.json";
 import errorMailJson from "../data/errorHandling/basicErrorHandlingMail.json";
+import errorMailTerminateJson from "../data/errorHandling/basicErrorHandlingMailTerminate.json";
 import requestManagerApprovalJson from "../data/sharepoint/requestManagerApproval.json";
+
 import getFilesByNameAndNoFolderTxt from "../data/sharepoint/getFilesByNameAndNoFolder.txt?raw";
 import getFilesByNameAndNoFolderJson from "../data/sharepoint/getFilesByNameAndNoFolder.json";
 import getFolderByNameTxt from "../data/sharepoint/getFolderByName.txt?raw";
@@ -28,7 +31,9 @@ const dataByPath: Record<string, unknown> = {
   "variables/object.json": objectJson,
   "variables/array.json": arrayJson,
   "errorHandling/basicErrorHandling.json": basicErrorJson,
+  "errorHandling/basicErrorHandlingTerminate.json": basicErrorTerminateJson,
   "errorHandling/basicErrorHandlingMail.json": errorMailJson,
+  "errorHandling/basicErrorHandlingMailTerminate.json": errorMailTerminateJson,
   "sharepoint/requestManagerApproval.json": requestManagerApprovalJson,
   "sharepoint/getFilesByNameAndNoFolder.txt": getFilesByNameAndNoFolderTxt,
   "sharepoint/getFilesByNameAndNoFolder.json": getFilesByNameAndNoFolderJson,
@@ -46,7 +51,9 @@ function getData(dataPath: string): unknown {
 
 export function getSnippets(): SnippetCategory[] {
   return categories.map((category) => {
-    const categorySnippets = snippets.filter((s) => s.categoryId === category.id);
+    const categorySnippets = snippets.filter(
+      (s) => s.categoryId === category.id,
+    );
     const items: ListItem[] = categorySnippets.map((snippet) => {
       const icon = hasIcon(snippet.iconKey) ? getIcon(snippet.iconKey) : null;
       const data = getData(snippet.dataPath);

@@ -2,6 +2,9 @@
 import { useState, useEffect } from "react";
 import { browserAPI, isExtensionContext } from "../utils/browserAPI";
 
+const STORAGE_KEY = "expandPanelActive";
+const MESSAGE_TYPE = "SET_EXPAND_PANEL_ACTIVE";
+
 export function useExtensionState() {
   const [isActive, setIsActive] = useState(true);
 
@@ -12,9 +15,9 @@ export function useExtensionState() {
     }
 
     browserAPI.storage.local
-      .get(["isActive"])
-      .then((result: { isActive?: boolean }) => {
-        const storedState = result.isActive ?? true;
+      .get([STORAGE_KEY])
+      .then((result: { [STORAGE_KEY]?: boolean }) => {
+        const storedState = result[STORAGE_KEY] ?? true;
         setIsActive(storedState);
       })
       .catch((error) => {
@@ -32,7 +35,7 @@ export function useExtensionState() {
     }
 
     try {
-      await browserAPI.storage.local.set({ isActive: newState });
+      await browserAPI.storage.local.set({ [STORAGE_KEY]: newState });
 
       const tabs = await browserAPI.tabs.query({
         url: "*://make.powerautomate.com/*",
@@ -42,7 +45,7 @@ export function useExtensionState() {
         if (tab.id) {
           try {
             await browserAPI.tabs.sendMessage(tab.id, {
-              type: "SET_ACTIVE_STATE",
+              type: MESSAGE_TYPE,
               payload: { isActive: newState },
             });
           } catch (error) {

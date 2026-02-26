@@ -1,5 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useExpandPanelSettings } from "../../hooks/useExpandPanelSettings";
+
+const WIDTH_INPUT_DEBOUNCE_MS = 1000;
 
 const inputBaseClass =
   "w-16 rounded-sm border border-gray-300 bg-white px-2 py-1 text-sm text-gray-800 " +
@@ -10,7 +12,7 @@ const switchBaseClass =
   "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500";
 
 export default function ExpandPanelSettingsRow() {
-  const { isActive, toggleActive, widthPercent, setWidthPercent } =
+  const { isActive, toggleActive, widthPercent, setWidthPercent, flushWidthSave } =
     useExpandPanelSettings();
 
   const [draft, setDraft] = useState<string>(String(widthPercent));
@@ -25,12 +27,33 @@ export default function ExpandPanelSettingsRow() {
     return Number.isFinite(n) ? n : NaN;
   }, [draft]);
 
-  const commit = async () => {
+  // After 1 s with no input change, persist the width (debounced). Only when value differs from stored.
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    if (!Number.isFinite(parsed) || parsed === widthPercent) return;
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      debounceRef.current = null;
+      setWidthPercent(parsed);
+    }, WIDTH_INPUT_DEBOUNCE_MS);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [draft, parsed, widthPercent, setWidthPercent]);
+
+  const commit = (saveImmediately = false) => {
     if (!Number.isFinite(parsed)) {
       setDraft(String(widthPercent));
       return;
     }
-    await setWidthPercent(parsed);
+    if (saveImmediately && debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = null;
+    }
+    setWidthPercent(parsed);
+    if (saveImmediately) {
+      flushWidthSave();
+    }
   };
 
   return (
@@ -49,10 +72,10 @@ export default function ExpandPanelSettingsRow() {
             step={1}
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            onBlur={commit}
+            onBlur={() => commit(true)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                void commit();
+                commit(true);
               }
               if (e.key === "Escape") {
                 setDraft(String(widthPercent));

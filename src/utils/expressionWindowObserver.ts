@@ -1,32 +1,36 @@
 // src/utils/expressionWindowObserver.ts
-const EXPRESSION_DIALOG_MIN_WIDTH_PX = 580;
+const APPLY_WIDTH_DEBOUNCE_MS = 150;
+const DEFAULT_WIDTH_PERCENT = 50;
 
 /**
- * Finds the expression callout dialog (div with role="dialog" and ms-Callout-main)
- * and sets min-width on its first child div (the inner content container).
+ * Finds the expression callout dialog. Tries role="dialog" + ms-Callout-main first, then ms-Callout-main.
  */
-function applyExpressionWindowMinWidth(): void {
-  const dialog = document.querySelector('div[role="dialog"].ms-Callout-main');
-  if (!dialog?.firstElementChild || !(dialog.firstElementChild instanceof HTMLElement)) {
-    return;
-  }
-  const inner = dialog.firstElementChild as HTMLElement;
-  inner.style.minWidth = `${EXPRESSION_DIALOG_MIN_WIDTH_PX}px`;
-}
-
-function clearExpressionWindowMinWidth(): void {
-  const dialog = document.querySelector('div[role="dialog"].ms-Callout-main');
-  if (!dialog?.firstElementChild || !(dialog.firstElementChild instanceof HTMLElement)) {
-    return;
-  }
-  const inner = dialog.firstElementChild as HTMLElement;
-  inner.style.minWidth = "";
+function findExpressionDialog(): HTMLElement | null {
+  const dialog =
+    document.querySelector<HTMLElement>('div[role="dialog"].ms-Callout-main') ??
+    document.querySelector<HTMLElement>("div.ms-Callout-main");
+  return dialog;
 }
 
 export class ExpressionWindowObserver {
   private observer: MutationObserver | null = null;
   private isActive = false;
+  private widthPercent = DEFAULT_WIDTH_PERCENT;
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
+  private applyWidthTimer: ReturnType<typeof setTimeout> | null = null;
+
+  setWidthPercent(widthPercent: number): void {
+    const next = Number.isFinite(widthPercent) ? Math.trunc(widthPercent) : DEFAULT_WIDTH_PERCENT;
+    this.widthPercent = Math.min(100, Math.max(1, next));
+
+    if (!this.isActive) return;
+
+    if (this.applyWidthTimer) clearTimeout(this.applyWidthTimer);
+    this.applyWidthTimer = setTimeout(() => {
+      this.applyWidthTimer = null;
+      this.applyExpressionWindowWidth();
+    }, APPLY_WIDTH_DEBOUNCE_MS);
+  }
 
   setActive(active: boolean): void {
     if (this.isActive === active) return;
@@ -36,7 +40,7 @@ export class ExpressionWindowObserver {
       this.start();
     } else {
       this.stop();
-      clearExpressionWindowMinWidth();
+      this.clearExpressionWindowWidth();
     }
   }
 
@@ -47,7 +51,7 @@ export class ExpressionWindowObserver {
     const debounceMs = 100;
     const run = (): void => {
       if (!this.isActive) return;
-      applyExpressionWindowMinWidth();
+      this.applyExpressionWindowWidth();
     };
 
     this.observer = new MutationObserver(() => {
@@ -72,9 +76,53 @@ export class ExpressionWindowObserver {
       clearTimeout(this.debounceTimer);
       this.debounceTimer = null;
     }
+    if (this.applyWidthTimer) {
+      clearTimeout(this.applyWidthTimer);
+      this.applyWidthTimer = null;
+    }
     if (this.observer) {
       this.observer.disconnect();
       this.observer = null;
     }
+    this.isActive = false;
+    this.clearExpressionWindowWidth();
+  }
+
+  private clearExpressionWindowWidth(): void {
+    const dialog = findExpressionDialog();
+    if (!dialog) return;
+    requestAnimationFrame(() => {
+      dialog.style.removeProperty("width");
+      dialog.style.removeProperty("min-width");
+      dialog.style.removeProperty("max-width");
+      const inner = dialog.firstElementChild instanceof HTMLElement ? dialog.firstElementChild : null;
+      if (inner) {
+        inner.style.removeProperty("width");
+        inner.style.removeProperty("min-width");
+        inner.style.removeProperty("max-width");
+      }
+    });
+  }
+
+  private applyExpressionWindowWidth(): void {
+    if (!this.isActive) return;
+    const dialog = findExpressionDialog();
+    if (!dialog) return;
+
+    const targetWidth = `${this.widthPercent}%`;
+    if (dialog.style.getPropertyValue("width") === targetWidth) return;
+
+    requestAnimationFrame(() => {
+      if (!this.isActive) return;
+      dialog.style.setProperty("width", targetWidth, "important");
+      dialog.style.setProperty("min-width", targetWidth, "important");
+      dialog.style.setProperty("max-width", targetWidth, "important");
+      const inner = dialog.firstElementChild instanceof HTMLElement ? dialog.firstElementChild : null;
+      if (inner) {
+        inner.style.setProperty("width", targetWidth, "important");
+        inner.style.setProperty("min-width", targetWidth, "important");
+        inner.style.setProperty("max-width", targetWidth, "important");
+      }
+    });
   }
 }
