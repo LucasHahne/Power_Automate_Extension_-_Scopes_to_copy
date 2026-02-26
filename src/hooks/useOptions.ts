@@ -7,14 +7,14 @@ const STORAGE_KEYS = OPTIONS_CONFIG.map((o) => o.storageKey);
 
 /**
  * Loads and persists all options from OPTIONS_CONFIG.
- * Handles side effects (e.g. notifying content script when "isActive" changes).
+ * Handles side effects (e.g. notifying content script when "expandPanelActive" changes).
  * Add new options in optionsConfig; they appear here automatically.
  */
 export function useOptions(): OptionItem[] {
   const [values, setValues] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     for (const opt of OPTIONS_CONFIG) {
-      initial[opt.id] = opt.storageKey === "isActive" ? true : false;
+      initial[opt.id] = opt.storageKey === "expandPanelActive" ? true : false;
     }
     return initial;
   });
@@ -30,7 +30,7 @@ export function useOptions(): OptionItem[] {
         for (const opt of OPTIONS_CONFIG) {
           const raw = result[opt.storageKey];
           next[opt.id] =
-            typeof raw === "boolean" ? raw : opt.storageKey === "isActive";
+            typeof raw === "boolean" ? raw : opt.storageKey === "expandPanelActive";
         }
         setValues(next);
       })
@@ -49,7 +49,7 @@ export function useOptions(): OptionItem[] {
       try {
         await browserAPI.storage.local.set({ [def.storageKey]: value });
 
-        if (def.storageKey === "isActive") {
+        if (def.storageKey === "expandPanelActive") {
           const tabs = await browserAPI.tabs.query({
             url: "*://make.powerautomate.com/*",
           });
@@ -57,7 +57,7 @@ export function useOptions(): OptionItem[] {
             if (tab.id) {
               try {
                 await browserAPI.tabs.sendMessage(tab.id, {
-                  type: "SET_ACTIVE_STATE",
+                  type: "SET_EXPAND_PANEL_ACTIVE",
                   payload: { isActive: value },
                 });
               } catch {
@@ -80,7 +80,7 @@ export function useOptions(): OptionItem[] {
   return OPTIONS_CONFIG.map((opt) => ({
     id: opt.id,
     label: opt.label,
-    checked: values[opt.id] ?? (opt.storageKey === "isActive"),
+    checked: values[opt.id] ?? (opt.storageKey === "expandPanelActive"),
     onChange: (checked: boolean) => setOption(opt.id, checked),
   }));
 }

@@ -1,9 +1,12 @@
 // src/utils/panelObserver.ts
+const APPLY_WIDTH_DEBOUNCE_MS = 150;
+
 export class PanelObserver {
   private observer: MutationObserver | null = null;
   private isActive: boolean = false;
   private widthPercent: number = 60;
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
+  private applyWidthTimer: ReturnType<typeof setTimeout> | null = null;
   private retryTimeouts: ReturnType<typeof setTimeout>[] = [];
 
   constructor() {}
@@ -12,16 +15,20 @@ export class PanelObserver {
     const next = Number.isFinite(widthPercent) ? Math.trunc(widthPercent) : 60;
     this.widthPercent = Math.min(100, Math.max(1, next));
 
-    if (this.isActive) {
+    if (!this.isActive) return;
+
+    if (this.applyWidthTimer) clearTimeout(this.applyWidthTimer);
+    this.applyWidthTimer = setTimeout(() => {
+      this.applyWidthTimer = null;
       this.setPanelWidth();
-    }
+    }, APPLY_WIDTH_DEBOUNCE_MS);
   }
 
   start(): void {
-    if (this.observer || !this.shouldRunOnCurrentPage()) {
+    if (this.observer) {
       return;
     }
-
+    // Start even when not yet on run page so we apply when user navigates there (e.g. SPA)
     this.isActive = true;
 
     const debounceMs = 120;
@@ -55,12 +62,23 @@ export class PanelObserver {
       clearTimeout(this.debounceTimer);
       this.debounceTimer = null;
     }
+    if (this.applyWidthTimer) {
+      clearTimeout(this.applyWidthTimer);
+      this.applyWidthTimer = null;
+    }
     this.clearRetries();
     if (this.observer) {
       this.observer.disconnect();
       this.observer = null;
     }
     this.isActive = false;
+    const panel = this.findExpandablePanel();
+    if (panel) {
+      const el = panel;
+      requestAnimationFrame(() => {
+        el.style.width = "";
+      });
+    }
   }
 
   private clearRetries(): void {
@@ -69,12 +87,13 @@ export class PanelObserver {
   }
 
   /**
-   * When the panel or Monaco isn't in the DOM yet, retry a few times with delays
-   * so we still apply the width once they render.
+   * When the panel or Monaco isn't in the DOM yet, retry with delays so we still
+   * apply the width once they render (e.g. SPA load, panel opened by user).
+   * Longer delays cover first-load and slow networks.
    */
   private scheduleRetries(): void {
     this.clearRetries();
-    const delays = [200, 500];
+    const delays = [200, 500, 1000, 1500];
     delays.forEach((delayMs) => {
       const id = setTimeout(() => {
         this.retryTimeouts = this.retryTimeouts.filter((t) => t !== id);
@@ -87,40 +106,34 @@ export class PanelObserver {
 
   private shouldRunOnCurrentPage(): boolean {
     const href = window.location.href;
-    return (
-      href.includes("make.powerautomate.com") && href.includes("run")
-    );
+    return href.includes("make.powerautomate.com") && href.includes("run");
+  }
+
+  private findExpandablePanel(): HTMLElement | null {
+    const panels = document.getElementsByClassName("ms-Panel-main");
+    for (let i = 0; i < panels.length; i++) {
+      const el = panels[i] as HTMLElement;
+      if (el.querySelector(".view-line") != null) return el;
+    }
+    return null;
   }
 
   private setPanelWidth(): void {
-    const panels = document.getElementsByClassName("ms-Panel-main");
-    let panelMain: HTMLElement | null = null;
-    for (let i = 0; i < panels.length; i++) {
-      const el = panels[i] as HTMLElement;
-      // Only expand the panel that contains the raw JSON/code view (Monaco editor lines)
-      if (el.querySelector(".view-line") != null) {
-        panelMain = el;
-        break;
-      }
-    }
-    // #region agent log
-    const w = this.widthPercent;
-    const found = !!panelMain;
-    fetch("http://127.0.0.1:7244/ingest/95e32b20-4201-4420-b55f-b8b70e73c946", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "9f5981" },
-      body: JSON.stringify({
-        sessionId: "9f5981",
-        location: "panelObserver.ts:setPanelWidth",
-        message: "setPanelWidth executed",
-        data: { hypothesisId: "H3", found, width: `${w}%` },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion
+    if (!this.isActive) return;
+    const panelMain = this.findExpandablePanel();
     if (panelMain) {
+      const targetWidth = `${this.widthPercent}%`;
+      const currentWidth = panelMain.style.width;
+      const earlyReturn = currentWidth === targetWidth;
+
+      if (earlyReturn) return;
       this.clearRetries();
-      panelMain.style.width = `${this.widthPercent}%`;
+      const el = panelMain;
+      requestAnimationFrame(() => {
+        if (!this.isActive) return;
+        if (el.style.width === targetWidth) return;
+        el.style.width = targetWidth;
+      });
     } else if (this.isActive && this.shouldRunOnCurrentPage()) {
       // Panel not found yet; ensure we have retries scheduled (e.g. after tab focus or late-open panel)
       if (this.retryTimeouts.length === 0) {

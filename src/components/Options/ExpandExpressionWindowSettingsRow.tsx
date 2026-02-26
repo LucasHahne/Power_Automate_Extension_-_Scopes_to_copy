@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useExpandPanelSettings } from "../../hooks/useExpandPanelSettings";
+import { useExpandExpressionWindowSettings } from "../../hooks/useExpandExpressionWindowSettings";
 
 const WIDTH_INPUT_DEBOUNCE_MS = 1000;
 
@@ -11,13 +11,12 @@ const switchBaseClass =
   "relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 p-0.5 transition-colors " +
   "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500";
 
-export default function ExpandPanelSettingsRow() {
+export default function ExpandExpressionWindowSettingsRow() {
   const { isActive, toggleActive, widthPercent, setWidthPercent, flushWidthSave } =
-    useExpandPanelSettings();
+    useExpandExpressionWindowSettings();
 
   const [draft, setDraft] = useState<string>(String(widthPercent));
 
-  // Keep draft in sync if storage changes after mount.
   React.useEffect(() => {
     setDraft(String(widthPercent));
   }, [widthPercent]);
@@ -27,7 +26,6 @@ export default function ExpandPanelSettingsRow() {
     return Number.isFinite(n) ? n : NaN;
   }, [draft]);
 
-  // After 1 s with no input change, persist the width (debounced). Only when value differs from stored.
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     if (!Number.isFinite(parsed) || parsed === widthPercent) return;
@@ -59,7 +57,7 @@ export default function ExpandPanelSettingsRow() {
   return (
     <div className="flex items-center justify-between gap-3 py-1.5 px-2 rounded-sm hover:bg-gray-200/60 transition-colors">
       <span className="text-sm font-normal text-gray-800 select-none">
-        Expand output and input panel
+        Expand expression window
       </span>
 
       <div className="flex items-center gap-2">
@@ -74,14 +72,10 @@ export default function ExpandPanelSettingsRow() {
             onChange={(e) => setDraft(e.target.value)}
             onBlur={() => commit(true)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                commit(true);
-              }
-              if (e.key === "Escape") {
-                setDraft(String(widthPercent));
-              }
+              if (e.key === "Enter") commit(true);
+              if (e.key === "Escape") setDraft(String(widthPercent));
             }}
-            aria-label="Expanded panel width percent"
+            aria-label="Expanded expression window width percent"
             className={inputBaseClass}
           />
           <span className="ml-1 text-sm text-gray-600 select-none">%</span>
@@ -105,4 +99,3 @@ export default function ExpandPanelSettingsRow() {
     </div>
   );
 }
-

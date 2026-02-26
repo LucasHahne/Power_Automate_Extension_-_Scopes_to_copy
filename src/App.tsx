@@ -2,6 +2,7 @@ import "./App.css";
 import List from "./components/List";
 import OptionsSection from "./components/Options";
 import ExpandPanelSettingsRow from "./components/Options/ExpandPanelSettingsRow";
+import ExpandExpressionWindowSettingsRow from "./components/Options/ExpandExpressionWindowSettingsRow";
 import { availableSnippets } from "./config/snippetLoader";
 import { githubIssueUrls, getReportBugUrl } from "./config/githubIssues";
 import { browserAPI, isExtensionContext } from "./utils/browserAPI";
@@ -48,6 +49,7 @@ function App() {
           </div>
           <OptionsSection options={options}>
             <ExpandPanelSettingsRow />
+            <ExpandExpressionWindowSettingsRow />
           </OptionsSection>
           {availableSnippets.map((category) => (
             <List
