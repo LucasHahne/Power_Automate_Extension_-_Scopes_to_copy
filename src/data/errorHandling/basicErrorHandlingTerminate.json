@@ -29,7 +29,14 @@
       "Terminate_-_failed": {
         "type": "Terminate",
         "inputs": { "runStatus": "Failed" },
-        "runAfter": { "Compose_-_get_Flow_URL": ["SUCCEEDED"] }
+        "runAfter": {
+          "Compose_-_get_Flow_URL": [
+            "SUCCEEDED",
+            "TIMEDOUT",
+            "SKIPPED",
+            "FAILED"
+          ]
+        }
       }
     },
     "runAfter": { "Compose": ["SUCCEEDED"] },

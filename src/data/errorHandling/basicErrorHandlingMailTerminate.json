@@ -46,10 +46,12 @@
           "operationMetadataId": "b4a278a3-feae-4564-82d6-1f64f11a59fb"
         }
       },
-      "Terminate_-_failed": {
+      "Terminate": {
         "type": "Terminate",
         "inputs": { "runStatus": "Failed" },
-        "runAfter": { "Send_an_email_(V2)": ["SUCCEEDED"] }
+        "runAfter": {
+          "Send_an_email_(V2)": ["SUCCEEDED", "TIMEDOUT", "SKIPPED", "FAILED"]
+        }
       }
     },
     "runAfter": { "Compose": ["SUCCEEDED"] },
