@@ -43,6 +43,15 @@ export interface SnippetManifestItem {
 }
 
 /**
+ * Custom scope stored by the user (scope content as JSON string for Power Automate paste).
+ */
+export interface CustomScope {
+  id: string;
+  name: string;
+  data: string;
+}
+
+/**
  * Option definition for the options section (extensible for future options).
  * storageKey is used for chrome.storage.local; afterSet runs after value is persisted (e.g. notify content script).
  */

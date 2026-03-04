@@ -3,11 +3,14 @@ import List from "./components/List";
 import OptionsSection from "./components/Options";
 import ExpandPanelSettingsRow from "./components/Options/ExpandPanelSettingsRow";
 import ExpandExpressionWindowSettingsRow from "./components/Options/ExpandExpressionWindowSettingsRow";
+import ScopeModeSwitch from "./components/ScopeModeSwitch";
+import CustomScopesSection from "./components/CustomScopesSection";
 import { availableSnippets } from "./config/snippetLoader";
 import { githubIssueUrls, getReportBugUrl } from "./config/githubIssues";
 import { browserAPI, isExtensionContext } from "./utils/browserAPI";
 import type { ListItem } from "./types";
 import { useOptions } from "./hooks/useOptions";
+import { useScopeMode } from "./hooks/useScopeMode";
 
 function getExtensionVersion(): string {
   if (!isExtensionContext()) return "unknown";
@@ -23,6 +26,7 @@ const reportBugUrl = getReportBugUrl(getExtensionVersion());
 
 function App() {
   const options = useOptions();
+  const { mode, setMode } = useScopeMode();
 
   const handleCopyClick = (item: ListItem) => {
     if (item.data) {
@@ -51,15 +55,18 @@ function App() {
             <ExpandPanelSettingsRow />
             <ExpandExpressionWindowSettingsRow />
           </OptionsSection>
-          {availableSnippets.map((category) => (
-            <List
-              key={category.title}
-              title={category.title}
-              gradient={category.gradient}
-              items={category.items}
-              onCopyClick={handleCopyClick}
-            />
-          ))}
+          <ScopeModeSwitch mode={mode} onModeChange={setMode} />
+          {mode === "prebuilt" &&
+            availableSnippets.map((category) => (
+              <List
+                key={category.title}
+                title={category.title}
+                gradient={category.gradient}
+                items={category.items}
+                onCopyClick={handleCopyClick}
+              />
+            ))}
+          {mode === "custom" && <CustomScopesSection />}
         </div>
       </div>
       <footer className="mt-auto shrink-0 pt-3 border-t border-gray-300 text-sm text-gray-600 flex items-center justify-between gap-2">
