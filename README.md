@@ -2,7 +2,7 @@
 
 Hey there! Welcome to the Power Automate Browser Extension - Scopes to Copy – your friendly companion for building Power Automate flows faster and easier. This extension gives you instant access to ready-to-use action templates right from your browser toolbar. Just click, copy, and paste into your flows!
 
-**[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/power-automate-extension/hfbdkblkbenbeeoccmbpmpgkakmckdmc)** – Get the extension for Chrome to use one-click copy, organized categories, and configurable panel/expression window expansion on make.powerautomate.com.
+**[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/power-automate-extension/hfbdkblkbenbeeoccmbpmpgkakmckdmc)** – Get the extension for Chrome to use one-click copy, organized categories, custom scope storage, and configurable panel/expression window expansion on make.powerautomate.com.
 
 (Only the new designer is supported for now)
 
@@ -57,9 +57,22 @@ The library is constantly growing with new actions and templates!
 ## How to Use
 
 1. **Click the extension icon** in your browser toolbar
-2. **Browse the categories** – Click any category header to expand and see what's available
-3. **Copy what you need** – Click the copy icon (📋) next to any action
-4. **Paste into Power Automate** – The JSON is on your clipboard, ready to go!
+2. **Choose your scope source** – Below the settings, use the switch to select **Prebuilt** (built-in categories) or **Custom** (your own saved scopes). Your choice is saved so the right view opens next time.
+3. **Browse the categories** – Click any category header to expand and see what's available
+4. **Copy what you need** – Click the copy icon (📋) next to any action
+5. **Paste into Power Automate** – The JSON is on your clipboard, ready to go!
+
+### Custom scopes
+
+When you select **Custom** as the scope source, you can store and manage your own Power Automate scope JSON:
+
+- **Add a scope** – Click **Show new** in the Custom section header. A popup opens where you enter a **scope name** and **paste the scope JSON** (from Power Automate). Click **Add scope** to save it. The scope name is required; the content must be valid JSON so it can be copied back into Power Automate.
+- **Copy** – Use the copy icon next to a custom scope to copy its JSON to the clipboard (pretty-printed) for pasting into Power Automate.
+- **Delete** – Click the trash icon to remove a scope. A confirmation popup asks whether you really want to delete it; choose **Cancel** to keep it or **Delete** to remove it from the extension and storage.
+
+All custom scopes are listed under the **Custom** header (rainbow-styled) and are stored in the extension so they persist across sessions.
+
+### Settings
 
 **Expand expression window**: When enabled, the raw Inputs/Outputs (expression) window is widened to a configurable percentage of the screen so you can debug and see values more easily. You can set the width and toggle it on or off in the extension options.
 
