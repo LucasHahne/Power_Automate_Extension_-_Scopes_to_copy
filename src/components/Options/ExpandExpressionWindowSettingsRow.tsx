@@ -12,8 +12,13 @@ const switchBaseClass =
   "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500";
 
 export default function ExpandExpressionWindowSettingsRow() {
-  const { isActive, toggleActive, widthPercent, setWidthPercent, flushWidthSave } =
-    useExpandExpressionWindowSettings();
+  const {
+    isActive,
+    toggleActive,
+    widthPercent,
+    setWidthPercent,
+    flushWidthSave,
+  } = useExpandExpressionWindowSettings();
 
   const [draft, setDraft] = useState<string>(String(widthPercent));
 
@@ -57,7 +62,7 @@ export default function ExpandExpressionWindowSettingsRow() {
   return (
     <div className="flex items-center justify-between gap-3 py-1.5 px-2 rounded-sm hover:bg-gray-200/60 transition-colors">
       <span className="text-sm font-normal text-gray-800 select-none">
-        Expand expression window
+        Increase expression window width
       </span>
 
       <div className="flex items-center gap-2">

@@ -1,6 +1,7 @@
 // src/utils/expressionWindowObserver.ts
 const APPLY_WIDTH_DEBOUNCE_MS = 150;
 const DEFAULT_WIDTH_PERCENT = 50;
+const DATA_NATURAL_WIDTH = "data-expression-natural-width";
 
 /**
  * Finds the expression callout dialog. Tries role="dialog" + ms-Callout-main first, then ms-Callout-main.
@@ -91,17 +92,16 @@ export class ExpressionWindowObserver {
   private clearExpressionWindowWidth(): void {
     const dialog = findExpressionDialog();
     if (!dialog) return;
-    requestAnimationFrame(() => {
-      dialog.style.removeProperty("width");
-      dialog.style.removeProperty("min-width");
-      dialog.style.removeProperty("max-width");
-      const inner = dialog.firstElementChild instanceof HTMLElement ? dialog.firstElementChild : null;
-      if (inner) {
-        inner.style.removeProperty("width");
-        inner.style.removeProperty("min-width");
-        inner.style.removeProperty("max-width");
-      }
-    });
+    dialog.removeAttribute(DATA_NATURAL_WIDTH);
+    dialog.style.removeProperty("width");
+    dialog.style.removeProperty("min-width");
+    dialog.style.removeProperty("max-width");
+    const inner = dialog.firstElementChild instanceof HTMLElement ? dialog.firstElementChild : null;
+    if (inner) {
+      inner.style.removeProperty("width");
+      inner.style.removeProperty("min-width");
+      inner.style.removeProperty("max-width");
+    }
   }
 
   private applyExpressionWindowWidth(): void {
@@ -109,7 +109,20 @@ export class ExpressionWindowObserver {
     const dialog = findExpressionDialog();
     if (!dialog) return;
 
-    const targetWidth = `${this.widthPercent}%`;
+    // Width = current expression window width + (width * percentage / 100)
+    let naturalWidthPx: number;
+    const stored = dialog.getAttribute(DATA_NATURAL_WIDTH);
+    if (stored != null) {
+      naturalWidthPx = parseFloat(stored);
+      if (!Number.isFinite(naturalWidthPx) || naturalWidthPx <= 0) return;
+    } else {
+      naturalWidthPx = dialog.getBoundingClientRect().width;
+      if (!Number.isFinite(naturalWidthPx) || naturalWidthPx <= 0) return;
+      dialog.setAttribute(DATA_NATURAL_WIDTH, String(naturalWidthPx));
+    }
+
+    const targetWidthPx = Math.round(naturalWidthPx * (1 + this.widthPercent / 100));
+    const targetWidth = `${targetWidthPx}px`;
     if (dialog.style.getPropertyValue("width") === targetWidth) return;
 
     requestAnimationFrame(() => {
@@ -119,9 +132,9 @@ export class ExpressionWindowObserver {
       dialog.style.setProperty("max-width", targetWidth, "important");
       const inner = dialog.firstElementChild instanceof HTMLElement ? dialog.firstElementChild : null;
       if (inner) {
-        inner.style.setProperty("width", targetWidth, "important");
-        inner.style.setProperty("min-width", targetWidth, "important");
-        inner.style.setProperty("max-width", targetWidth, "important");
+        inner.style.setProperty("width", "100%", "important");
+        inner.style.setProperty("min-width", "100%", "important");
+        inner.style.setProperty("max-width", "100%", "important");
       }
     });
   }

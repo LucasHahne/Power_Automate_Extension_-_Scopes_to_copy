@@ -1,8 +1,12 @@
 # Power Automate Browser Extension - Scopes to Copy
 
+**Version:** 2.0.0.1
+
 Hey there! Welcome to the Power Automate Browser Extension - Scopes to Copy – your friendly companion for building Power Automate flows faster and easier. This extension gives you instant access to ready-to-use action templates right from your browser toolbar. Just click, copy, and paste into your flows!
 
-**[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/power-automate-extension/hfbdkblkbenbeeoccmbpmpgkakmckdmc)** – Get the extension for Chrome to use one-click copy, organized categories, custom scope storage, and configurable panel/expression window expansion on make.powerautomate.com.
+[![Available in the Chrome Web Store](https://developer.chrome.com/static/docs/webstore/branding/image/mPGKYBIR2uCP0ApchDXE.png)](https://chromewebstore.google.com/detail/power-automate-extension/hfbdkblkbenbeeoccmbpmpgkakmckdmc)
+
+Get the extension for Chrome to use one-click copy, organized categories, custom scope storage, and configurable panel/expression window expansion on make.powerautomate.com.
 
 (Only the new designer is supported for now)
 
