@@ -12,7 +12,13 @@ function parseCollapsedRecord(raw: unknown): Record<string, boolean> {
   return out;
 }
 
-export function usePersistedSnippetCategoryCollapse() {
+export type UsePersistedSnippetCategoryCollapseReturn = {
+  getCollapsed: (categoryId: string) => boolean;
+  setCollapsed: (categoryId: string, collapsed: boolean) => void;
+  hydrated: boolean;
+};
+
+export function usePersistedSnippetCategoryCollapse(): UsePersistedSnippetCategoryCollapseReturn {
   const [collapsedByCategoryId, setCollapsedByCategoryId] = useState<
     Record<string, boolean>
   >({});
@@ -20,7 +26,6 @@ export function usePersistedSnippetCategoryCollapse() {
 
   useEffect(() => {
     if (!isExtensionContext()) {
-      setHydrated(true);
       return;
     }
 

@@ -1,4 +1,3 @@
-import React from "react";
 import variablesLogo from "../../assets/variables_logo.png";
 import dataverseLogo from "../../assets/dataverse_logo.png";
 import sharepointLogo from "../../assets/sharepoint_logo.png";
@@ -7,15 +6,12 @@ import outlookLogo from "../../assets/outlook_logo.png";
 import office365Logo from "../../assets/office365_logo.png";
 import excelLogo from "../../assets/excel_logo.png";
 
-interface IconProps {
+export interface IconProps {
   size?: number;
   className?: string;
 }
 
-export const VariableIcon: React.FC<IconProps> = ({
-  size = 20,
-  className = "",
-}) => {
+export function VariableIcon({ size = 20, className = "" }: IconProps) {
   return (
     <img
       src={variablesLogo}
@@ -25,12 +21,9 @@ export const VariableIcon: React.FC<IconProps> = ({
       className={className}
     />
   );
-};
+}
 
-export const DataverseIcon: React.FC<IconProps> = ({
-  size = 20,
-  className = "",
-}) => {
+export function DataverseIcon({ size = 20, className = "" }: IconProps) {
   return (
     <img
       src={dataverseLogo}
@@ -40,12 +33,9 @@ export const DataverseIcon: React.FC<IconProps> = ({
       className={className}
     />
   );
-};
+}
 
-export const SharepointIcon: React.FC<IconProps> = ({
-  size = 20,
-  className = "",
-}) => {
+export function SharepointIcon({ size = 20, className = "" }: IconProps) {
   return (
     <img
       src={sharepointLogo}
@@ -55,12 +45,9 @@ export const SharepointIcon: React.FC<IconProps> = ({
       className={className}
     />
   );
-};
+}
 
-export const OutlookIcon: React.FC<IconProps> = ({
-  size = 20,
-  className = "",
-}) => {
+export function OutlookIcon({ size = 20, className = "" }: IconProps) {
   return (
     <img
       src={outlookLogo}
@@ -70,12 +57,9 @@ export const OutlookIcon: React.FC<IconProps> = ({
       className={className}
     />
   );
-};
+}
 
-export const Office365Icon: React.FC<IconProps> = ({
-  size = 20,
-  className = "",
-}) => {
+export function Office365Icon({ size = 20, className = "" }: IconProps) {
   return (
     <img
       src={office365Logo}
@@ -85,12 +69,9 @@ export const Office365Icon: React.FC<IconProps> = ({
       className={className}
     />
   );
-};
+}
 
-export const ErrorhandlingIcon: React.FC<IconProps> = ({
-  size = 20,
-  className = "",
-}) => {
+export function ErrorhandlingIcon({ size = 20, className = "" }: IconProps) {
   return (
     <img
       src={errorhandlingLogo}
@@ -100,12 +81,9 @@ export const ErrorhandlingIcon: React.FC<IconProps> = ({
       className={className}
     />
   );
-};
+}
 
-export const ObjectIcon: React.FC<IconProps> = ({
-  size = 20,
-  className = "",
-}) => {
+export function ObjectIcon({ size = 20, className = "" }: IconProps) {
   return (
     <img
       src={variablesLogo}
@@ -115,12 +93,9 @@ export const ObjectIcon: React.FC<IconProps> = ({
       className={className}
     />
   );
-};
+}
 
-export const ArrayIcon: React.FC<IconProps> = ({
-  size = 20,
-  className = "",
-}) => {
+export function ArrayIcon({ size = 20, className = "" }: IconProps) {
   return (
     <img
       src={variablesLogo}
@@ -130,12 +105,9 @@ export const ArrayIcon: React.FC<IconProps> = ({
       className={className}
     />
   );
-};
+}
 
-export const ExcelIcon: React.FC<IconProps> = ({
-  size = 20,
-  className = "",
-}) => {
+export function ExcelIcon({ size = 20, className = "" }: IconProps) {
   return (
     <img
       src={excelLogo}
@@ -145,4 +117,4 @@ export const ExcelIcon: React.FC<IconProps> = ({
       className={className}
     />
   );
-};
+}

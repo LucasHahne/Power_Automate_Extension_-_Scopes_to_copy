@@ -9,13 +9,18 @@ function isScopeMode(value: unknown): value is ScopeMode {
   return value === "prebuilt" || value === "custom";
 }
 
-export function useScopeMode() {
+export type UseScopeModeReturn = {
+  mode: ScopeMode;
+  setMode: (next: ScopeMode) => void;
+  hydrated: boolean;
+};
+
+export function useScopeMode(): UseScopeModeReturn {
   const [mode, setModeState] = useState<ScopeMode>(DEFAULT_MODE);
   const [hydrated, setHydrated] = useState(() => !isExtensionContext());
 
   useEffect(() => {
     if (!isExtensionContext()) {
-      setHydrated(true);
       return;
     }
 

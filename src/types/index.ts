@@ -1,15 +1,17 @@
 import React from "react";
 
-/**
- * Represents an item in a list with an icon and optional data
- */
-export interface ListItem {
+type ListItemBase = {
   id: string;
   name: string;
   icon: React.ReactNode;
-  data?: unknown;
-  fileType?: "json" | "txt";
-}
+};
+
+/**
+ * Snippet row: `fileType` discriminates clipboard / payload shape.
+ */
+export type ListItem =
+  | (ListItemBase & { fileType: "txt"; data: string })
+  | (ListItemBase & { fileType: "json"; data: unknown });
 
 /**
  * Represents a category of snippets with items
