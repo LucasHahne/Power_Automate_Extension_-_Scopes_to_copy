@@ -1,4 +1,4 @@
-import React from "react";
+import type { KeyboardEvent } from "react";
 
 interface OptionRowProps {
   label: string;
@@ -11,13 +11,8 @@ interface OptionRowProps {
  * Single option row: label on the left (normal text), toggle on the right.
  * Toggle is grey when off, green when on.
  */
-const OptionRow: React.FC<OptionRowProps> = ({
-  label,
-  checked,
-  onChange,
-  id,
-}) => {
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+function OptionRow({ label, checked, onChange, id }: OptionRowProps) {
+  const handleKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === " " || e.key === "Enter") {
       e.preventDefault();
       onChange(!checked);
@@ -56,6 +51,6 @@ const OptionRow: React.FC<OptionRowProps> = ({
       </button>
     </div>
   );
-};
+}
 
 export default OptionRow;

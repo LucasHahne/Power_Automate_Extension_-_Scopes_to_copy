@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Header from "./Header";
 import Content from "./Content";
 import type { ListItem } from "../../types";
@@ -15,7 +15,7 @@ interface ListProps {
   onCollapsedChange?: (collapsed: boolean) => void;
 }
 
-const List: React.FC<ListProps> = ({
+function List({
   title,
   gradient,
   items,
@@ -24,7 +24,7 @@ const List: React.FC<ListProps> = ({
   defaultCollapsed = true,
   isCollapsed: isCollapsedControlled,
   onCollapsedChange,
-}) => {
+}: ListProps) {
   const [internalCollapsed, setInternalCollapsed] = useState(defaultCollapsed);
   const isControlled =
     typeof isCollapsedControlled === "boolean" && !!onCollapsedChange;
@@ -57,6 +57,6 @@ const List: React.FC<ListProps> = ({
       )}
     </div>
   );
-};
+}
 
 export default List;

@@ -1,6 +1,6 @@
 # Power Automate Browser Extension - Scopes to Copy
 
-**Version:** 2.0.1.0
+**Version:** 2.0.2.0
 
 Hey there! Welcome to the Power Automate Browser Extension - Scopes to Copy – your friendly companion for building Power Automate flows faster and easier. This extension gives you instant access to ready-to-use action templates right from your browser toolbar. Just click, copy, and paste into your flows!
 
@@ -123,6 +123,12 @@ If you run into any problems or have questions:
 - Check existing issues to see if someone else has had the same question
 
 ## Version history
+
+### 2.0.2.0
+
+- **TypeScript / React:** Stricter typings (events, hooks, `ListItem` variants), function components instead of `React.FC`, and clearer icon registry types.
+- **Linting:** `eslint-plugin-react` added alongside existing React Hooks rules; redundant hydration `setState` paths in storage hooks removed for cleaner effects.
+- **UI polish:** Extension version string is computed once for the bug-report link and footer.
 
 ### 2.0.1.0
 

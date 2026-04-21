@@ -23,7 +23,8 @@ function getExtensionVersion(): string {
   }
 }
 
-const reportBugUrl = getReportBugUrl(getExtensionVersion());
+const extensionVersion = getExtensionVersion();
+const reportBugUrl = getReportBugUrl(extensionVersion);
 
 function App() {
   const options = useOptions();
@@ -35,14 +36,11 @@ function App() {
   } = usePersistedSnippetCategoryCollapse();
 
   const handleCopyClick = (item: ListItem) => {
-    if (item.data) {
-      if (item.fileType === "txt") {
-        navigator.clipboard.writeText(item.data as string);
-      } else {
-        const jsonString = JSON.stringify(item.data, null, 2);
-        navigator.clipboard.writeText(jsonString);
-      }
+    if (item.fileType === "txt") {
+      navigator.clipboard.writeText(item.data);
+      return;
     }
+    navigator.clipboard.writeText(JSON.stringify(item.data, null, 2));
   };
 
   return (
@@ -113,7 +111,7 @@ function App() {
             Suggest a feature
           </a>
         </div>
-        <span className="shrink-0 text-gray-500">v{getExtensionVersion()}</span>
+        <span className="shrink-0 text-gray-500">v{extensionVersion}</span>
       </footer>
     </div>
   );

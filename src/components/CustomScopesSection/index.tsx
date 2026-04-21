@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import type { FormEvent, MouseEvent } from "react";
 import { useCustomScopes } from "../../hooks/useCustomScopes";
 import type { CustomScope } from "../../types";
 import { UI_CONFIG } from "../../constants";
@@ -89,7 +90,7 @@ export default function CustomScopesSection() {
     setError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
     const trimmedName = name.trim();
@@ -196,7 +197,9 @@ export default function CustomScopesSection() {
       {popupOpen && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
-          onClick={(e) => e.target === e.currentTarget && closePopup()}
+          onClick={(e: MouseEvent<HTMLDivElement>) =>
+            e.target === e.currentTarget && closePopup()
+          }
           role="dialog"
           aria-modal="true"
           aria-labelledby="add-scope-title"
@@ -267,7 +270,7 @@ export default function CustomScopesSection() {
       {scopeToDelete && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
-          onClick={(e) =>
+          onClick={(e: MouseEvent<HTMLDivElement>) =>
             e.target === e.currentTarget && setScopeToDelete(null)
           }
           role="dialog"
@@ -276,7 +279,7 @@ export default function CustomScopesSection() {
         >
           <div
             className="w-full max-w-md bg-white rounded-lg shadow-xl p-4 space-y-4"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e: MouseEvent<HTMLDivElement>) => e.stopPropagation()}
           >
             <h3
               id="delete-scope-title"

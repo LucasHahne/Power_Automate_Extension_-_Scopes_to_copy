@@ -1,4 +1,4 @@
-import React from "react";
+import type { ReactNode } from "react";
 import OptionRow from "./OptionRow";
 
 export interface OptionItem {
@@ -13,18 +13,18 @@ interface OptionsSectionProps {
   /** Optional section title; omit to show only the rows */
   title?: string;
   /** Optional custom rows (e.g. composite controls) */
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 /**
  * Renders a compact options block: one row per option with label left, toggle right.
  * Extensible: pass options from a single source (e.g. useOptions hook).
  */
-const OptionsSection: React.FC<OptionsSectionProps> = ({
+function OptionsSection({
   options,
   title,
   children,
-}) => {
+}: OptionsSectionProps) {
   const hasOptions = (options?.length ?? 0) > 0;
   const hasChildren = children != null;
   if (!hasOptions && !hasChildren) return null;
@@ -50,7 +50,7 @@ const OptionsSection: React.FC<OptionsSectionProps> = ({
       </div>
     </div>
   );
-};
+}
 
 export default OptionsSection;
 export { OptionRow };

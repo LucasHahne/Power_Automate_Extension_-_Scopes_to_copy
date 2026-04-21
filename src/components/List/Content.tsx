@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import type { MouseEvent } from "react";
 import type { ListItem } from "../../types";
 import { UI_CONFIG } from "../../constants";
 
@@ -42,11 +43,11 @@ const CheckIcon = () => (
   </svg>
 );
 
-const ListContent: React.FC<ListProps> = ({
+function ListContent({
   items,
   onItemClick,
   onCopyClick,
-}) => {
+}: ListProps) {
   const [copiedItemId, setCopiedItemId] = useState<string | number | null>(
     null
   );
@@ -61,9 +62,9 @@ const ListContent: React.FC<ListProps> = ({
   }, []);
 
   const handleCopyClick = (
-    e: React.MouseEvent,
+    e: MouseEvent<HTMLButtonElement>,
     item: ListItem,
-    index: number
+    index: number,
   ) => {
     e.stopPropagation();
     onCopyClick?.(item);
@@ -119,6 +120,6 @@ const ListContent: React.FC<ListProps> = ({
       </ul>
     </div>
   );
-};
+}
 
 export default ListContent;

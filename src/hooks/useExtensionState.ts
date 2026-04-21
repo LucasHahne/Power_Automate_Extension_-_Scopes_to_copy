@@ -5,7 +5,12 @@ import { browserAPI, isExtensionContext } from "../utils/browserAPI";
 const STORAGE_KEY = "expandPanelActive";
 const MESSAGE_TYPE = "SET_EXPAND_PANEL_ACTIVE";
 
-export function useExtensionState() {
+export type UseExtensionStateReturn = {
+  isActive: boolean;
+  toggleActive: () => Promise<void>;
+};
+
+export function useExtensionState(): UseExtensionStateReturn {
   const [isActive, setIsActive] = useState(true);
 
   useEffect(() => {

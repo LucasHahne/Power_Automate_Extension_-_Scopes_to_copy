@@ -56,13 +56,24 @@ export function getSnippets(): SnippetCategory[] {
     );
     const items: ListItem[] = categorySnippets.map((snippet) => {
       const icon = hasIcon(snippet.iconKey) ? getIcon(snippet.iconKey) : null;
-      const data = getData(snippet.dataPath);
+      const raw = getData(snippet.dataPath);
+      const iconNode = icon ?? <span />;
+      if (snippet.fileType === "txt") {
+        const data = typeof raw === "string" ? raw : String(raw ?? "");
+        return {
+          id: snippet.id,
+          name: snippet.name,
+          icon: iconNode,
+          fileType: "txt" as const,
+          data,
+        };
+      }
       return {
         id: snippet.id,
         name: snippet.name,
-        icon: icon ?? <span />,
-        data,
-        fileType: snippet.fileType,
+        icon: iconNode,
+        fileType: "json" as const,
+        data: raw,
       };
     });
     return {

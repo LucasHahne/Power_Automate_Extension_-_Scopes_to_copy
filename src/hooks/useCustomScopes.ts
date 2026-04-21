@@ -11,7 +11,13 @@ function generateId(): string {
   );
 }
 
-export function useCustomScopes() {
+export type UseCustomScopesReturn = {
+  customScopes: CustomScope[];
+  addScope: (name: string, data: string) => boolean;
+  removeScope: (id: string) => void;
+};
+
+export function useCustomScopes(): UseCustomScopesReturn {
   const [customScopes, setCustomScopes] = useState<CustomScope[]>([]);
 
   useEffect(() => {

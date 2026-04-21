@@ -1,4 +1,3 @@
-import React from "react";
 import { DEFAULT_GRADIENT } from "../../constants";
 
 interface ListHeaderProps {
@@ -8,31 +7,33 @@ interface ListHeaderProps {
   onToggle?: () => void;
 }
 
-const ChevronIcon: React.FC<{ isCollapsed: boolean }> = ({ isCollapsed }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={2}
-    stroke="currentColor"
-    className={`w-5 h-5 transition-transform ${
-      isCollapsed ? "" : "rotate-180"
-    }`}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="m19.5 8.25-7.5 7.5-7.5-7.5"
-    />
-  </svg>
-);
+function ChevronIcon({ isCollapsed }: { isCollapsed: boolean }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+      className={`w-5 h-5 transition-transform ${
+        isCollapsed ? "" : "rotate-180"
+      }`}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="m19.5 8.25-7.5 7.5-7.5-7.5"
+      />
+    </svg>
+  );
+}
 
-const ListHeader: React.FC<ListHeaderProps> = ({
+function ListHeader({
   title,
   gradient = DEFAULT_GRADIENT,
   isCollapsed = false,
   onToggle,
-}) => {
+}: ListHeaderProps) {
   return (
     <div
       className={`bg-linear-to-r ${gradient} px-4 py-2 rounded-t-sm cursor-pointer hover:opacity-90 transition-opacity`}
@@ -44,6 +45,6 @@ const ListHeader: React.FC<ListHeaderProps> = ({
       </div>
     </div>
   );
-};
+}
 
 export default ListHeader;

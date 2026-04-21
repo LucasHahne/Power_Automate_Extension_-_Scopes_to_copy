@@ -1,12 +1,13 @@
-import React from "react";
+import type { ComponentType, ReactNode } from "react";
 import {
+  type IconProps,
   DataverseIcon,
   ErrorhandlingIcon,
+  ExcelIcon,
   Office365Icon,
   OutlookIcon,
   SharepointIcon,
   VariableIcon,
-  ExcelIcon,
 } from "../components/Icons/ServiceIcons";
 
 export type IconKey =
@@ -18,7 +19,7 @@ export type IconKey =
   | "Outlook"
   | "Office365";
 
-const iconMap: Record<IconKey, React.FC<{ size?: number; className?: string }>> = {
+const iconMap: Record<IconKey, ComponentType<IconProps>> = {
   Variable: VariableIcon,
   Errorhandling: ErrorhandlingIcon,
   Sharepoint: SharepointIcon,
@@ -28,7 +29,7 @@ const iconMap: Record<IconKey, React.FC<{ size?: number; className?: string }>> 
   Office365: Office365Icon,
 };
 
-export function getIcon(key: IconKey): React.ReactNode {
+export function getIcon(key: IconKey): ReactNode {
   const IconComponent = iconMap[key];
   if (!IconComponent) return null;
   return <IconComponent />;
