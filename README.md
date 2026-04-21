@@ -6,7 +6,7 @@ Hey there! Welcome to the Power Automate Browser Extension - Scopes to Copy – 
 
 [![Available in the Chrome Web Store](https://developer.chrome.com/static/docs/webstore/branding/image/mPGKYBIR2uCP0ApchDXE.png)](https://chromewebstore.google.com/detail/power-automate-extension/hfbdkblkbenbeeoccmbpmpgkakmckdmc)
 
-Get the extension for Chrome to use one-click copy, organized categories, custom scope storage, and configurable panel/expression window expansion on make.powerautomate.com. Prebuilt category expand/collapse and your Prebuilt vs Custom choice are remembered between sessions.
+Get the extension for Chrome to use one-click copy, organized categories, custom scope storage, and configurable panel/expression window expansion on make.powerautomate.com.
 
 (Only the new designer is supported for now)
 
