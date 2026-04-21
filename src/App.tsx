@@ -10,6 +10,7 @@ import { githubIssueUrls, getReportBugUrl } from "./config/githubIssues";
 import { browserAPI, isExtensionContext } from "./utils/browserAPI";
 import type { ListItem } from "./types";
 import { useOptions } from "./hooks/useOptions";
+import { usePersistedSnippetCategoryCollapse } from "./hooks/usePersistedSnippetCategoryCollapse";
 import { useScopeMode } from "./hooks/useScopeMode";
 
 function getExtensionVersion(): string {
@@ -26,7 +27,12 @@ const reportBugUrl = getReportBugUrl(getExtensionVersion());
 
 function App() {
   const options = useOptions();
-  const { mode, setMode } = useScopeMode();
+  const { mode, setMode, hydrated: scopeModeHydrated } = useScopeMode();
+  const {
+    getCollapsed,
+    setCollapsed,
+    hydrated: categoryCollapseHydrated,
+  } = usePersistedSnippetCategoryCollapse();
 
   const handleCopyClick = (item: ListItem) => {
     if (item.data) {
@@ -55,18 +61,37 @@ function App() {
             <ExpandPanelSettingsRow />
             <ExpandExpressionWindowSettingsRow />
           </OptionsSection>
-          <ScopeModeSwitch mode={mode} onModeChange={setMode} />
-          {mode === "prebuilt" &&
-            availableSnippets.map((category) => (
-              <List
-                key={category.title}
-                title={category.title}
-                gradient={category.gradient}
-                items={category.items}
-                onCopyClick={handleCopyClick}
-              />
-            ))}
-          {mode === "custom" && <CustomScopesSection />}
+          {!scopeModeHydrated && (
+            <p className="rounded-sm bg-white px-3 py-2 text-sm text-gray-500 shadow-md">
+              Loading…
+            </p>
+          )}
+          {scopeModeHydrated && (
+            <>
+              <ScopeModeSwitch mode={mode} onModeChange={setMode} />
+              {mode === "prebuilt" && !categoryCollapseHydrated && (
+                <p className="rounded-sm bg-white px-3 py-2 text-sm text-gray-500 shadow-md">
+                  Loading…
+                </p>
+              )}
+              {mode === "prebuilt" &&
+                categoryCollapseHydrated &&
+                availableSnippets.map((category) => (
+                  <List
+                    key={category.id}
+                    title={category.title}
+                    gradient={category.gradient}
+                    items={category.items}
+                    isCollapsed={getCollapsed(category.id)}
+                    onCollapsedChange={(collapsed) =>
+                      setCollapsed(category.id, collapsed)
+                    }
+                    onCopyClick={handleCopyClick}
+                  />
+                ))}
+              {mode === "custom" && <CustomScopesSection />}
+            </>
+          )}
         </div>
       </div>
       <footer className="mt-auto shrink-0 pt-3 border-t border-gray-300 text-sm text-gray-600 flex items-center justify-between gap-2">

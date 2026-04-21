@@ -15,6 +15,8 @@ export interface ListItem {
  * Represents a category of snippets with items
  */
 export interface SnippetCategory {
+  /** Manifest category id; used for persisted UI state (e.g. collapse). */
+  id: string;
   title: string;
   gradient: string;
   items: ListItem[];

@@ -23,15 +23,14 @@ const getBrowserAPI = (): BrowserAPI => {
   ) {
     cachedAPI = browser as unknown as BrowserAPI;
     return cachedAPI;
-  }
+    }
   throw new Error("No browser API available");
 };
 
-// Export a proxy object that lazily gets the API
+/** Lazily resolves chrome/browser so importing this module never throws outside an extension. */
 export const browserAPI = new Proxy({} as BrowserAPI, {
-  get(_target, prop) {
-    const api = getBrowserAPI();
-    return api[prop as keyof BrowserAPI];
+  get(_target, prop: keyof BrowserAPI) {
+    return getBrowserAPI()[prop];
   },
 });
 

@@ -66,6 +66,7 @@ export function getSnippets(): SnippetCategory[] {
       };
     });
     return {
+      id: category.id,
       title: category.title,
       gradient: category.gradient,
       items,

@@ -11,9 +11,13 @@ function isScopeMode(value: unknown): value is ScopeMode {
 
 export function useScopeMode() {
   const [mode, setModeState] = useState<ScopeMode>(DEFAULT_MODE);
+  const [hydrated, setHydrated] = useState(() => !isExtensionContext());
 
   useEffect(() => {
-    if (!isExtensionContext()) return;
+    if (!isExtensionContext()) {
+      setHydrated(true);
+      return;
+    }
 
     browserAPI.storage.local
       .get([STORAGE_KEY])
@@ -21,7 +25,8 @@ export function useScopeMode() {
         const stored = result[STORAGE_KEY];
         setModeState(isScopeMode(stored) ? stored : DEFAULT_MODE);
       })
-      .catch((err) => console.error("Error loading scope mode:", err));
+      .catch((err) => console.error("Error loading scope mode:", err))
+      .finally(() => setHydrated(true));
   }, []);
 
   const setMode = useCallback((next: ScopeMode) => {
@@ -32,5 +37,5 @@ export function useScopeMode() {
       .catch((err) => console.error("Error saving scope mode:", err));
   }, []);
 
-  return { mode, setMode };
+  return { mode, setMode, hydrated };
 }
