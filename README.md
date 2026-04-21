@@ -1,6 +1,6 @@
 # Power Automate Browser Extension - Scopes to Copy
 
-**Version:** 2.0.0.1
+**Version:** 2.0.1.0
 
 Hey there! Welcome to the Power Automate Browser Extension - Scopes to Copy – your friendly companion for building Power Automate flows faster and easier. This extension gives you instant access to ready-to-use action templates right from your browser toolbar. Just click, copy, and paste into your flows!
 
@@ -61,8 +61,8 @@ The library is constantly growing with new actions and templates!
 ## How to Use
 
 1. **Click the extension icon** in your browser toolbar
-2. **Choose your scope source** – Below the settings, use the switch to select **Prebuilt** (built-in categories) or **Custom** (your own saved scopes). Your choice is saved so the right view opens next time.
-3. **Browse the categories** – Click any category header to expand and see what's available
+2. **Choose your scope source** – Below the settings, use the switch to select **Prebuilt** (built-in categories) or **Custom** (your own saved scopes). Your choice is saved and restored when you open the side panel again (no flash to the wrong mode while settings load).
+3. **Browse the categories** – Click any category header to expand or collapse. Which categories are open stays saved for your next visit.
 4. **Copy what you need** – Click the copy icon (📋) next to any action
 5. **Paste into Power Automate** – The JSON is on your clipboard, ready to go!
 
@@ -121,6 +121,13 @@ If you run into any problems or have questions:
 
 - Open an issue on [GitHub](https://github.com/LucasHahne/PowerAutomateBrowserExtension/issues)
 - Check existing issues to see if someone else has had the same question
+
+## Version history
+
+### 2.0.1.0
+
+- **Prebuilt categories:** Each category’s expanded or collapsed state is stored in the extension, so your layout returns after you close the side panel or come back later.
+- **Scope source:** **Prebuilt** vs **Custom** is read from storage before the main content is shown, so the panel does not briefly open on the wrong source while loading.
 
 ## License
 

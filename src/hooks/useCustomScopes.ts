@@ -5,7 +5,10 @@ import type { CustomScope } from "../types";
 const STORAGE_KEY = "customScopes";
 
 function generateId(): string {
-  return crypto.randomUUID?.() ?? `custom-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  return (
+    crypto.randomUUID?.() ??
+    `custom-${Date.now()}-${Math.random().toString(36).slice(2)}`
+  );
 }
 
 export function useCustomScopes() {

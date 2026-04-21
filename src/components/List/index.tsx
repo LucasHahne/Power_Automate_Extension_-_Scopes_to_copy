@@ -10,6 +10,9 @@ interface ListProps {
   onItemClick?: (item: ListItem) => void;
   onCopyClick?: (item: ListItem) => void;
   defaultCollapsed?: boolean;
+  /** When set with `onCollapsedChange`, collapse state is controlled by the parent (e.g. persisted). */
+  isCollapsed?: boolean;
+  onCollapsedChange?: (collapsed: boolean) => void;
 }
 
 const List: React.FC<ListProps> = ({
@@ -19,11 +22,22 @@ const List: React.FC<ListProps> = ({
   onItemClick,
   onCopyClick,
   defaultCollapsed = true,
+  isCollapsed: isCollapsedControlled,
+  onCollapsedChange,
 }) => {
-  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
+  const [internalCollapsed, setInternalCollapsed] = useState(defaultCollapsed);
+  const isControlled =
+    typeof isCollapsedControlled === "boolean" && !!onCollapsedChange;
+  const isCollapsed = isControlled
+    ? isCollapsedControlled
+    : internalCollapsed;
 
   const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
+    if (isControlled) {
+      onCollapsedChange(!isCollapsed);
+    } else {
+      setInternalCollapsed(!isCollapsed);
+    }
   };
 
   return (
