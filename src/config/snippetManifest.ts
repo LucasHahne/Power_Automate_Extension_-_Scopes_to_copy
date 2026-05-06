@@ -167,6 +167,22 @@ export const snippets: SnippetManifestItem[] = [
     fileType: "txt",
   },
   {
+    id: "sharepoint-5",
+    categoryId: "sharepoint",
+    name: "Search for file by Filetype",
+    iconKey: "Sharepoint",
+    dataPath: "sharepoint/getFileByFiletype.json",
+    fileType: "json",
+  },
+  {
+    id: "sharepoint-6",
+    categoryId: "sharepoint",
+    name: "Search for file by Filetype (Filter Query only)",
+    iconKey: "Sharepoint",
+    dataPath: "sharepoint/getFileByFiletype.txt",
+    fileType: "txt",
+  },
+  {
     id: "excelonline-1",
     categoryId: "excelonline",
     name: "Filter Tablerows which are not empty",

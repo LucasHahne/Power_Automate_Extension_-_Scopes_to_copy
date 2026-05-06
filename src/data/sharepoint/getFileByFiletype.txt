@@ -1,0 +1,1 @@
+File_x0020_Type eq 'your wanted filetype like pdf, xlsx, ppt etc. no "." needed before the filetype'

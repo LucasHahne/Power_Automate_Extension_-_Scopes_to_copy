@@ -1,0 +1,41 @@
+{
+  "nodeId": "Scope_-_Try",
+  "serializedValue": {
+    "type": "Scope",
+    "actions": {
+      "Get_files_(properties_only)_": {
+        "type": "OpenApiConnection",
+        "inputs": {
+          "parameters": {
+            "dataset": "",
+            "table": "",
+            "$filter": "File_x0020_Type eq 'your wanted filetype like pdf, xlsx, ppt etc. no '.' needed before the filetype'"
+          },
+          "host": {
+            "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+            "connection": "shared_sharepointonline",
+            "operationId": "GetFileItems"
+          }
+        }
+      }
+    },
+    "runAfter": {}
+  },
+  "allConnectionData": {
+    "Get_files_(properties_only)_": {
+      "connectionReference": {
+        "api": {
+          "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+        },
+        "connection": {
+          "id": ""
+        },
+        "connectionName": ""
+      },
+      "referenceKey": "shared_sharepointonline"
+    }
+  },
+  "staticResults": {},
+  "isScopeNode": true,
+  "mslaNode": true
+}
