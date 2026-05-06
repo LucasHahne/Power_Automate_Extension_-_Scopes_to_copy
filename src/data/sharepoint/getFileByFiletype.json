@@ -7,13 +7,13 @@
         "type": "OpenApiConnection",
         "inputs": {
           "parameters": {
-            "dataset": "test",
-            "table": "test",
-            "$filter": "substringof('Your Filename as String',FileLeafRef) and FSObjType eq 1"
+            "dataset": "",
+            "table": "",
+            "$filter": "File_x0020_Type eq 'your wanted filetype like pdf, xlsx, ppt etc. no '.' needed before the filetype'"
           },
           "host": {
             "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
-            "connection": "shared_sharepointonline-1",
+            "connection": "shared_sharepointonline",
             "operationId": "GetFileItems"
           }
         }

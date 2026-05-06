@@ -56,10 +56,7 @@
     "Send_an_email_(V2)": {
       "connectionReference": {
         "api": { "id": "/providers/Microsoft.PowerApps/apis/shared_office365" },
-        "connection": {
-          "id": ""
-        },
-        "connectionName": ""
+        "connection": { "id": null }
       },
       "referenceKey": "shared_office365"
     }

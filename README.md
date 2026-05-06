@@ -1,6 +1,6 @@
 # Power Automate Browser Extension - Scopes to Copy
 
-**Version:** 2.0.2.0
+**Version:** 2.0.3.0
 
 Hey there! Welcome to the Power Automate Browser Extension - Scopes to Copy – your friendly companion for building Power Automate flows faster and easier. This extension gives you instant access to ready-to-use action templates right from your browser toolbar. Just click, copy, and paste into your flows!
 
@@ -41,6 +41,11 @@ Error handling scopes require a **Scope - Try** that wraps the actions you want 
 - Search for file by name (Filter Query only)
 - Search for folder by name
 - Search for folder by name (Filter Query only)
+- Search for file by Filetype
+- Search for file by Filetype (Filter Query only)
+- Batch create items in SP List
+- Batch update items in SP List
+- Batch delete items in SP List
 
 ### Excel Online (Business)
 
@@ -123,6 +128,11 @@ If you run into any problems or have questions:
 - Check existing issues to see if someone else has had the same question
 
 ## Version history
+
+### 2.0.3.0
+
+- **SharePoint:** New snippets for filtering files by file type (full scope + OData filter-query text), plus batch **create**, **update**, and **delete** items for SharePoint lists.
+- **Templates:** Prebuilt JSON snippets use neutral connection metadata (`connection: null` without an embedded connection name), so pasted scopes are easier to wire to your own connections in Power Automate.
 
 ### 2.0.2.0
 

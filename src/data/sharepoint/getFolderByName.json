@@ -27,10 +27,7 @@
         "api": {
           "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
         },
-        "connection": {
-          "id": ""
-        },
-        "connectionName": ""
+        "connection": { "id": null }
       },
       "referenceKey": "shared_sharepointonline"
     }
