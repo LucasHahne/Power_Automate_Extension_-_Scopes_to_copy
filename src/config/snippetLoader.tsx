@@ -19,10 +19,14 @@ import getFilesByNameAndNoFolderTxt from "../data/sharepoint/getFilesByNameAndNo
 import getFilesByNameAndNoFolderJson from "../data/sharepoint/getFilesByNameAndNoFolder.json";
 import getFolderByNameTxt from "../data/sharepoint/getFolderByName.txt?raw";
 import getFolderByNameJson from "../data/sharepoint/getFolderByName.json";
+import getFileByFiletypeJson from "../data/sharepoint/getFileByFiletype.json";
+import getFileByFiletypeTxt from "../data/sharepoint/getFileByFiletype.txt?raw";
 import sendPicturesEmbeddedViaMailJson from "../data/dataverse/sendPicturesEmbeddedViaMail.json";
 import getTableRowsWhichContainDataJson from "../data/excel/getTableRowsWhichContainData.json";
 import saveAttachementToSharepointJson from "../data/outlook/saveAttachementToSharepoint.json";
-
+import batchCreateItemsInSharepointListJson from "../data/sharepoint/batchCreateItemsInSharepointList.json";
+import batchUpdateItemsInSharepointListJson from "../data/sharepoint/batchUpdateItemsInSharepointList.json";
+import batchDeleteItemsInSharepointListJson from "../data/sharepoint/batchDeleteItemsInSharepointList.json";
 const dataByPath: Record<string, unknown> = {
   "variables/boolean.json": booleanJson,
   "variables/integer.json": integerJson,
@@ -39,10 +43,17 @@ const dataByPath: Record<string, unknown> = {
   "sharepoint/getFilesByNameAndNoFolder.json": getFilesByNameAndNoFolderJson,
   "sharepoint/getFolderByName.txt": getFolderByNameTxt,
   "sharepoint/getFolderByName.json": getFolderByNameJson,
+  "sharepoint/getFileByFiletype.json": getFileByFiletypeJson,
+  "sharepoint/getFileByFiletype.txt": getFileByFiletypeTxt,
   "dataverse/sendPicturesEmbeddedViaMail.json": sendPicturesEmbeddedViaMailJson,
   "excel/getTableRowsWhichContainData.json": getTableRowsWhichContainDataJson,
   "outlook/saveAttachementToSharepoint.json": saveAttachementToSharepointJson,
-  "": {},
+  "sharepoint/batchCreateItemsInSharepointList.json":
+    batchCreateItemsInSharepointListJson,
+  "sharepoint/batchUpdateItemsInSharepointList.json":
+    batchUpdateItemsInSharepointListJson,
+  "sharepoint/batchDeleteItemsInSharepointList.json":
+    batchDeleteItemsInSharepointListJson,
 };
 
 function getData(dataPath: string): unknown {

@@ -1,0 +1,139 @@
+{
+  "nodeId": "Scope_-_Try",
+  "serializedValue": {
+    "type": "Scope",
+    "description": "- When you see an issue for actions with \"This operation contains a token that does not exist in the current workflow.\" Make sure to just click on the action and collapse it with the << in the top right.",
+    "actions": {
+      "Compose_-_SampleArry_with_IDs_from_SP_List": {
+        "type": "Compose",
+        "description": "This is just an Array which provides data to show what's happening. You will need to get your source and map the Columns accordingly inside the \"Select - Generate SharepointItems\" Action.",
+        "inputs": [1, 2, 3, 4, 5, 6],
+        "metadata": {
+          "operationMetadataId": "ac271fcb-0e14-49bf-bfb4-660f4a909385"
+        }
+      },
+      "Parse_JSON_-_Create_Settingsobject": {
+        "type": "ParseJson",
+        "description": "Change the content for the settings accordingly",
+        "inputs": {
+          "content": {
+            "tenantBaseUrl": "YOUR_TENANT_BASE_URL.sharepoint.com",
+            "sitePath": "sites/YOUR_SITENAME",
+            "listName": "YOUR_LIST_NAME",
+            "batchSize": 350,
+            "oDataLevel": "nometadata"
+          },
+          "schema": {
+            "type": "object",
+            "properties": {
+              "tenantBaseUrl": {
+                "type": "string",
+                "title": "BaseURLofSharePointSite",
+                "description": "BaseURLofSharePointSite"
+              },
+              "sitePath": {
+                "type": "string",
+                "title": "Relativepathofthesite"
+              },
+              "listName": {
+                "type": "string",
+                "title": "SharepointList",
+                "description": "Listwhereitemsaretobebatchdeleted"
+              },
+              "batchSize": {
+                "type": "integer",
+                "title": "BatchSize",
+                "description": "Numberofitemstosendinasinglebatch"
+              },
+              "oDataLevel": {
+                "type": "string",
+                "title": "oDataLevel",
+                "description": "verbose,minimalmetadataornometadata"
+              }
+            }
+          }
+        },
+        "runAfter": {
+          "Compose_-_SampleArry_with_IDs_from_SP_List": ["Succeeded"]
+        }
+      },
+      "Compose_-_Create_the_Batchtemplate": {
+        "type": "Compose",
+        "inputs": "--changeset_c1\nContent-Type: application/http\nContent-Transfer-Encoding: binary\n\nDELETE /@{body('Parse_JSON_-_Create_Settingsobject')?['sitePath']}/_api/web/lists/getByTitle('@{body('Parse_JSON_-_Create_Settingsobject')?['listName']}')/items(|ItemID|) HTTP/1.1\nIf-Match: *\n\nodata=@{body('Parse_JSON_-_Create_Settingsobject')?['oDataLevel']}\nPrefer: return=minimal",
+        "runAfter": { "Parse_JSON_-_Create_Settingsobject": ["Succeeded"] }
+      },
+      "Select_-_Generate_SharepointItems": {
+        "type": "Select",
+        "description": "You will need the exact Columnname of your List to be successfull.\nThe ID is needed to delete the item inside the Sharepoint List.",
+        "inputs": {
+          "from": "@outputs('Compose_-_SampleArry_with_IDs_from_SP_List')",
+          "select": { "ID": "@item()" }
+        },
+        "runAfter": { "Compose_-_Create_the_Batchtemplate": ["Succeeded"] }
+      },
+      "Apply_to_each_-_Defined_Chunk_Size": {
+        "type": "Foreach",
+        "foreach": "@chunk(body('Select_-_Generate_SharepointItems'),body('Parse_JSON_-_Create_Settingsobject')?['batchSize'])",
+        "actions": {
+          "Select_-_Adjust_the_batch_and_add_necessary_data": {
+            "type": "Select",
+            "inputs": {
+              "from": "@items('Apply_to_each_-_Defined_Chunk_Size')",
+              "select": "@replace(outputs('Compose_-_Create_the_Batchtemplate'), '|ItemID|', string(item()?['ID']))"
+            }
+          },
+          "Send_an_HTTP_request_to_SharePoint_-_Send_Batch_Create": {
+            "type": "OpenApiConnection",
+            "description": "You will have to establish the connection here. And collapse the action when seeing: This operation contains a token that does not exist in the current workflow.",
+            "inputs": {
+              "parameters": {
+                "dataset": "https://@{body('Parse_JSON_-_Create_Settingsobject')?['tenantBaseUrl']}/@{body('Parse_JSON_-_Create_Settingsobject')?['sitePath']}/",
+                "parameters/method": "POST",
+                "parameters/uri": "/_api/$batch",
+                "parameters/headers": {
+                  "X-RequestDigest": "digest",
+                  "Content-Type": "multipart/mixed;boundary=batch_b1"
+                },
+                "parameters/body": "--batch_b1\nContent-Type: multipart/mixed; boundary=\"changeset_c1\"\nContent-Transfer-Encoding: binary\n\n@{join(body('Select_-_Adjust_the_batch_and_add_necessary_data'), decodeUriComponent('%0A'))}\n--changeset_c1--\n\n--batch_b1--"
+              },
+              "host": {
+                "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                "connection": "shared_sharepointonline-2",
+                "operationId": "HttpRequest"
+              }
+            },
+            "runAfter": {
+              "Select_-_Adjust_the_batch_and_add_necessary_data": ["Succeeded"]
+            }
+          },
+          "Compose_-_result": {
+            "type": "Compose",
+            "inputs": "@base64ToString(body('Send_an_HTTP_request_to_SharePoint_-_Send_Batch_Create')['$content'])",
+            "runAfter": {
+              "Send_an_HTTP_request_to_SharePoint_-_Send_Batch_Create": [
+                "Succeeded"
+              ]
+            }
+          }
+        },
+        "runAfter": { "Select_-_Generate_SharepointItems": ["Succeeded"] }
+      }
+    },
+    "runAfter": {}
+  },
+  "allConnectionData": {
+    "Send_an_HTTP_request_to_SharePoint_-_Send_Batch_Create": {
+      "connectionReference": {
+        "api": {
+          "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+        },
+        "connection": null,
+        "connectionName": null
+      },
+      "referenceKey": "shared_sharepointonline-2"
+    }
+  },
+  "staticResults": {},
+  "isScopeNode": true,
+  "mslaNode": true
+}

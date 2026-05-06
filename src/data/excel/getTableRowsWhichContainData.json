@@ -40,8 +40,7 @@
         "api": {
           "id": "/providers/Microsoft.PowerApps/apis/shared_excelonlinebusiness"
         },
-        "connection": { "id": "" },
-        "connectionName": ""
+        "connection": null
       },
       "referenceKey": "shared_excelonlinebusiness"
     }

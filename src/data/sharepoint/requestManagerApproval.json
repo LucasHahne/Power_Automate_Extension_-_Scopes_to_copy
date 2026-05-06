@@ -73,8 +73,7 @@
         "api": {
           "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
         },
-        "connection": { "id": "" },
-        "connectionName": ""
+        "connection": null
       },
       "referenceKey": "shared_sharepointonline"
     },
@@ -83,16 +82,14 @@
         "api": {
           "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
         },
-        "connection": { "id": "" },
-        "connectionName": ""
+        "connection": null
       },
       "referenceKey": "shared_sharepointonline"
     },
     "Start_and_wait_for_an_approval_-_Approval_from_Manager": {
       "connectionReference": {
         "api": { "id": "/providers/Microsoft.PowerApps/apis/shared_approvals" },
-        "connection": { "id": "" },
-        "connectionName": ""
+        "connection": null
       },
       "referenceKey": "shared_approvals"
     }

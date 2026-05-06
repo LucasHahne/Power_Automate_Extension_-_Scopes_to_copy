@@ -7,13 +7,13 @@
         "type": "OpenApiConnection",
         "inputs": {
           "parameters": {
-            "dataset": "",
-            "table": "",
+            "dataset": "test",
+            "table": "test",
             "$filter": "substringof('Your Filename as String',FileLeafRef) and FSObjType eq 1"
           },
           "host": {
             "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
-            "connection": "shared_sharepointonline",
+            "connection": "shared_sharepointonline-1",
             "operationId": "GetFileItems"
           }
         }
@@ -27,10 +27,7 @@
         "api": {
           "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
         },
-        "connection": {
-          "id": ""
-        },
-        "connectionName": ""
+        "connection": null
       },
       "referenceKey": "shared_sharepointonline"
     }
