@@ -1,7 +1,7 @@
 {
   "name": "powerautomate-scopes-to-copy",
   "private": true,
-  "version": "2.0.2.0",
+  "version": "2.0.3.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

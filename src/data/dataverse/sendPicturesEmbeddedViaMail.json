@@ -83,7 +83,7 @@
         "api": {
           "id": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
         },
-        "connection": null
+        "connection": {"id":null}
       },
       "referenceKey": "shared_commondataserviceforapps"
     },
@@ -92,14 +92,14 @@
         "api": {
           "id": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
         },
-        "connection": null
+        "connection": {"id":null}
       },
       "referenceKey": "shared_commondataserviceforapps"
     },
     "Send_an_email_(V2)_-_with_embedded_picture": {
       "connectionReference": {
         "api": { "id": "/providers/Microsoft.PowerApps/apis/shared_office365" },
-        "connection": null
+        "connection": {"id":null}
       },
       "referenceKey": "shared_office365"
     }

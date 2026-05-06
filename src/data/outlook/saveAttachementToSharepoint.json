@@ -59,7 +59,7 @@
     "Get_Attachment_(V2)": {
       "connectionReference": {
         "api": { "id": "/providers/Microsoft.PowerApps/apis/shared_office365" },
-        "connection": null
+        "connection": { "id": null }
       },
       "referenceKey": "shared_office365"
     },
@@ -68,7 +68,7 @@
         "api": {
           "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
         },
-        "connection": null
+        "connection": { "id": null }
       },
       "referenceKey": "shared_sharepointonline"
     }
