@@ -82,7 +82,7 @@
               "select": "@replace(outputs('Compose_-_Create_the_Batchtemplate'), '|ItemID|', string(item()?['ID']))"
             }
           },
-          "Send_an_HTTP_request_to_SharePoint_-_Send_Batch_Create": {
+          "Send_an_HTTP_request_to_SharePoint_-_Send_Batch_Delete": {
             "type": "OpenApiConnection",
             "description": "You will have to establish the connection here. And collapse the action when seeing: This operation contains a token that does not exist in the current workflow.",
             "inputs": {
@@ -98,7 +98,7 @@
               },
               "host": {
                 "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
-                "connection": "shared_sharepointonline-2",
+                "connection": "shared_sharepointonline",
                 "operationId": "HttpRequest"
               }
             },
@@ -108,9 +108,9 @@
           },
           "Compose_-_result": {
             "type": "Compose",
-            "inputs": "@base64ToString(body('Send_an_HTTP_request_to_SharePoint_-_Send_Batch_Create')['$content'])",
+            "inputs": "@base64ToString(body('Send_an_HTTP_request_to_SharePoint_-_Send_Batch_Delete')['$content'])",
             "runAfter": {
-              "Send_an_HTTP_request_to_SharePoint_-_Send_Batch_Create": [
+              "Send_an_HTTP_request_to_SharePoint_-_Send_Batch_Delete": [
                 "Succeeded"
               ]
             }
@@ -122,15 +122,15 @@
     "runAfter": {}
   },
   "allConnectionData": {
-    "Send_an_HTTP_request_to_SharePoint_-_Send_Batch_Create": {
+    "Send_an_HTTP_request_to_SharePoint_-_Send_Batch_Delete": {
       "connectionReference": {
         "api": {
           "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
         },
-        "connection": null,
+        "connection": { "id": null },
         "connectionName": null
       },
-      "referenceKey": "shared_sharepointonline-2"
+      "referenceKey": "shared_sharepointonline"
     }
   },
   "staticResults": {},

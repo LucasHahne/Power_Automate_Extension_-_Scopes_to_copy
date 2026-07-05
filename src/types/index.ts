@@ -52,14 +52,3 @@ export interface CustomScope {
   name: string;
   data: string;
 }
-
-/**
- * Option definition for the options section (extensible for future options).
- * storageKey is used for chrome.storage.local; afterSet runs after value is persisted (e.g. notify content script).
- */
-export interface OptionDefinition {
-  id: string;
-  label: string;
-  storageKey: string;
-  afterSet?: (value: boolean) => Promise<void>;
-}

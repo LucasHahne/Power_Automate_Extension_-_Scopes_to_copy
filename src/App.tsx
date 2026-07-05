@@ -9,7 +9,6 @@ import { availableSnippets } from "./config/snippetLoader";
 import { githubIssueUrls, getReportBugUrl } from "./config/githubIssues";
 import { browserAPI, isExtensionContext } from "./utils/browserAPI";
 import type { ListItem } from "./types";
-import { useOptions } from "./hooks/useOptions";
 import { usePersistedSnippetCategoryCollapse } from "./hooks/usePersistedSnippetCategoryCollapse";
 import { useScopeMode } from "./hooks/useScopeMode";
 
@@ -26,7 +25,6 @@ function getExtensionVersion(): string {
 const reportBugUrl = getReportBugUrl(getExtensionVersion());
 
 function App() {
-  const options = useOptions();
   const { mode, setMode, hydrated: scopeModeHydrated } = useScopeMode();
   const {
     getCollapsed,
@@ -57,7 +55,7 @@ function App() {
               Power Automate Scopes
             </span>
           </div>
-          <OptionsSection options={options}>
+          <OptionsSection>
             <ExpandPanelSettingsRow />
             <ExpandExpressionWindowSettingsRow />
           </OptionsSection>

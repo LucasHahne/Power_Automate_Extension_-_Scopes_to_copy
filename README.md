@@ -1,6 +1,6 @@
 # Power Automate Browser Extension - Scopes to Copy
 
-**Version:** 2.0.3.0
+**Version:** 2.0.3.1
 
 Hey there! Welcome to the Power Automate Browser Extension - Scopes to Copy – your friendly companion for building Power Automate flows faster and easier. This extension gives you instant access to ready-to-use action templates right from your browser toolbar. Just click, copy, and paste into your flows!
 
@@ -128,6 +128,11 @@ If you run into any problems or have questions:
 - Check existing issues to see if someone else has had the same question
 
 ## Version history
+
+### 2.0.3.1
+
+- **Dependencies:** Updated project packages (React 19, Vite 8, TypeScript tooling, and related dev dependencies) to their latest versions.
+- **Cleanup:** Removed the leftover placeholder options config, its `useOptions` hook, and the unused `OptionDefinition` type that were causing a broken build after a previous refactor.
 
 ### 2.0.3.0
 
