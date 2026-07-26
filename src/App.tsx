@@ -3,6 +3,7 @@ import List from "./components/List";
 import OptionsSection from "./components/Options";
 import ExpandPanelSettingsRow from "./components/Options/ExpandPanelSettingsRow";
 import ExpandExpressionWindowSettingsRow from "./components/Options/ExpandExpressionWindowSettingsRow";
+import CopyJsonExpressionSettingsRow from "./components/Options/CopyJsonExpressionSettingsRow";
 import ScopeModeSwitch from "./components/ScopeModeSwitch";
 import CustomScopesSection from "./components/CustomScopesSection";
 import { availableSnippets } from "./config/snippetLoader";
@@ -58,6 +59,7 @@ function App() {
           <OptionsSection>
             <ExpandPanelSettingsRow />
             <ExpandExpressionWindowSettingsRow />
+            <CopyJsonExpressionSettingsRow />
           </OptionsSection>
           {!scopeModeHydrated && (
             <p className="rounded-sm bg-white px-3 py-2 text-sm text-gray-500 shadow-md">

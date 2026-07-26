@@ -1,12 +1,14 @@
 // src/content/contentScript.ts
 import { PanelObserver } from "../utils/panelObserver";
 import { ExpressionWindowObserver } from "../utils/expressionWindowObserver";
+import { JsonExpressionCopyObserver } from "../utils/jsonExpressionCopyObserver";
 import { browserAPI } from "../utils/browserAPI";
 
 const DEFAULT_PANEL_WIDTH_PERCENT = 60;
 
 const panelObserver = new PanelObserver();
 const expressionWindowObserver = new ExpressionWindowObserver();
+const jsonExpressionCopyObserver = new JsonExpressionCopyObserver();
 
 browserAPI.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === "SET_EXPAND_PANEL_ACTIVE") {
@@ -31,6 +33,10 @@ browserAPI.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     const { widthPercent } = message.payload ?? {};
     expressionWindowObserver.setWidthPercent(widthPercent);
     sendResponse({ success: true, widthPercent });
+  } else if (message.type === "SET_COPY_JSON_EXPRESSION_ACTIVE") {
+    const { isActive } = message.payload ?? {};
+    jsonExpressionCopyObserver.setActive(!!isActive);
+    sendResponse({ success: true, isActive: !!isActive });
   } else if (message.type === "GET_OBSERVER_STATE") {
     sendResponse({ isRunning: panelObserver.isRunning() });
   }
@@ -48,6 +54,7 @@ browserAPI.storage.local
     "expandPanelWidthPercent",
     "expandExpressionWindowActive",
     "expandExpressionWindowWidthPercent",
+    "copyJsonExpressionActive",
     "isActive",
     "panelWidthPercent",
     "expandExpressionWindowDefault",
@@ -73,7 +80,15 @@ browserAPI.storage.local
       ? Math.min(100, Math.max(1, Math.trunc(expressionWidthRaw as number)))
       : DEFAULT_EXPRESSION_WINDOW_WIDTH_PERCENT;
 
+    const copyJsonExpressionActive =
+      typeof result.copyJsonExpressionActive === "boolean"
+        ? result.copyJsonExpressionActive
+        : true;
+
     const toSet: Record<string, number | boolean> = {};
+    if (result.copyJsonExpressionActive === undefined) {
+      toSet.copyJsonExpressionActive = copyJsonExpressionActive;
+    }
     if (result.expandPanelActive === undefined && typeof result.isActive === "boolean") {
       toSet.expandPanelActive = expandPanelActive;
     }
@@ -95,6 +110,7 @@ browserAPI.storage.local
     panelObserver.setWidthPercent(expandPanelWidthPercent);
     expressionWindowObserver.setWidthPercent(expandExpressionWindowWidthPercent);
     expressionWindowObserver.setActive(expandExpressionWindowActive);
+    jsonExpressionCopyObserver.setActive(copyJsonExpressionActive);
     if (expandPanelActive) {
       panelObserver.start();
     } else {
