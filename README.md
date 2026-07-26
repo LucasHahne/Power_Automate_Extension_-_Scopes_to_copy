@@ -1,6 +1,6 @@
 # Power Automate Browser Extension - Scopes to Copy
 
-**Version:** 2.0.3.2
+**Version:** 2.1.0.0
 
 Hey there! Welcome to the Power Automate Browser Extension - Scopes to Copy – your friendly companion for building Power Automate flows faster and easier. This extension gives you instant access to ready-to-use action templates right from your browser toolbar. Just click, copy, and paste into your flows!
 
@@ -87,6 +87,14 @@ All custom scopes are listed under the **Custom** header (rainbow-styled) and ar
 
 **Expand output and input panel**: When enabled, the output and input panel is widened to a configurable percentage. Width and on/off can be set in the extension options.
 
+**Copy expression on JSON click**: When enabled, clicking a key or value in an action's run-history Outputs JSON copies the matching Power Automate expression to your clipboard (with a short confirmation). For example, clicking `"name"` inside the `value` array of an action called `Get_worksheets_-_Production_Data_Large` copies:
+
+```text
+outputs('Get_worksheets_-_Production_Data_Large')?['body']?['value']?[0]?['name']
+```
+
+Paste it straight into the expression editor (no leading `@` needed). For **Initialize variable** / **Set variable** (and related) actions, the expression uses `variables('varName')` instead of the long `outputs(...)` path when the variable name is visible in the JSON. Because the run viewer only loads the visible part of large responses, the extension reconstructs the path from what is on screen and closes any unbalanced brackets, so keep the key/value you click (and its parent keys) visible for the most accurate result. Toggle it on or off in the extension options.
+
 ## Want to Add a New Flow Action?
 
 This is a community-driven project, and we'd love your contributions! If you have a Power Automate action or flow pattern that you think others would find useful, here's how to share it:
@@ -128,6 +136,10 @@ If you run into any problems or have questions:
 - Check existing issues to see if someone else has had the same question
 
 ## Version history
+
+### 2.1.0.0
+
+- **New feature:** Click a key or value in an action's run-history Outputs JSON to copy the matching Power Automate expression (e.g. `outputs('Action')?['body']?['value']?[0]?['name']`) straight to your clipboard, with a short confirmation toast. Toggle it on or off under **Copy expression on JSON click** in the extension options.
 
 ### 2.0.3.2
 
