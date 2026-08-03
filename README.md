@@ -1,6 +1,6 @@
 # Power Automate Browser Extension - Scopes to Copy
 
-**Version:** 2.1.0.0
+**Version:** 2.1.0.1
 
 Hey there! Welcome to the Power Automate Browser Extension - Scopes to Copy – your friendly companion for building Power Automate flows faster and easier. This extension gives you instant access to ready-to-use action templates right from your browser toolbar. Just click, copy, and paste into your flows!
 
@@ -136,6 +136,10 @@ If you run into any problems or have questions:
 - Check existing issues to see if someone else has had the same question
 
 ## Version history
+
+### 2.1.0.1
+
+- **SharePoint:** Corrected `FSObjType` filters on get-files-by-name and get-folder-by-name snippets so files use `eq 0` and folders use `eq 1`.
 
 ### 2.1.0.0
 

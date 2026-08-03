@@ -6,9 +6,23 @@ import manifest from "./public/manifest.json";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  plugins: [react(), crx({ manifest }), tailwindcss()],
+  plugins: [
+    react(),
+    crx({
+      manifest,
+      // Inline content-script deps so shared chunks (e.g. browserAPI) are not
+      // exposed as web_accessible_resources and module-preloaded across worlds.
+      contentScripts: {
+        standaloneFiles: ["src/content/contentScript.ts"],
+      },
+    }),
+    tailwindcss(),
+  ],
   base: "./",
   build: {
+    // Avoid <link rel="modulepreload"> for extension chunks; Chrome warns on
+    // cross-world preload mismatches for chrome-extension:// resources.
+    modulePreload: false,
     rollupOptions: {
       input: {
         sidepanel: resolve(__dirname, "sidepanel.html"),
