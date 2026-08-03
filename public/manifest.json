@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Power Automate Extension - Scopes to Copy",
-  "version": "2.1.0.0",
+  "version": "2.1.0.1",
   "action": {
     "default_title": "Power Automate Scopes"
   },
@@ -16,7 +16,7 @@
   "content_scripts": [
     {
       "matches": ["*://make.powerautomate.com/*"],
-      "js": ["src/content/contentScript.js"],
+      "js": ["src/content/contentScript.ts"],
       "run_at": "document_end"
     }
   ],
