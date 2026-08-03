@@ -9,7 +9,7 @@
           "parameters": {
             "dataset": "test",
             "table": "test",
-            "$filter": "substringof('Your Filename as String',FileLeafRef) and FSObjType eq 1"
+            "$filter": "substringof('Your Filename as String',FileLeafRef) and FSObjType eq 0"
           },
           "host": {
             "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
