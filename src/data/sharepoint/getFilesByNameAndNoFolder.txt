@@ -1,1 +1,1 @@
-substringof('Your Filename as String',FileLeafRef) and FSObjType eq 1
+substringof('Your Filename as String',FileLeafRef) and FSObjType eq 0
