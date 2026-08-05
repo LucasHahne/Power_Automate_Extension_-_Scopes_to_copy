@@ -1,6 +1,6 @@
 # Power Automate Browser Extension - Scopes to Copy
 
-**Version:** 2.1.0.1
+**Version:** 2.1.0.2
 
 Hey there! Welcome to the Power Automate Browser Extension - Scopes to Copy – your friendly companion for building Power Automate flows faster and easier. This extension gives you instant access to ready-to-use action templates right from your browser toolbar. Just click, copy, and paste into your flows!
 
@@ -136,6 +136,10 @@ If you run into any problems or have questions:
 - Check existing issues to see if someone else has had the same question
 
 ## Version history
+
+### 2.1.0.2
+
+- **Bug fix:** Copy-expression-on-JSON-click no longer inserts a spurious `[0]` for object values (e.g. a plain `body` object). Numeric indexes are only added for real array elements.
 
 ### 2.1.0.1
 
