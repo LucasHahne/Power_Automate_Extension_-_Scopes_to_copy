@@ -111,6 +111,73 @@ function findParentIndex(lines: ViewLine[], from: number, indent: number): numbe
 }
 
 /**
+ * True when a line opens an array: bare `[` or a key whose value starts with `[`
+ * (e.g. `"value": [`). Object openers (`{`, `"body": {`) return false.
+ */
+function isArrayOpener(content: string): boolean {
+  const keyMatch = KEY_RE.exec(content);
+  const valuePart = (keyMatch ? content.slice(keyMatch[0].length) : content).trim();
+  return valuePart.startsWith("[");
+}
+
+/**
+ * True when `elementIdx` is a child of an array opener. Root `{` / object-valued
+ * `{` under a key are not array elements and must not contribute a `[n]` segment.
+ */
+function isInsideArray(lines: ViewLine[], elementIdx: number): boolean {
+  const parentIdx = findParentIndex(
+    lines,
+    elementIdx,
+    lines[elementIdx].indent,
+  );
+  if (parentIdx === -1) return false;
+  return isArrayOpener(lines[parentIdx].content);
+}
+
+/**
+ * When an object opener `{` sits on its own line at the same indent as its key
+ * (`"body":` / `{`), indentation alone cannot link them. Walk back for that key.
+ */
+function findPrecedingKeyAtIndent(
+  lines: ViewLine[],
+  from: number,
+  indent: number,
+): number {
+  for (let i = from - 1; i >= 0; i--) {
+    if (lines[i].indent < indent) return -1;
+    if (lines[i].indent > indent) continue;
+    const c = classify(lines[i].content);
+    if (c.type === "key") return i;
+    // Another element/closer at this indent means this `{` is not that key's value.
+    return -1;
+  }
+  return -1;
+}
+
+/** Path segment contributed by an element line, or null if it should be skipped. */
+function elementPathSegment(
+  lines: ViewLine[],
+  elementIdx: number,
+): PathSegment | null {
+  if (isInsideArray(lines, elementIdx)) {
+    return arrayIndexOf(lines, elementIdx, lines[elementIdx].indent);
+  }
+  // Standalone object `{` under a same-indent key — use the key, not [0].
+  if (lines[elementIdx].content.trimStart().startsWith("{")) {
+    const keyIdx = findPrecedingKeyAtIndent(
+      lines,
+      elementIdx,
+      lines[elementIdx].indent,
+    );
+    if (keyIdx !== -1) {
+      const k = classify(lines[keyIdx].content);
+      if (k.type === "key") return k.key;
+    }
+  }
+  return null;
+}
+
+/**
  * Resolves the JSON path (relative to the outermost visible container) for the
  * clicked line, using indentation to reconstruct ancestry.
  *
@@ -146,7 +213,8 @@ export function resolveExpressionPath(
     if (findParentIndex(lines, idx, lines[idx].indent) === -1) {
       return [];
     }
-    path.unshift(arrayIndexOf(lines, idx, lines[idx].indent));
+    const seg = elementPathSegment(lines, idx);
+    if (seg !== null) path.unshift(seg);
     curIndent = lines[idx].indent;
   } else {
     return null;
@@ -162,7 +230,8 @@ export function resolveExpressionPath(
     if (ocls.type === "key") {
       path.unshift(ocls.key);
     } else if (ocls.type === "element") {
-      path.unshift(arrayIndexOf(lines, p, opener.indent));
+      const seg = elementPathSegment(lines, p);
+      if (seg !== null) path.unshift(seg);
     }
     curIndent = opener.indent;
     searchFrom = p;
