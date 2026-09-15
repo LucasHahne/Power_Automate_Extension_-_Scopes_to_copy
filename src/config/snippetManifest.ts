@@ -127,6 +127,22 @@ export const snippets: SnippetManifestItem[] = [
     fileType: "json",
   },
   {
+    id: "error-5",
+    categoryId: "error",
+    name: "Error Handler with mail and failed actions table incl. Terminate (Coming soon)",
+    iconKey: "Errorhandling",
+    dataPath: "errorHandling/errorHandlingReturnMailTerminate.json",
+    fileType: "json",
+  },
+  {
+    id: "error-6",
+    categoryId: "error",
+    name: "Error Handler with mail and failed actions table incl. Terminate (Condensed version)(Coming soon)",
+    iconKey: "Errorhandling",
+    dataPath: "errorHandling/errorHandlingReturnMailTerminateCondensed.json",
+    fileType: "json",
+  },
+  {
     id: "sharepoint-1",
     categoryId: "sharepoint",
     name: "Request Manager Approval",
@@ -212,6 +228,14 @@ export const snippets: SnippetManifestItem[] = [
     name: "Filter Tablerows which are not empty",
     iconKey: "Excel",
     dataPath: "excel/getTableRowsWhichContainData.json",
+    fileType: "json",
+  },
+  {
+    id: "excelonline-2",
+    categoryId: "excelonline",
+    name: "Bulk add rows into Excel from Sharepoint (Coming soon)",
+    iconKey: "Excel",
+    dataPath: "excel/batchAddRowsIntoExcelFromSharepoint.json",
     fileType: "json",
   },
   {

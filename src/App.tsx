@@ -6,12 +6,14 @@ import ExpandExpressionWindowSettingsRow from "./components/Options/ExpandExpres
 import CopyJsonExpressionSettingsRow from "./components/Options/CopyJsonExpressionSettingsRow";
 import ScopeModeSwitch from "./components/ScopeModeSwitch";
 import CustomScopesSection from "./components/CustomScopesSection";
+import WhatsNewDialog from "./components/WhatsNewDialog";
 import { availableSnippets } from "./config/snippetLoader";
 import { githubIssueUrls, getReportBugUrl } from "./config/githubIssues";
 import { browserAPI, isExtensionContext } from "./utils/browserAPI";
 import type { ListItem } from "./types";
 import { usePersistedSnippetCategoryCollapse } from "./hooks/usePersistedSnippetCategoryCollapse";
 import { useScopeMode } from "./hooks/useScopeMode";
+import { useWhatsNew } from "./hooks/useWhatsNew";
 
 function getExtensionVersion(): string {
   if (!isExtensionContext()) return "unknown";
@@ -32,6 +34,12 @@ function App() {
     setCollapsed,
     hydrated: categoryCollapseHydrated,
   } = usePersistedSnippetCategoryCollapse();
+  const {
+    shouldShow: showWhatsNew,
+    hydrated: whatsNewHydrated,
+    dismiss: dismissWhatsNew,
+    currentVersion: whatsNewVersion,
+  } = useWhatsNew();
 
   const handleCopyClick = (item: ListItem) => {
     if (item.data) {
@@ -115,6 +123,9 @@ function App() {
         </div>
         <span className="shrink-0 text-gray-500">v{getExtensionVersion()}</span>
       </footer>
+      {whatsNewHydrated && showWhatsNew && (
+        <WhatsNewDialog version={whatsNewVersion} onDismiss={dismissWhatsNew} />
+      )}
     </div>
   );
 }

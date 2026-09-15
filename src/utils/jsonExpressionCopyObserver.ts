@@ -2,7 +2,7 @@
 import {
   collectViewLines,
   formatExpression,
-  resolveExpressionPath,
+  resolveClickedExpressionPath,
 } from "./jsonExpressionPath";
 
 const TOAST_ID = "pa-scopes-expression-toast";
@@ -49,7 +49,10 @@ export class JsonExpressionCopyObserver {
 
     const viewLine = target.closest<HTMLElement>(".view-line");
     if (!viewLine) return;
-    const linesContainer = viewLine.closest(".view-lines");
+    const linesContainer =
+      viewLine.closest(".monaco-editor") ??
+      viewLine.closest(".lines-content") ??
+      viewLine.closest(".view-lines");
     if (!linesContainer) return;
 
     const actionName = this.findActionName(viewLine);
@@ -62,7 +65,11 @@ export class JsonExpressionCopyObserver {
     const idx = lines.findIndex((l) => l.element === viewLine);
     if (idx < 0) return;
 
-    const path = resolveExpressionPath(lines, idx);
+    const path = resolveClickedExpressionPath(
+      lines,
+      idx,
+      offsetInViewLine(viewLine, e),
+    );
     if (!path) {
       this.showToast("Could not build an expression here", true);
       return;
@@ -156,4 +163,56 @@ export class JsonExpressionCopyObserver {
     document.body.appendChild(toast);
     this.toastTimer = setTimeout(() => this.removeToast(), TOAST_DURATION_MS);
   }
+}
+
+interface CaretPoint {
+  node: Node;
+  offset: number;
+}
+
+function caretFromPoint(x: number, y: number): CaretPoint | null {
+  const doc = document as Document & {
+    caretRangeFromPoint?: (x: number, y: number) => Range | null;
+    caretPositionFromPoint?: (x: number, y: number) => { offsetNode: Node; offset: number } | null;
+  };
+  if (typeof doc.caretRangeFromPoint === "function") {
+    const range = doc.caretRangeFromPoint(x, y);
+    if (range) return { node: range.startContainer, offset: range.startOffset };
+  }
+  if (typeof doc.caretPositionFromPoint === "function") {
+    const pos = doc.caretPositionFromPoint(x, y);
+    if (pos) return { node: pos.offsetNode, offset: pos.offset };
+  }
+  return null;
+}
+
+function textOffsetInElement(root: HTMLElement, targetNode: Node, targetOffset: number): number | null {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  let offset = 0;
+  let node: Node | null;
+  while ((node = walker.nextNode())) {
+    const text = node.textContent ?? "";
+    if (node === targetNode) return offset + targetOffset;
+    if (targetNode instanceof Element && targetNode.contains(node)) return offset;
+    offset += text.length;
+  }
+  return null;
+}
+
+/** Character offset inside a Monaco `.view-line` (NBSP counts as one, same as spaces). */
+function offsetInViewLine(viewLine: HTMLElement, event: MouseEvent): number {
+  const caret = caretFromPoint(event.clientX, event.clientY);
+  if (caret && viewLine.contains(caret.node)) {
+    const fromCaret = textOffsetInElement(viewLine, caret.node, caret.offset);
+    if (fromCaret !== null) return fromCaret;
+  }
+
+  const target = event.target;
+  if (target instanceof Node && viewLine.contains(target)) {
+    const fromTarget = textOffsetInElement(viewLine, target, 0);
+    if (fromTarget !== null) return fromTarget;
+  }
+
+  const text = (viewLine.textContent ?? "").replace(/\u00a0/g, " ");
+  return text.length - text.trimStart().length;
 }

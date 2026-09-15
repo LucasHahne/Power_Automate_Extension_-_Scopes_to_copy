@@ -1,5 +1,5 @@
 {
-  "nodeId": "Scope_-_Try",
+  "nodeId": "Scope_-_try",
   "serializedValue": {
     "type": "Scope",
     "description": "- When you see an issue for actions with \"This operation contains a token that does not exist in the current workflow.\" Make sure to just click on the action and collapse it with the << in the top right.",
