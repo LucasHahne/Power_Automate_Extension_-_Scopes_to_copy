@@ -17,7 +17,11 @@ const CloseIcon = () => (
     stroke="currentColor"
     className="w-5 h-5"
   >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M6 18 18 6M6 6l12 12"
+    />
   </svg>
 );
 
@@ -87,7 +91,7 @@ export default function WhatsNewDialog({
 
         <p className="text-sm text-gray-600">
           Enjoying the extension? A quick review on the Chrome Web Store really
-          helps.
+          helps and motivates.
         </p>
 
         <div className="flex flex-col-reverse gap-2 pt-1 sm:flex-row sm:justify-end">

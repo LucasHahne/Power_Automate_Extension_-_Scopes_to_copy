@@ -141,7 +141,7 @@ If you run into any problems or have questions:
 
 - **Bug fix:** Copy-expression-on-JSON-click now walks the full JSON in the editor DOM from the clicked character, so nested array items (e.g. `values[2][0]` in a compact `[[...], ...]` body) keep every index even when that part of the tree is scrolled off-screen.
 
-- **Enhancement** Aligned all Catch Scopes to refer to "Scope - Try"
+- **Enhancement:** Aligned all Catch Scopes to refer to "Scope - Try"
 
 ### 2.1.0.2
 
