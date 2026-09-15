@@ -1,6 +1,6 @@
 # Power Automate Browser Extension - Scopes to Copy
 
-**Version:** 2.1.0.2
+**Version:** 2.1.0.3
 
 Hey there! Welcome to the Power Automate Browser Extension - Scopes to Copy – your friendly companion for building Power Automate flows faster and easier. This extension gives you instant access to ready-to-use action templates right from your browser toolbar. Just click, copy, and paste into your flows!
 
@@ -93,7 +93,7 @@ All custom scopes are listed under the **Custom** header (rainbow-styled) and ar
 outputs('Get_worksheets_-_Production_Data_Large')?['body']?['value']?[0]?['name']
 ```
 
-Paste it straight into the expression editor (no leading `@` needed). For **Initialize variable** / **Set variable** (and related) actions, the expression uses `variables('varName')` instead of the long `outputs(...)` path when the variable name is visible in the JSON. Because the run viewer only loads the visible part of large responses, the extension reconstructs the path from what is on screen and closes any unbalanced brackets, so keep the key/value you click (and its parent keys) visible for the most accurate result. Toggle it on or off in the extension options.
+Paste it straight into the expression editor (no leading `@` needed). For **Initialize variable** / **Set variable** (and related) actions, the expression uses `variables('varName')` instead of the long `outputs(...)` path when the variable name is visible in the JSON. The path is built from the JSON already in the editor DOM (including lines scrolled out of view) and uses the exact character you clicked, so nested array items like `values[2][0]` keep both indexes. Toggle it on or off in the extension options.
 
 ## Want to Add a New Flow Action?
 
@@ -136,6 +136,12 @@ If you run into any problems or have questions:
 - Check existing issues to see if someone else has had the same question
 
 ## Version history
+
+### 2.1.0.3
+
+- **Bug fix:** Copy-expression-on-JSON-click now walks the full JSON in the editor DOM from the clicked character, so nested array items (e.g. `values[2][0]` in a compact `[[...], ...]` body) keep every index even when that part of the tree is scrolled off-screen.
+
+- **Enhancement** Aligned all Catch Scopes to refer to "Scope - Try"
 
 ### 2.1.0.2
 

@@ -2,11 +2,11 @@
 // Pure helpers for turning a clicked line in the Power Automate run-history
 // Monaco JSON viewer into a Power Automate `outputs('Action')?[...]` expression.
 //
-// The Monaco viewer is virtualized: only visible lines exist in the DOM, they
-// are positioned absolutely (DOM order != visual order), and long / deep JSON
-// is often only partially loaded. Because of that we resolve the path from the
-// visible lines using indentation depth rather than trying to parse the whole
-// document from the root.
+// `.view-line` rows are positioned absolutely (DOM order != visual order), so
+// we sort by `top` and join the full editor text from the DOM. Path resolution
+// prefers a character-offset walk of that JSON (needed for nested arrays that
+// share a single line, e.g. `["Product A", "PN-1001"]`). Indent-walking is
+// only the fallback when the joined text is not parseable.
 
 export type PathSegment = string | number;
 
@@ -55,7 +55,8 @@ function escapeSingleQuoted(value: string): string {
 }
 
 /**
- * Collects the visible Monaco `.view-line` rows inside a `.view-lines` container,
+ * Collects Monaco `.view-line` rows inside a container (prefer the full
+ * `.monaco-editor` so off-screen lines still in the DOM are included),
  * sorted into visual (top-to-bottom) order.
  */
 export function collectViewLines(container: Element): ViewLine[] {
@@ -135,8 +136,9 @@ function isInsideArray(lines: ViewLine[], elementIdx: number): boolean {
 }
 
 /**
- * When an object opener `{` sits on its own line at the same indent as its key
- * (`"body":` / `{`), indentation alone cannot link them. Walk back for that key.
+ * When an object or array opener sits on its own line at the same indent as its
+ * key (`"body":` / `{`, `"values":` / `[`), indentation alone cannot link them.
+ * Walk back for that key.
  */
 function findPrecedingKeyAtIndent(
   lines: ViewLine[],
@@ -162,8 +164,9 @@ function elementPathSegment(
   if (isInsideArray(lines, elementIdx)) {
     return arrayIndexOf(lines, elementIdx, lines[elementIdx].indent);
   }
-  // Standalone object `{` under a same-indent key — use the key, not [0].
-  if (lines[elementIdx].content.trimStart().startsWith("{")) {
+  // Standalone `{` / `[` under a same-indent key (`"body":` / `{`, `"values":` / `[`).
+  const trimmed = lines[elementIdx].content.trimStart();
+  if (trimmed.startsWith("{") || trimmed.startsWith("[")) {
     const keyIdx = findPrecedingKeyAtIndent(
       lines,
       elementIdx,
@@ -350,7 +353,256 @@ export function closeIncompleteJson(text: string): string {
   return out;
 }
 
-/** Reconstructs a parseable JSON string from the visible lines (best-effort). */
+/** Reconstructs a parseable JSON string from the view-lines (best-effort). */
 export function reconstructJson(lines: ViewLine[]): string {
   return closeIncompleteJson(lines.map((l) => l.raw).join("\n"));
+}
+
+type WalkResult = PathSegment[] | "skip" | "error";
+
+function isWs(c: string | undefined): boolean {
+  return c === " " || c === "\t" || c === "\n" || c === "\r";
+}
+
+/**
+ * JSON path at a character offset in a complete (or closable) JSON document.
+ * Clicking a key name includes that key; clicking `[` / `{` yields the path to
+ * that container; clicking a nested array item includes every index.
+ *
+ * Returns `null` when the text cannot be walked as JSON.
+ */
+export function jsonPathAtOffset(text: string, offset: number): PathSegment[] | null {
+  return walkJsonPathAtOffset(text, offset, true);
+}
+
+function walkJsonPathAtOffset(
+  text: string,
+  offset: number,
+  retryOnError: boolean,
+): PathSegment[] | null {
+  if (!text) return null;
+  const n = text.length;
+  if (offset < 0) offset = 0;
+  if (offset > n) offset = n;
+
+  let i = 0;
+
+  const skipWs = () => {
+    while (i < n && isWs(text[i])) i++;
+  };
+
+  const inSpan = (start: number, end: number): boolean => {
+    if (offset === n) return end === n || (start < n && end === n);
+    if (start === end) return offset === start;
+    return offset >= start && offset < end;
+  };
+
+  const readString = (): string | null => {
+    if (text[i] !== '"') return null;
+    i++;
+    let inner = "";
+    while (i < n) {
+      const c = text[i];
+      if (c === "\\") {
+        inner += c + (text[i + 1] ?? "");
+        i += text[i + 1] === undefined ? 1 : 2;
+        continue;
+      }
+      if (c === '"') {
+        i++;
+        return unescapeJsonString(inner);
+      }
+      inner += c;
+      i++;
+    }
+    return null;
+  };
+
+  const parseLiteral = (path: PathSegment[], start: number): WalkResult => {
+    if (text.startsWith("true", i)) i += 4;
+    else if (text.startsWith("false", i)) i += 5;
+    else if (text.startsWith("null", i)) i += 4;
+    else {
+      const slice = text.slice(i);
+      const m = /^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?/.exec(slice);
+      if (!m) return "error";
+      i += m[0].length;
+    }
+    return inSpan(start, i) ? path : "skip";
+  };
+
+  const parseStringValue = (path: PathSegment[], start: number): WalkResult => {
+    if (readString() === null) return "error";
+    return inSpan(start, i) ? path : "skip";
+  };
+
+  const parseObject = (path: PathSegment[], start: number): WalkResult => {
+    i++;
+    skipWs();
+    if (text[i] === "}") {
+      i++;
+      return inSpan(start, i) ? path : "skip";
+    }
+    while (i < n) {
+      skipWs();
+      if (text[i] === "}") {
+        i++;
+        return inSpan(start, i) ? path : "skip";
+      }
+      if (text[i] !== '"') return "error";
+      const keyStart = i;
+      const key = readString();
+      if (key === null) return "error";
+      const keyEnd = i;
+      skipWs();
+      if (text[i] !== ":") return "error";
+      i++;
+      const childPath = path.concat(key);
+      if (inSpan(keyStart, keyEnd)) return childPath;
+      const hit = parseValue(childPath);
+      if (hit === "error") return "error";
+      if (hit !== "skip") return hit;
+      skipWs();
+      if (text[i] === ",") {
+        if (offset === i) return childPath;
+        i++;
+        continue;
+      }
+      if (text[i] === "}") {
+        i++;
+        return inSpan(start, i) ? path : "skip";
+      }
+      return "error";
+    }
+    return "error";
+  };
+
+  const parseArray = (path: PathSegment[], start: number): WalkResult => {
+    i++;
+    skipWs();
+    if (text[i] === "]") {
+      i++;
+      return inSpan(start, i) ? path : "skip";
+    }
+    let index = 0;
+    while (i < n) {
+      skipWs();
+      if (text[i] === "]") {
+        i++;
+        return inSpan(start, i) ? path : "skip";
+      }
+      const childPath = path.concat(index);
+      const valueStart = i;
+      const hit = parseValue(childPath);
+      if (hit === "error") return "error";
+      if (hit !== "skip") return hit;
+      if (offset >= valueStart && offset < i) return childPath;
+      skipWs();
+      if (text[i] === ",") {
+        if (offset === i) return childPath;
+        i++;
+        index++;
+        continue;
+      }
+      if (text[i] === "]") {
+        i++;
+        return inSpan(start, i) ? path : "skip";
+      }
+      return "error";
+    }
+    return "error";
+  };
+
+  const parseValue = (path: PathSegment[]): WalkResult => {
+    skipWs();
+    if (i >= n) return "error";
+    const start = i;
+    const c = text[i];
+    if (c === "{") return parseObject(path, start);
+    if (c === "[") return parseArray(path, start);
+    if (c === '"') return parseStringValue(path, start);
+    if (c === "t" || c === "f" || c === "n" || c === "-" || (c >= "0" && c <= "9")) {
+      return parseLiteral(path, start);
+    }
+    return "error";
+  };
+
+  const result = parseValue([]);
+  if (result === "error") {
+    if (retryOnError) {
+      const repaired = closeIncompleteJson(text);
+      if (repaired !== text) return walkJsonPathAtOffset(repaired, offset, false);
+    }
+    return null;
+  }
+  if (result === "skip") return [];
+  return result;
+}
+
+function stripTrailingComma(s: string): string {
+  return s.replace(/,\s*$/, "");
+}
+
+function clampOffsetInLine(line: ViewLine, offsetInLine: number): number {
+  if (!Number.isFinite(offsetInLine)) return line.indent;
+  if (offsetInLine < line.indent) return line.indent;
+  if (offsetInLine > line.raw.length) return line.raw.length;
+  return offsetInLine;
+}
+
+/**
+ * Extra path segments for JSON nested on the clicked line itself (compact
+ * arrays such as `["Product A", "PN-1001", "Yes", "125"],`).
+ */
+function inlinePathSegments(line: ViewLine, offsetInLine: number): PathSegment[] {
+  const offsetInContent = offsetInLine - line.indent;
+  const content = line.content;
+  if (offsetInContent < 0 || content.length === 0) return [];
+
+  const keyMatch = KEY_RE.exec(content);
+  if (keyMatch) {
+    const afterKey = content.slice(keyMatch[0].length);
+    const ws = afterKey.length - afterKey.trimStart().length;
+    const valueStart = keyMatch[0].length + ws;
+    if (offsetInContent <= keyMatch[0].length) return [];
+    const valuePart = stripTrailingComma(afterKey.trimStart());
+    if (!valuePart) return [];
+    return jsonPathAtOffset(valuePart, Math.max(0, offsetInContent - valueStart)) ?? [];
+  }
+
+  const stripped = stripTrailingComma(content);
+  if (!stripped) return [];
+  const rel = Math.min(Math.max(0, offsetInContent), Math.max(0, stripped.length - 1));
+  return jsonPathAtOffset(stripped, rel) ?? [];
+}
+
+/**
+ * Resolves the expression path for a clicked view-line, using the character
+ * offset inside that line so nested values that share a row still get indexes.
+ *
+ * Prefers walking the joined DOM JSON; falls back to indent ancestry plus any
+ * inline nested path on the clicked line.
+ */
+export function resolveClickedExpressionPath(
+  lines: ViewLine[],
+  clickedIndex: number,
+  offsetInLine: number = 0,
+): PathSegment[] | null {
+  if (clickedIndex < 0 || clickedIndex >= lines.length) return null;
+
+  const line = lines[clickedIndex];
+  const clamped = clampOffsetInLine(line, offsetInLine);
+  const fullText = lines.map((l) => l.raw).join("\n");
+  let abs = 0;
+  for (let i = 0; i < clickedIndex; i++) {
+    abs += lines[i].raw.length + 1;
+  }
+  abs += clamped;
+
+  const fromJson = jsonPathAtOffset(fullText, abs);
+  if (fromJson !== null) return fromJson;
+
+  const indentPath = resolveExpressionPath(lines, clickedIndex);
+  if (!indentPath) return null;
+  return indentPath.concat(inlinePathSegments(line, clamped));
 }
