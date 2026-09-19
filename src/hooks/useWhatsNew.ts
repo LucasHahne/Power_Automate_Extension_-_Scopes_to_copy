@@ -16,7 +16,8 @@ function getManifestVersion(): string {
 /**
  * Tracks whether the "What's new" popup should be shown for the current
  * release. Compares the manifest version to the last version the user has
- * already acknowledged (persisted in chrome.storage.local).
+ * already acknowledged (persisted in chrome.storage.local). `open` reopens
+ * the same popup on demand (e.g. from the footer version control).
  */
 export function useWhatsNew() {
   const currentVersion = getManifestVersion();
@@ -31,13 +32,18 @@ export function useWhatsNew() {
       .get([STORAGE_KEY])
       .then((result: Record<string, unknown>) => {
         const lastSeen = result[STORAGE_KEY];
-        setShouldShow(lastSeen !== currentVersion);
+        // Keep an already-opened dialog visible if storage resolves later.
+        setShouldShow((prev) => prev || lastSeen !== currentVersion);
       })
       .catch((err) => {
         console.error("Error loading what's-new state:", err);
       })
       .finally(() => setHydrated(true));
   }, [currentVersion]);
+
+  const open = useCallback(() => {
+    setShouldShow(true);
+  }, []);
 
   const dismiss = useCallback(() => {
     setShouldShow(false);
@@ -47,5 +53,5 @@ export function useWhatsNew() {
       .catch((err) => console.error("Error saving what's-new state:", err));
   }, [currentVersion]);
 
-  return { shouldShow, hydrated, dismiss, currentVersion };
+  return { shouldShow, hydrated, dismiss, open, currentVersion };
 }

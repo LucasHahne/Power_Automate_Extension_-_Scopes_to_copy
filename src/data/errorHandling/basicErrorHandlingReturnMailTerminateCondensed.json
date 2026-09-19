@@ -1,1 +1,57 @@
-{}
+{
+  "nodeId": "Scope_-_catch",
+  "serializedValue": {
+    "type": "Scope",
+    "actions": {
+      "Select_-_failed_actions_as_HTML_rows": {
+        "type": "Select",
+        "inputs": {
+          "from": "@result('Scope_-_Try')",
+          "select": "@if(\r\nor(equals(item()?['status'],'Failed'),equals(item()?['status'],'TimedOut')),\r\nconcat(\r\n'<tr><td style=\"border:1px solid #d1d1d1;padding:8px;vertical-align:top;word-break:break-word;\">',\r\nitem()?['name'],\r\n'</td><td style=\"border:1px solid #d1d1d1;padding:8px;vertical-align:top;word-break:break-word;\">',\r\ncoalesce(item()?['error']?['message'],item()?['outputs']?['body']?['error']?['message'],'No error message returned'),\r\n'</td></tr>'\r\n),\r\n''\r\n)"
+        }
+      },
+      "Send_an_email_(V2)_-_failed_actions_with_description": {
+        "type": "OpenApiConnection",
+        "inputs": {
+          "parameters": {
+            "emailMessage/To": "",
+            "emailMessage/Subject": "Error in Flow: @{workflow()?['tags']?['flowDisplayName']}",
+            "emailMessage/Body": "<p>Hi,</p><p>Your flow: <b>@{workflow()?['tags']?['flowDisplayName']}</b> has failed.</p><p>Error:</p><table style=\"border-collapse:collapse;width:100%;table-layout:fixed;font-family:Segoe UI,Arial,sans-serif;font-size:13px;\"><tbody><tr><th style=\"width:28%;background:#f3f2f1;border:1px solid #d1d1d1;padding:8px;text-align:left;\">Action</th><th style=\"background:#f3f2f1;border:1px solid #d1d1d1;padding:8px;text-align:left;\">Error</th></tr>@{join(body('Select_-_failed_actions_as_HTML_rows'),'')}</tbody></table><p>Your flow link: <a href=\"https://make.powerautomate.com/environments/@{workflow()?['tags']?['environmentName']}/flows/@{workflow()?['name']}/runs/@{workflow()?['run']?['name']}\">Open the failed run</a></p><p>Or copy the following link: <a href=\"https://make.powerautomate.com/environments/@{workflow()?['tags']?['environmentName']}/flows/@{workflow()?['name']}/runs/@{workflow()?['run']?['name']}\">https://make.powerautomate.com/environments/@{workflow()?['tags']?['environmentName']}/flows/@{workflow()?['name']}/runs/@{workflow()?['run']?['name']}</a></p><p>Please have a look</p><p>Your Flowbot</p>",
+            "emailMessage/Importance": "Normal"
+          },
+          "host": {
+            "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+            "connection": "shared_office365",
+            "operationId": "SendEmailV2"
+          }
+        },
+        "runAfter": { "Select_-_failed_actions_as_HTML_rows": ["Succeeded"] }
+      },
+      "Terminate": {
+        "type": "Terminate",
+        "inputs": { "runStatus": "Failed" },
+        "runAfter": {
+          "Send_an_email_(V2)_-_failed_actions_with_description": [
+            "SUCCEEDED",
+            "TIMEDOUT",
+            "SKIPPED",
+            "FAILED"
+          ]
+        }
+      }
+    },
+    "runAfter": { "Scope_-_try": ["TIMEDOUT", "SKIPPED", "FAILED"] }
+  },
+  "allConnectionData": {
+    "Send_an_email_(V2)_-_failed_actions_with_description": {
+      "connectionReference": {
+        "api": { "id": "/providers/Microsoft.PowerApps/apis/shared_office365" },
+        "connection": { "id": null }
+      },
+      "referenceKey": "shared_office365"
+    }
+  },
+  "staticResults": {},
+  "isScopeNode": true,
+  "mslaNode": true
+}

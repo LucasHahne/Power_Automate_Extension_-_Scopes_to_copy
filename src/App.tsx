@@ -27,6 +27,24 @@ function getExtensionVersion(): string {
 
 const reportBugUrl = getReportBugUrl(getExtensionVersion());
 
+const InfoIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="h-3.5 w-3.5"
+    aria-hidden="true"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+    />
+  </svg>
+);
+
 function App() {
   const { mode, setMode, hydrated: scopeModeHydrated } = useScopeMode();
   const {
@@ -36,8 +54,8 @@ function App() {
   } = usePersistedSnippetCategoryCollapse();
   const {
     shouldShow: showWhatsNew,
-    hydrated: whatsNewHydrated,
     dismiss: dismissWhatsNew,
+    open: openWhatsNew,
     currentVersion: whatsNewVersion,
   } = useWhatsNew();
 
@@ -121,9 +139,17 @@ function App() {
             Suggest a feature
           </a>
         </div>
-        <span className="shrink-0 text-gray-500">v{getExtensionVersion()}</span>
+        <button
+          type="button"
+          onClick={openWhatsNew}
+          aria-label={`What's new in v${whatsNewVersion}`}
+          className="inline-flex shrink-0 cursor-pointer items-center gap-1 rounded-sm text-gray-500 hover:text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-500"
+        >
+          <InfoIcon />
+          <span>v{whatsNewVersion}</span>
+        </button>
       </footer>
-      {whatsNewHydrated && showWhatsNew && (
+      {showWhatsNew && (
         <WhatsNewDialog version={whatsNewVersion} onDismiss={dismissWhatsNew} />
       )}
     </div>
