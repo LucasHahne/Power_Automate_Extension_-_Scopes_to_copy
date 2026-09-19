@@ -1,1 +1,87 @@
-{}
+{
+  "nodeId": "Scope_-_catch",
+  "serializedValue": {
+    "type": "Scope",
+    "actions": {
+      "Compose_-_results_of_try_scope_actions": {
+        "type": "Compose",
+        "inputs": "@result('Scope_-_try')"
+      },
+      "Filter_-_failed_actions": {
+        "type": "Query",
+        "inputs": {
+          "from": "@outputs('Compose_-_results_of_try_scope_actions')",
+          "where": "@equals(item()?['status'],Failed)"
+        },
+        "runAfter": { "Compose_-_results_of_try_scope_actions": ["Succeeded"] }
+      },
+      "Create_HTML_table_-_actions_and_errors": {
+        "type": "Table",
+        "inputs": {
+          "from": "@body('Filter_-_failed_actions')",
+          "format": "HTML",
+          "columns": [
+            { "header": "Action", "value": "@item()?['name']" },
+            {
+              "header": "Error",
+              "value": "@if(not(empty(item()?['error']?['message'])),item()?['error']?['message'],item()?['outputs']?['body']?['error']?['message'])"
+            }
+          ]
+        },
+        "runAfter": { "Filter_-_failed_actions": ["Succeeded"] }
+      },
+      "Compose_-_make_the_html_table_prettier": {
+        "type": "Compose",
+        "inputs": "@replace(\r\nreplace(\r\nreplace(\r\nreplace(body('Create_HTML_table_-_actions_and_errors'),\r\n'<table>','<table style=\"border-collapse:collapse;width:100%;table-layout:fixed;font-family:Segoe UI,Arial,sans-serif;font-size:13px;\">'),\r\n'<th>Action</th>','<th style=\"width:28%;background:#f3f2f1;border:1px solid #d1d1d1;padding:8px;text-align:left;\">Action</th>'),\r\n'<th>','<th style=\"background:#f3f2f1;border:1px solid #d1d1d1;padding:8px;text-align:left;\">'),\r\n'<td>','<td style=\"border:1px solid #d1d1d1;padding:8px;vertical-align:top;word-break:break-word;\">')",
+        "runAfter": { "Create_HTML_table_-_actions_and_errors": ["Succeeded"] }
+      },
+      "Compose_-_get_Flow_URL": {
+        "type": "Compose",
+        "inputs": "@concat('https://make.powerautomate.com/environments/', workflow()?['tags']['environmentName'],'/flows/',workflow()?['name'],'/runs/',workflow()?['run']['name'])",
+        "runAfter": { "Compose_-_make_the_html_table_prettier": ["Succeeded"] }
+      },
+      "Send_an_email_(V2)_-_failed_actions_with_description": {
+        "type": "OpenApiConnection",
+        "inputs": {
+          "parameters": {
+            "emailMessage/To": "",
+            "emailMessage/Subject": "Error in Flow: ",
+            "emailMessage/Body": "<p>Hi,</p><p>Your flow  has failed.</p><p>Error:</p><p>@{outputs('Compose_-_make_the_html_table_prettier')}</p><p>Your flowlink: @{outputs('Compose_-_get_Flow_URL')}</p><p>Please have a look</p><p>Your Flowbot</p>",
+            "emailMessage/Importance": "Normal"
+          },
+          "host": {
+            "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+            "connection": "shared_office365",
+            "operationId": "SendEmailV2"
+          }
+        },
+        "runAfter": { "Compose_-_get_Flow_URL": ["Succeeded"] }
+      },
+      "Terminate": {
+        "type": "Terminate",
+        "inputs": { "runStatus": "Failed" },
+        "runAfter": {
+          "Send_an_email_(V2)_-_failed_actions_with_description": [
+            "SUCCEEDED",
+            "TIMEDOUT",
+            "SKIPPED",
+            "FAILED"
+          ]
+        }
+      }
+    },
+    "runAfter": { "Scope_-_try": ["SUCCEEDED"] }
+  },
+  "allConnectionData": {
+    "Send_an_email_(V2)_-_failed_actions_with_description": {
+      "connectionReference": {
+        "api": { "id": "/providers/Microsoft.PowerApps/apis/shared_office365" },
+        "connection": { "id": null }
+      },
+      "referenceKey": "shared_office365"
+    }
+  },
+  "staticResults": {},
+  "isScopeNode": true,
+  "mslaNode": true
+}
