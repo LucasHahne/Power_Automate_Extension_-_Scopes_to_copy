@@ -10,9 +10,9 @@ import stringJson from "../data/variables/string.json";
 import objectJson from "../data/variables/object.json";
 import arrayJson from "../data/variables/array.json";
 import basicErrorJson from "../data/errorHandling/basicErrorHandling.json";
-import basicErrorTerminateJson from "../data/errorHandling/basicErrorHandlingTerminate.json";
-import errorMailJson from "../data/errorHandling/basicErrorHandlingMail.json";
 import errorMailTerminateJson from "../data/errorHandling/basicErrorHandlingMailTerminate.json";
+import errorReturnMailTerminateJson from "../data/errorHandling/basicErrorHandlingReturnMailTerminate.json";
+import errorReturnMailTerminateCondensedJson from "../data/errorHandling/basicErrorHandlingReturnMailTerminateCondensed.json";
 import requestManagerApprovalJson from "../data/sharepoint/requestManagerApproval.json";
 
 import getFilesByNameAndNoFolderTxt from "../data/sharepoint/getFilesByNameAndNoFolder.txt?raw";
@@ -36,9 +36,11 @@ const dataByPath: Record<string, unknown> = {
   "variables/object.json": objectJson,
   "variables/array.json": arrayJson,
   "errorHandling/basicErrorHandling.json": basicErrorJson,
-  "errorHandling/basicErrorHandlingTerminate.json": basicErrorTerminateJson,
-  "errorHandling/basicErrorHandlingMail.json": errorMailJson,
   "errorHandling/basicErrorHandlingMailTerminate.json": errorMailTerminateJson,
+  "errorHandling/basicErrorHandlingReturnMailTerminate.json":
+    errorReturnMailTerminateJson,
+  "errorHandling/basicErrorHandlingReturnMailTerminateCondensed.json":
+    errorReturnMailTerminateCondensedJson,
   "sharepoint/requestManagerApproval.json": requestManagerApprovalJson,
   "sharepoint/getFilesByNameAndNoFolder.txt": getFilesByNameAndNoFolderTxt,
   "sharepoint/getFilesByNameAndNoFolder.json": getFilesByNameAndNoFolderJson,

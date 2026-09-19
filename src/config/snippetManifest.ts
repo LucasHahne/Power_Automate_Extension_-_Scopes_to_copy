@@ -107,7 +107,7 @@ export const snippets: SnippetManifestItem[] = [
     categoryId: "error",
     name: "Basic Error Handler with mail incl. Terminate",
     iconKey: "Errorhandling",
-    dataPath: "errorHandling/basicErrorHandlingTerminate.json",
+    dataPath: "errorHandling/basicErrorHandlingMailTerminate.json",
     fileType: "json",
   },
   {
@@ -115,7 +115,7 @@ export const snippets: SnippetManifestItem[] = [
     categoryId: "error",
     name: "Error Handler with mail and failed actions table incl. Terminate",
     iconKey: "Errorhandling",
-    dataPath: "errorHandling/errorHandlingReturnMailTerminate.json",
+    dataPath: "errorHandling/basicErrorHandlingReturnMailTerminate.json",
     fileType: "json",
   },
   {
@@ -123,7 +123,7 @@ export const snippets: SnippetManifestItem[] = [
     categoryId: "error",
     name: "Error Handler with mail and failed actions table incl. Terminate (Condensed version)",
     iconKey: "Errorhandling",
-    dataPath: "errorHandling/errorHandlingReturnMailTerminateCondensed.json",
+    dataPath: "errorHandling/basicErrorHandlingReturnMailTerminateCondensed.json",
     fileType: "json",
   },
   {

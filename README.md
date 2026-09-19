@@ -1,6 +1,6 @@
 # Power Automate Browser Extension - Scopes to Copy
 
-**Version:** 2.1.0.3
+**Version:** 2.1.1.0
 
 Hey there! Welcome to the Power Automate Browser Extension - Scopes to Copy – your friendly companion for building Power Automate flows faster and easier. This extension gives you instant access to ready-to-use action templates right from your browser toolbar. Just click, copy, and paste into your flows!
 
@@ -28,9 +28,9 @@ This extension is a growing collection of Power Automate actions and flow templa
 ### Error Handling
 
 - Basic Error Handler
-- Basic Error Handler incl. Terminate
-- Basic Error Handler with mail
 - Basic Error Handler with mail incl. Terminate
+- Error Handler with mail and failed actions table incl. Terminate
+- Error Handler with mail and failed actions table incl. Terminate (Condensed version)
 
 Error handling scopes require a **Scope - Try** that wraps the actions you want to monitor; the catch block uses it to get the proper error information.
 
@@ -70,6 +70,8 @@ The library is constantly growing with new actions and templates!
 3. **Browse the categories** – Click any category header to expand or collapse. Which categories are open stays saved for your next visit.
 4. **Copy what you need** – Click the copy icon (📋) next to any action
 5. **Paste into Power Automate** – The JSON is on your clipboard, ready to go!
+
+**What's new:** Click the info icon next to the version number in the footer to reopen the release notes popup for the current version.
 
 ### Custom scopes
 
@@ -136,6 +138,12 @@ If you run into any problems or have questions:
 - Check existing issues to see if someone else has had the same question
 
 ## Version history
+
+### 2.1.1.0
+
+- **Error Handling:** Added catch scopes that email an HTML table of failed actions and terminate the run — a full version and a condensed version with fewer actions.
+- **Error Handling:** Removed the mail-only and terminate-only basic handlers. The library now includes the basic catch, mail with terminate, and the two table-based handlers.
+- **New feature:** Click the info icon next to the version number in the footer to reopen the What's new popup for this release.
 
 ### 2.1.0.3
 

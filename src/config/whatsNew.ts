@@ -21,8 +21,10 @@ export interface WhatsNew {
 }
 
 export const WHATS_NEW: WhatsNew = {
-  version: "2.1.0.3",
+  version: "2.1.1.0",
   highlights: [
-    "Copy-expression-on-JSON-click now keeps nested array indexes (e.g. values[2][0]) by walking the full JSON in the editor DOM from the character you click, including lines scrolled out of view.",
+    "New error handlers that email an HTML table of failed actions (full and condensed). Recommendation is the condensed version due to its simplicty. In case you are using the long version, you have to add a single space in the first part of the filter expression. That's due to a parsing issue in PowerAutomate itself.",
+    "The mail-only and terminate-only basic handlers are gone, so the error-handling list stays focused on the scopes you actually use.",
+    "Click the info icon next to the version number in the footer anytime to reopen these release notes.",
   ],
 };
