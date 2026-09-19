@@ -189,3 +189,7 @@ This project is open source and available under the [MIT License](LICENSE).
 **Lucas Hahne**
 
 Thanks for checking out the Power Automate Browser Extension! Whether you're using it or contributing to it, you're helping make Power Automate development easier for everyone. Happy automating!
+
+## Contributors
+
+[Maximilian Lippl](https://github.com/Sheeponthemountain)
