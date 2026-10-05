@@ -8,6 +8,7 @@ import {
   OutlookIcon,
   SharepointIcon,
   VariableIcon,
+  WordIcon,
 } from "../components/Icons/ServiceIcons";
 
 export type IconKey =
@@ -17,7 +18,8 @@ export type IconKey =
   | "Excel"
   | "Dataverse"
   | "Outlook"
-  | "Office365";
+  | "Office365"
+  | "Word";
 
 const iconMap: Record<IconKey, ComponentType<IconProps>> = {
   Variable: VariableIcon,
@@ -27,6 +29,7 @@ const iconMap: Record<IconKey, ComponentType<IconProps>> = {
   Dataverse: DataverseIcon,
   Outlook: OutlookIcon,
   Office365: Office365Icon,
+  Word: WordIcon,
 };
 
 export function getIcon(key: IconKey): ReactNode {

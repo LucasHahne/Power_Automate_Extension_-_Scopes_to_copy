@@ -14,7 +14,6 @@ import errorMailTerminateJson from "../data/errorHandling/basicErrorHandlingMail
 import errorReturnMailTerminateJson from "../data/errorHandling/basicErrorHandlingReturnMailTerminate.json";
 import errorReturnMailTerminateCondensedJson from "../data/errorHandling/basicErrorHandlingReturnMailTerminateCondensed.json";
 import requestManagerApprovalJson from "../data/sharepoint/requestManagerApproval.json";
-
 import getFilesByNameAndNoFolderTxt from "../data/sharepoint/getFilesByNameAndNoFolder.txt?raw";
 import getFilesByNameAndNoFolderJson from "../data/sharepoint/getFilesByNameAndNoFolder.json";
 import getFolderByNameTxt from "../data/sharepoint/getFolderByName.txt?raw";
@@ -27,8 +26,13 @@ import saveAttachementToSharepointJson from "../data/outlook/saveAttachementToSh
 import batchCreateItemsInSharepointListJson from "../data/sharepoint/batchCreateItemsInSharepointList.json";
 import batchUpdateItemsInSharepointListJson from "../data/sharepoint/batchUpdateItemsInSharepointList.json";
 import batchDeleteItemsInSharepointListJson from "../data/sharepoint/batchDeleteItemsInSharepointList.json";
+import saveWordAsPDFToSharepointJson from "../data/word/saveWordAsPDFToSharepoint.json";
+import populateWordTemplateAndSaveAsPDFToSharepointJson from "../data/word/populateWordTemplateAndSaveAsPDFToSharepoint.json";
 
 const dataByPath: Record<string, unknown> = {
+  "word/saveWordAsPDFToSharepoint.json": saveWordAsPDFToSharepointJson,
+  "word/populateWordTemplateAndSaveAsPDFToSharepoint.json":
+    populateWordTemplateAndSaveAsPDFToSharepointJson,
   "variables/boolean.json": booleanJson,
   "variables/integer.json": integerJson,
   "variables/float.json": floatJson,

@@ -5,6 +5,7 @@ import errorhandlingLogo from "../../assets/errorhandling_logo.png";
 import outlookLogo from "../../assets/outlook_logo.png";
 import office365Logo from "../../assets/office365_logo.png";
 import excelLogo from "../../assets/excel_logo.png";
+import wordLogo from "../../assets/word_logo.png";
 
 export interface IconProps {
   size?: number;
@@ -112,6 +113,18 @@ export function ExcelIcon({ size = 20, className = "" }: IconProps) {
     <img
       src={excelLogo}
       alt="Excel Icon"
+      width={size}
+      height={size}
+      className={className}
+    />
+  );
+}
+
+export function WordIcon({ size = 20, className = "" }: IconProps) {
+  return (
+    <img
+      src={wordLogo}
+      alt="Word Icon"
       width={size}
       height={size}
       className={className}

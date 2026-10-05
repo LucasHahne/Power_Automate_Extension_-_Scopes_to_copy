@@ -21,10 +21,8 @@ export interface WhatsNew {
 }
 
 export const WHATS_NEW: WhatsNew = {
-  version: "2.1.1.0",
+  version: "2.1.2.0",
   highlights: [
-    "New error handlers that email an HTML table of failed actions (full and condensed). Recommendation is the condensed version due to its simplicty. In case you are using the long version, you have to add a single space in the first part of the filter expression. That's due to a parsing issue in PowerAutomate itself.",
-    "The mail-only and terminate-only basic handlers are gone, so the error-handling list stays focused on the scopes you actually use.",
-    "Click the info icon next to the version number in the footer anytime to reopen these release notes.",
+    "New Word category: Populate Word template and save it as PDF to Sharepoint (fills a template, converts it to PDF, then cleans up the temporary Word file), and Save Word as PDF to Sharepoint (converts an existing Word document to PDF).",
   ],
 };

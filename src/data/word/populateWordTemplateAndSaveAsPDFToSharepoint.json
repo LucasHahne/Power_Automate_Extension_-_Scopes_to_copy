@@ -1,0 +1,161 @@
+{
+  "nodeId": "Scope_-_try",
+  "serializedValue": {
+    "type": "Scope",
+    "actions": {
+      "Populate_a_Microsoft_Word_template_-_new_document": {
+        "type": "OpenApiConnection",
+        "inputs": {
+          "parameters": {
+            "source": "",
+            "drive": "",
+            "file": ""
+          },
+          "host": {
+            "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness",
+            "connection": "shared_wordonlinebusiness",
+            "operationId": "CreateFileItem"
+          }
+        },
+        "metadata": {}
+      },
+      "Create_file_-_temp_docx_file": {
+        "type": "OpenApiConnection",
+        "inputs": {
+          "parameters": {
+            "dataset": "",
+            "folderPath": "",
+            "name": "@concat('_temp_',guid(),'_',utcNow('yyyyMMdd_HHmmss'), '.docx')",
+            "body": "@body('Populate_a_Microsoft_Word_template_-_new_document')"
+          },
+          "host": {
+            "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+            "connection": "shared_sharepointonline",
+            "operationId": "CreateFile"
+          }
+        },
+        "runAfter": {
+          "Populate_a_Microsoft_Word_template_-_new_document": ["Succeeded"]
+        },
+        "metadata": {
+          "operationMetadataId": "06724fcf-d7e5-45ea-a3ce-b7f449f400fd"
+        }
+      },
+      "Convert_Word_Document_to_PDF_-_temp_docx_to_pdf": {
+        "type": "OpenApiConnection",
+        "inputs": {
+          "parameters": {
+            "source": "",
+            "drive": "",
+            "file": "@split(outputs('Create_file_-_temp_docx_file')?['body/Path'],split(outputs('Create_file_-_temp_docx_file')?['body/Path'],'/')[1])[1]"
+          },
+          "host": {
+            "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness",
+            "connection": "shared_wordonlinebusiness",
+            "operationId": "GetFilePDF"
+          }
+        },
+        "runAfter": { "Create_file_-_temp_docx_file": ["Succeeded"] },
+        "metadata": {
+          "013UIZY5Y3447OAJEZTBH2K5A7P4JIBSCJ": "//Test Template New.docx",
+          "013UIZY555AQEZK3K6TZA2KSJYMSW4JLOE": "//Test_20260923_195330.docx",
+          "operationMetadataId": "f98c4a08-f285-46db-96c8-193fbb55b93e"
+        }
+      },
+      "Create_file_-_pdf_file": {
+        "type": "OpenApiConnection",
+        "inputs": {
+          "parameters": {
+            "dataset": "",
+            "folderPath": "",
+            "name": "@replace(outputs('Create_file_-_temp_docx_file')?['body/Name'], '.docx', '.pdf')",
+            "body": "@body('Convert_Word_Document_to_PDF_-_temp_docx_to_pdf')"
+          },
+          "host": {
+            "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+            "connection": "shared_sharepointonline",
+            "operationId": "CreateFile"
+          }
+        },
+        "runAfter": {
+          "Convert_Word_Document_to_PDF_-_temp_docx_to_pdf": ["Succeeded"]
+        },
+        "metadata": {
+          "operationMetadataId": "d8d1e714-4efd-4362-a2e7-de89ef06f016"
+        }
+      },
+      "Delete_file_-_temp_docx_file": {
+        "type": "OpenApiConnection",
+        "inputs": {
+          "parameters": {
+            "dataset": "",
+            "id": "@outputs('Create_file_-_temp_docx_file')?['body/Id']"
+          },
+          "host": {
+            "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+            "connection": "shared_sharepointonline",
+            "operationId": "DeleteFile"
+          }
+        },
+        "runAfter": { "Create_file_-_pdf_file": ["Succeeded"] },
+        "metadata": {
+          "operationMetadataId": "0e78ed48-6a44-4b76-9003-18c2cd8b65f7"
+        }
+      }
+    },
+    "runAfter": {},
+    "metadata": {
+      "operationMetadataId": "cee0e62e-0c89-4139-9541-d40fa890c600"
+    }
+  },
+  "allConnectionData": {
+    "": {
+      "connectionReference": {
+        "api": {
+          "id": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+        },
+        "connection": { "id": null }
+      },
+      "referenceKey": "shared_wordonlinebusiness"
+    },
+    "Create_file_-_temp_docx_file": {
+      "connectionReference": {
+        "api": {
+          "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+        },
+        "connection": { "id": null }
+      },
+      "referenceKey": "shared_sharepointonline"
+    },
+    "Convert_Word_Document_to_PDF_-_temp_docx_to_pdf": {
+      "connectionReference": {
+        "api": {
+          "id": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+        },
+        "connection": { "id": null }
+      },
+      "referenceKey": "shared_wordonlinebusiness"
+    },
+    "Create_file_-_pdf_file": {
+      "connectionReference": {
+        "api": {
+          "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+        },
+        "connection": { "id": null }
+      },
+      "referenceKey": "shared_sharepointonline"
+    },
+    "Delete_file_-_temp_docx_file": {
+      "connectionReference": {
+        "api": {
+          "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+        },
+        "connection": { "id": null }
+      },
+      "referenceKey": "shared_sharepointonline"
+    }
+  },
+  "staticResults": {},
+  "isScopeNode": true,
+  "mslaNode": true
+}
