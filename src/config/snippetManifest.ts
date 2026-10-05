@@ -38,6 +38,12 @@ export const categories: CategoryManifestItem[] = [
     iconKey: "Outlook",
   },
   {
+    id: "word",
+    title: "Word",
+    gradient: "from-blue-600 to-blue-300",
+    iconKey: "Word",
+  },
+  {
     id: "office365",
     title: "Office 365",
     gradient: "from-violet-600 to-orange-500",
@@ -123,7 +129,8 @@ export const snippets: SnippetManifestItem[] = [
     categoryId: "error",
     name: "Error Handler with mail and failed actions table incl. Terminate (Condensed version)",
     iconKey: "Errorhandling",
-    dataPath: "errorHandling/basicErrorHandlingReturnMailTerminateCondensed.json",
+    dataPath:
+      "errorHandling/basicErrorHandlingReturnMailTerminateCondensed.json",
     fileType: "json",
   },
   {
@@ -236,6 +243,22 @@ export const snippets: SnippetManifestItem[] = [
     name: "Save attachment to Sharepoint",
     iconKey: "Outlook",
     dataPath: "outlook/saveAttachementToSharepoint.json",
+    fileType: "json",
+  },
+  {
+    id: "word-1",
+    categoryId: "word",
+    name: "Populate Word template and save it as PDF to Sharepoint",
+    iconKey: "Word",
+    dataPath: "word/populateWordTemplateAndSaveAsPDFToSharepoint.json",
+    fileType: "json",
+  },
+  {
+    id: "word-2",
+    categoryId: "word",
+    name: "Save Word as PDF to Sharepoint",
+    iconKey: "Word",
+    dataPath: "word/saveWordAsPDFToSharepoint.json",
     fileType: "json",
   },
   {
