@@ -32,7 +32,7 @@ This extension is a growing collection of Power Automate actions and flow templa
 - Error Handler with mail and failed actions table incl. Terminate
 - Error Handler with mail and failed actions table incl. Terminate (Condensed version)
 
-Error handling scopes require a **Scope - Try** that wraps the actions you want to monitor; the catch block uses it to get the proper error information.
+Error handling scopes require a **Scope - try** that wraps the actions you want to monitor; the catch block uses it to get the proper error information.
 
 ### SharePoint
 
